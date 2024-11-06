@@ -37,6 +37,14 @@ CREATE TABLE Utilisateur (
     role INT(3) NOT NULL
 );
 
+CREATE TABLE ListePreference (
+  idUtilisateur INT(4),
+  idSpectacle INT(4),
+  PRIMARY KEY (idUtilisateur, idSpectacle),
+  FOREIGN KEY (idUtilisateur) REFERENCES Utilisateur(idUtilisateur),
+  FOREIGN KEY (idSpectacle) REFERENCES Spectacle(idSpectacle)
+);
+
 
 -- ### Script d'ajout de données dans la BDD ### --
 
@@ -85,4 +93,11 @@ VALUES
     (3,    'user3@mail.com',    '$2y$12$5dDqgRbmCN35XzhniJPJ1ejM5GIpBMzRizP730IDEHsSNAu24850S',    1),
     (4,    'user4@mail.com',    '$2y$12$ltC0A0zZkD87pZ8K0e6TYOJPJeN/GcTSkUbpqq0kBvx6XdpFqzzqq',    1),
     (5,    'admin@mail.com',    '$2y$12$JtV1W6MOy/kGILbNwGR2lOqBn8PAO3Z6MupGhXpmkeCXUPQ/wzD8a',    100); -- mdp = admin
-
+    
+INSERT INTO ListePreference (idUtilisateur, idSpectacle)
+VALUES
+    (1, 1),
+    (1, 3),
+    (2, 2),
+    (2, 5),
+    (4, 2);
