@@ -23,8 +23,8 @@ CREATE TABLE Soiree (
 CREATE TABLE Programme (
     idSoiree INT(4),
     idSpectacle INT(4),
-    heureD DATE NOT NULL,
-    heureF DATE NOT NULL,
+    heureD TIME NOT NULL,
+    heureF TIME NOT NULL,
     PRIMARY KEY (idSoiree, idSpectacle),
     FOREIGN KEY (idSoiree) REFERENCES Soiree(idSoiree),
     FOREIGN KEY (idSpectacle) REFERENCES Spectacle(idSpectacle)
