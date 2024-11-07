@@ -14,7 +14,7 @@ abstract class Repository {
 
     // Attributs
     private PDO $pdo; // Objet permettant d'accéder à la BDD et d'executer les requêtes SQL
-    private static ?array $config = []; // Liste qui contient les configurations pour accéder à la BDD
+    protected static ?array $config = []; // Liste qui contient les configurations pour accéder à la BDD
 
 
 
