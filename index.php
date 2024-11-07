@@ -32,18 +32,15 @@ use iutnc\sae_dev_web\repository\SelectRepository;
 session_start();
 
  try {
-    SelectRepository::setConfig('conf.db.ini');
-    InsertRepository::setConfig('conf.db.ini');
+    SelectRepository::setConfig('db.conf.ini');
+    InsertRepository::setConfig('db.conf.ini');
 // Erreur lors de la lecture du fichier de configuration
 } catch (Exception $e) {
     echo $e->getMessage();
 }
 
 
-/*
+$_GET['action'] = 'default';
+
 $dispatcher = new Dispatcher();
 $dispatcher->run();
-*/
-
-$bd = SelectRepository::getInstance();
-$bd->
