@@ -1,17 +1,27 @@
 @startuml
 
 abstract class Repository {
-    - pdo
-    - __construct()
-    + setConfig()
-    + getInstance()
+    - pdo : PDO
+    - config : array
+    - __construct(Array) : void
+    + setConfig(String) : void
+    + <i>getInstance() : Repository
 }
 
 class SelectRepository {
-    
+    - instance : SelectRepository
+    + getInstance() : SelectRepository
+    + getSpectacle(int) : Spectacle
+    + findExistingEmail(String) : array
 }
 
 class InsertRepository {
+    - instance : InsertRepository
+    + getInstance() : InsertRepository
+    + ajouterSpectacle(Spectacle) : void
+    + ajouterSpectacleToSoiree(int, int) : void
+    + ajouterLieu(String) : void
+    + ajouterUtilisateur(String, String, int) : void
 
 }
 
