@@ -28,4 +28,9 @@ class Video {
         $this->url = $url;
     }
 
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
 }
