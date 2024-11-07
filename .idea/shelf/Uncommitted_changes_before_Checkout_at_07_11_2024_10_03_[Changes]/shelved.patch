@@ -1,0 +1,31 @@
+Index: documents/diagrammes/diagClasses.puml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/documents/diagrammes/diagClasses.puml b/documents/diagrammes/diagClasses.puml
+--- a/documents/diagrammes/diagClasses.puml	(revision ea76c9a9d86df7cdebce343d061cf464cca8ce18)
++++ b/documents/diagrammes/diagClasses.puml	(date 1730970170322)
+@@ -1,0 +1,21 @@
++@startuml
++
++abstract class Repository {
++    - pdo
++    - __construct()
++    + setConfig()
++    + getInstance()
++}
++
++class SelectRepository {
++    
++}
++
++class InsertRepository {
++
++}
++
++Repository --> SelectRepository
++Repository --> InsertRepository
++
++@enduml
+\ No newline at end of file

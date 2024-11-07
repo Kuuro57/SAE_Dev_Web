@@ -1,0 +1,18 @@
+Index: script_creation_tables.sql
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>CREATE TABLE Soiree (\r\n    idSoiree INT(4) PRIMARY KEY,\r\n    idLieu INT(4),\r\n    estAnnule BOOLEAN DEFAULT FALSE,\r\n    dateSoiree DATE,\r\n    FOREIGN KEY (idLieu) REFERENCES Lieu(idLieu)\r\n);\r\n\r\nCREATE TABLE Lieu (\r\n    idLieu INT(4) PRIMARY KEY,\r\n    nomLieu VARCHAR(50) NOT NULL\r\n);\r\n\r\n\r\nCREATE TABLE Spectacle (\r\n    idSpectacle INT(4) PRIMARY KEY,\r\n    style VARCHAR(50) NOT NULL\r\n);\r\n\r\nCREATE TABLE Programme (\r\n    idSoiree INT(4),\r\n    idSpectacle INT(4),\r\n    heureD DATE,\r\n    heureF DATE,\r\n    PRIMARY KEY (idSoiree, idSpectacle),\r\n    FOREIGN KEY (idSoiree) REFERENCES Soiree(idSoiree),\r\n    FOREIGN KEY (idSpectacle) REFERENCES Spectacle(idSpectacle)\r\n);\r\n\r\nCREATE TABLE Utilisateur (\r\n    idUtilisateur INT(4) PRIMARY KEY,\r\n    email VARCHAR(50),\r\n    mdp VARCHAR(256),\r\n    role INT(3)\r\n);\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/script_creation_tables.sql b/script_creation_tables.sql
+--- a/script_creation_tables.sql	(revision 773236af4f139dab25355ae5e1fdd0ba2ce778ee)
++++ b/script_creation_tables.sql	(date 1730907622866)
+@@ -11,7 +11,6 @@
+     nomLieu VARCHAR(50) NOT NULL
+ );
+ 
+-
+ CREATE TABLE Spectacle (
+     idSpectacle INT(4) PRIMARY KEY,
+     style VARCHAR(50) NOT NULL

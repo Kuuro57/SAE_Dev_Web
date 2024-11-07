@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c08b6c83-a538-4305-84d4-002807669e53" name="Changes" comment="Ajouts dans Repository.php&#10;Coding d'InsertRepository.php" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="Git.Settings">
+    <favorite-branches>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="base" />
+                <branch-info repo="$PROJECT_DIR$" source="diagrammes" />
+                <branch-info repo="$PROJECT_DIR$" source="insertionsBD(InsertRepository.php)" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </favorite-branches>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="insertionsBD(InsertRepository.php)" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;ClemDW&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Kuuro57/SAE_Dev_Web.git&quot;,
+    &quot;accountId&quot;: &quot;53d20488-b917-4530-9dca-85216d6bb29e&quot;
+  }
+}</component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="C:\xampp\php\php.exe" />
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2oVpI6kLwE1un4DzzAMtFgPNVxS" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "C:/xampp/htdocs/SAE Web/SAE_Dev_Web",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-PS-242.23726.107" />
+        <option value="bundled-php-predefined-a98d8de5180a-90914f2295cb-com.jetbrains.php.sharedIndexes-PS-242.23726.107" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c08b6c83-a538-4305-84d4-002807669e53" name="Changes" comment="" />
+      <created>1730964514893</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1730964514893</updated>
+      <workItem from="1730964516043" duration="2243000" />
+      <workItem from="1730968344811" duration="2191000" />
+      <workItem from="1730970993936" duration="46000" />
+      <workItem from="1730971049807" duration="357000" />
+      <workItem from="1730971425739" duration="2458000" />
+      <workItem from="1730974006637" duration="9858000" />
+    </task>
+    <task id="LOCAL-00001" summary="Création diagramme de classes PHP">
+      <option name="closed" value="true" />
+      <created>1730968486120</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1730968486120</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Modifications diagramme de classes">
+      <option name="closed" value="true" />
+      <created>1730970311908</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1730970311908</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Repository ajoutés au diagramme">
+      <option name="closed" value="true" />
+      <created>1730973314518</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1730973314518</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Ajouts dans Repository.php&#10;Coding d'InsertRepository.php">
+      <option name="closed" value="true" />
+      <created>1730985272861</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1730985272861</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Création diagramme de classes PHP" />
+    <MESSAGE value="Modifications diagramme de classes" />
+    <MESSAGE value="Repository ajoutés au diagramme" />
+    <MESSAGE value="Ajouts dans Repository.php&#10;Coding d'InsertRepository.php" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajouts dans Repository.php&#10;Coding d'InsertRepository.php" />
+  </component>
+</project>
