@@ -34,8 +34,8 @@ try {
 
 $_GET['action'] = 'default';
 try {
-    InsertRepository::setConfig('conf.db.ini');
-    SelectRepository::setConfig('conf.db.ini');
+    InsertRepository::setConfig('db.conf.ini');
+    SelectRepository::setConfig('db.conf.ini');
 } catch (Exception $e) {
     echo $e->getMessage();
 }
