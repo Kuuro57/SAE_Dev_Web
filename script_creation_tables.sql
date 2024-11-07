@@ -8,7 +8,13 @@ CREATE TABLE Lieu (
 CREATE TABLE Spectacle (
     idSpectacle INT(4) PRIMARY KEY,
     nomSpectacle VARCHAR(50) NOT NULL,
-    style VARCHAR(50) NOT NULL
+    style VARCHAR(50) NOT NULL,
+    artiste VARCHAR(50) NOT NULL,
+    duree INT(4),
+    descSpectacle VARCHAR(50),
+    nomFichierVideo VARCHAR(50),
+    nomFichierAudio VARCHAR(50),
+    nomFichierImage VARCHAR(50)
 );
 
 CREATE TABLE Soiree (
@@ -58,13 +64,15 @@ VALUES
     (5, 'Soiree Big Snap', 5, '2024-11-19');
 
 
-INSERT INTO Spectacle (idSpectacle, nomSpectacle, style) 
+-- L'attribut duree est complété quand le spectacle est ajouté dans la table Programme (en récupérant l'heure de début et l'heure de fin)
+-- grâce à un trigger
+INSERT INTO Spectacle (idSpectacle, nomSpectacle, style, artiste, descSpectacle, nomFichierVideo, nomFichierAudio) 
 VALUES 
-    (1, 'Indochine', 'Rock'), 
-    (2, 'Daft Punk', 'Electro'),
-    (3, 'PNL', 'Rap'),
-    (4, 'The Beatles', 'Rock'),
-    (5, 'Naps', 'Rap');
+    (1, 'Indochine', 'Rock', 'Indochine', 'Un super spectacle !', 'indochine2024.mp4', 'indochine2024.mp3', 'indochine2024.png'), 
+    (2, 'Daft Punk', 'Electro', 'Daft Punk', 'Un super spectacle !', 'daft_punk2024.mp4', 'daft_punk2024.mp3', 'daft_punk2024.png'),
+    (3, 'PNL', 'Rap', 'PNL', 'Un super spectacle !', 'pnl2024.mp4', 'pnl2024.mp3', 'pnl2024.png'),
+    (4, 'The Beatles', 'Rock', 'The Beatles', 'Un super spectacle !', 'the_beatles2024.mp4', 'the_beatles2024.mp3', 'the_beatles2024.png'),
+    (5, 'Naps', 'Rap', 'Naps', 'Une super spectacle !', 'naps2024.mp4', 'naps2024.mp3', 'naps2024.png');
 
 
 INSERT INTO Programme (idSoiree, idSpectacle, heureD, heureF) 

@@ -3,7 +3,7 @@
 namespace iutnc\sae_dev_web\auth;
 
 use iutnc\sae_dev_web\exception\AuthException;
-
+use iutnc\sae_dev_web\repository\InsertRepository;
 
 
 /**
@@ -16,13 +16,12 @@ class Auth{
      * @param string $e Une adresse email
      * @param string $p Un mot de passe
      * @return bool True si l'authentification s'est bien déroulée
-     * @throws AuthException
      */
     public static function authenticate(string $e, string $p):bool{
 
         // On regarde si l'email est présent dans la BDD
-        $bd = DeefyRepository::getInstance();
-        $res = $bd->checkExistingEmail($e);
+        $bd = InsertRepository::getInstance();
+        $res = $bd->findExistingEmail($e);
 
         // Si l'email n'existe pas
         if ($res === []) {
@@ -31,7 +30,7 @@ class Auth{
         }
 
         // On vérifie que le mot de passe est bon (on lance une exception si non)
-        if (!password_verify($p, $res['passwd'])) throw new AuthException("Mot de passe Incorrect");
+        if (!password_verify($p, $res['mdp'])) return false;
 
         // On ajoute l'email et le role dans la session
         $_SESSION['user']['email']=$e;
@@ -50,11 +49,11 @@ class Auth{
      * @param string $p Un mot de passe
      * @return String Message qui indique si l'inscription s'est bien déroulée ou non
      */
-    public static function register(string $e, string $p):String{
+    public static function register(string $e, string $p): String {
 
         // On vérifie que l'utilisateur n'existe pas déjà dans la BDD
-        $bd = DeefyRepository::getInstance();
-        $list = $bd->checkExistingEmail($e);
+        $bd = InsertRepository::getInstance();
+        $list = $bd->findExistingEmail($e);
 
         // Si la liste n'est pas vide
         if (!($list === [])) {
@@ -64,7 +63,7 @@ class Auth{
         // On hash son mot de passe
         $hashpassw = password_hash($p, PASSWORD_DEFAULT);
         // On ajoute l'email et le mot de passe à la BDD avec le role 1 (rôle standard)
-        $bd->addUser($e, $hashpassw, 1);
+        $bd->ajouterUtilisateur($e, $hashpassw, 1);
         // On retourne un message qui indique que l'inscription s'est bien déroulée
         return '<b>Compte créé !</b>';
 

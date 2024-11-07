@@ -9,15 +9,17 @@ use iutnc\sae_dev_web\auth\Auth;
 /**
  * Classe qui représente l'action de créer un nouveau compte
  */
-class AddUserAction extends Action {
+class AddUtilisateurAction extends Action {
 
     // Attribut
-    private string $formulaire = '<form method="post" action="?action=add-user">
+    private string $formulaire = '<form method="post" action="?action=add-utilisateur">
                                         <input type="email" name="email" placeholder="Email" class="input-field" required autofocus>
                                         <input type="password" name="passwd1" placeholder="Mot de passe" class="input-field" required>
                                         <input type="password" name="passwd2" placeholder="Confirmez le mot de passe" class="input-field" required>
                                         <input type="submit" name="connex" value="Connexion" class="button">
                                   </form>';
+
+
 
     /**
      * Constructeur de la classe
@@ -44,6 +46,8 @@ class AddUserAction extends Action {
         // Retourne vrai si toutes les conditions sont réunies
         return $length && $digit && $special && $lower && $upper;
     }
+
+
 
     /**
      * Méthode qui execute l'action
