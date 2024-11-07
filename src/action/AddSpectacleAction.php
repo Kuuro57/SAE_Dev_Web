@@ -13,14 +13,14 @@ use iutnc\sae_dev_web\repository\InsertRepository;
 class AddSpectacleAction extends Action {
 
     // Attribut
-    private string $formulaire = '<form method="post" action="?action=add-spectacle">
-                                        <input type="text" name="nomSpec" placeholder="Nom du spectacle" required>
-                                        <input type="text" name="style" placeholder="Style" required>
-                                        <input type="text" name="artiste" placeholder="Artiste" required>
-                                        <input type="text" name="descSpec" placeholder="Description" required>
-                                        <input type="file" name="fichierVideo" placeholder="<fichier Video>">
-                                        <input type="file" name="fichierAudio" placeholder="<fichier Audio>">
-                                        <input type="file" name="fichierImage" placeholder="<fichier Image>">
+    private string $formulaire = '<form method="post" name="" action="?action=add-spectacle" enctype="multipart/form-data">
+                                        <input type="text" name="nomSpec" placeholder="Nom du spectacle" required> <br>
+                                        <input type="text" name="style" placeholder="Style" required> <br>
+                                        <input type="text" name="artiste" placeholder="Artiste" required> <br>
+                                        <input type="text" name="descSpec" placeholder="Description" required> <br>
+                                        Fichier Video : <input type="file" name="fichierVideo" placeholder="<fichierVideo>"> <br>
+                                        Fichier Audio : <input type="file" name="fichierAudio" placeholder="<fichierAudio>"> <br>
+                                        Image : <input type="file" name="fichierImage" placeholder="<fichierImage>"> <br>
                                         <button type="submit" name="valider" class="button"> Valider </button>
                                   </form>';
 
@@ -56,7 +56,7 @@ class AddSpectacleAction extends Action {
                     if ($this->verifFichierImage($nomFichierImage)) {
 
                         // On créé un objet de type Spectacle
-                        $spectacle = new Spectacle(null, $nomSpec, $style, $artiste, null, $description, $nomFichierVideo, $nomFichierAudio, null, null, $nomFichierImage);
+                        $spectacle = new Spectacle(null, $nomSpec, $style, $artiste, $description, $nomFichierVideo, $nomFichierAudio, $nomFichierImage);
                         // On ajoute le spectacle à la BDD
                         $bd = InsertRepository::getInstance();
                         $bd->ajouterSpectacle($spectacle);
@@ -102,6 +102,7 @@ class AddSpectacleAction extends Action {
         // Si aucun fichier n'a été envoyé
         if (count($_FILES) === 0) {
             // On renvoie false
+            echo 'oups1';
             return false;
         }
         // Si le fichier a été envoyé par la méthode POST
@@ -109,6 +110,7 @@ class AddSpectacleAction extends Action {
             // Si l'extension du fichier n'est pas en .mp4
             if (!(str_ends_with($_FILES['fichierVideo']['name'], '.mp4'))) {
                 // On renvoie false
+                echo 'oups2';
                 return false;
             }
             // On met comme type au fichier audio audio/mpeg-4
@@ -122,6 +124,7 @@ class AddSpectacleAction extends Action {
         // Sinon
         else {
             // On renvoie false (fichier incorrect)
+            echo 'oups3';
             return false;
         }
     }
