@@ -25,7 +25,7 @@ class SelectRepository extends Repository {
      * @param string $filtre Filtre qui permet de savoir dans quel ordre afficher les spectacles
      * @return Spectacle[] La liste de tout les spectacles dans le bon ordre d'affichage
      */
-    public function getSpectacles(string $filtre) : array {
+    public function getSpectacles(string $filtre) : array { //null
         // TODO switch sur le filtre qui renvoie une requête SQL différente en fonction du filtre
     }
 

@@ -1,0 +1,15 @@
+{
+    "name": "super/sae_dev_web",
+    "autoload": {
+        "psr-4": {
+            "Super\\SaeDevWeb\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "armbrust5u",
+            "email": "SuperBidul1@gmail.com"
+        }
+    ],
+    "require": {}
+}

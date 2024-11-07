@@ -21,7 +21,7 @@ abstract class Repository {
     /**
      * Constructeur de la classe
      */
-    private function __construct(array $config) {
+    protected function __construct(array $config) {
 
         $this->pdo = new PDO(
             $config['dns'],
