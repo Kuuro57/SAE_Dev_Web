@@ -85,7 +85,6 @@ CREATE TABLE Programme (
     idSoiree INT(4),
     idSpectacle INT(4),
     heureD TIME NOT NULL,
-    heureF TIME NOT NULL,
     PRIMARY KEY (idSoiree, idSpectacle),
     FOREIGN KEY (idSoiree) REFERENCES Soiree(idSoiree),
     FOREIGN KEY (idSpectacle) REFERENCES Spectacle(idSpectacle)
@@ -155,15 +154,13 @@ VALUES
     (3, 'Rap');
 
 
--- L'attribut duree est complété quand le spectacle est ajouté dans la table Programme (en récupérant l'heure de début et l'heure de fin)
--- grâce à un trigger
-INSERT INTO Spectacle (idSpectacle, nomSpectacle, idStyle, idArtiste, descSpectacle) 
+INSERT INTO Spectacle (idSpectacle, nomSpectacle, idStyle, idArtiste, duree, descSpectacle) 
 VALUES 
-    (1, 'Indochine', 1, 1, 'Un super spectacle !'), 
-    (2, 'Daft Punk', 2, 2, 'Un super spectacle !'),
-    (3, 'PNL', 3, 3, 'Un super spectacle !'),
-    (4, 'The Beatles', 1, 4, 'Un super spectacle !'),
-    (5, 'Naps', 3, 4, 'Une super spectacle !');
+    (1, 'Indochine', 1, 1, 2, 'Un super spectacle !'), 
+    (2, 'Daft Punk', 2, 2, 3, 'Un super spectacle !'),
+    (3, 'PNL', 3, 3, 2, 'Un super spectacle !'),
+    (4, 'The Beatles', 1, 4, 2, 'Un super spectacle !'),
+    (5, 'Naps', 3, 4, 3, 'Une super spectacle !');
 
 
 INSERT INTO ImageSpectacle (idSpectacle, nomFichierImage)
@@ -202,15 +199,15 @@ VALUES
     (5, 5, 'Hip-Hop Extravaganza');
 
 
-INSERT INTO Programme (idSoiree, idSpectacle, heureD, heureF) 
+INSERT INTO Programme (idSoiree, idSpectacle, heureD) 
 VALUES 
-    (1, 2, '19:00', '22:00'), 
-    (1, 3, '23:00', '01:00'),
-    (2, 1, '19:00', '21:00'),
-    (3, 4, '20:00', '23:00'),
-    (3, 1, '17:00', '19:00'),
-    (4, 5, '20:00', '23:00'),
-    (5, 5, '20:00', '23:00');
+    (1, 2, '19:00'), 
+    (1, 3, '23:00'),
+    (2, 1, '19:00'),
+    (3, 4, '20:00'),
+    (3, 1, '17:00'),
+    (4, 5, '20:00'),
+    (5, 5, '20:00');
 
 
 INSERT INTO Utilisateur (idUtilisateur, email, mdp, role) 
