@@ -10,7 +10,7 @@ namespace iutnc\sae_dev_web\festival;
 class Spectacle {
 
     // Attributs
-    private int $id; // L'id du spectacle
+    private ?int $id; // L'id du spectacle
     private string $nom; // Nom du spectacle
     private string $style; // Style du spectacle
     private string $artiste; // Nom de l'artiste qui se représente pendant ce spectacle
@@ -64,7 +64,7 @@ class Spectacle {
 
     public function getNomFichierAudio(): string { return $this->nomFichierAudio; }
     public function setNomFichierAudio(string $nomFichierAudio): void { $this->nomFichierAudio = $nomFichierAudio; }
-    
+
     public function getNomFichierImage(): string { return $this->nomFichierImage; }
     public function setNomFichierImage(string $nomFichierImage): void { $this->nomFichierImage = $nomFichierImage; }
 
