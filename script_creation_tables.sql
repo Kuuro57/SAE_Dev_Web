@@ -8,13 +8,7 @@ CREATE TABLE Lieu (
 CREATE TABLE Spectacle (
     idSpectacle INT(4) PRIMARY KEY,
     nomSpectacle VARCHAR(50) NOT NULL,
-    style VARCHAR(50) NOT NULL,
-    artiste VARCHAR(50) NOT NULL,
-    duree INT(4),
-    descSpectacle VARCHAR(50),
-    nomFichierVideo VARCHAR(50),
-    nomFichierAudio VARCHAR(50),
-    nomFichierImage VARCHAR(50)
+    style VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE Soiree (
@@ -43,14 +37,6 @@ CREATE TABLE Utilisateur (
     role INT(3) NOT NULL
 );
 
-CREATE TABLE ListePreference (
-  idUtilisateur INT(4),
-  idSpectacle INT(4),
-  PRIMARY KEY (idUtilisateur, idSpectacle),
-  FOREIGN KEY (idUtilisateur) REFERENCES Utilisateur(idUtilisateur),
-  FOREIGN KEY (idSpectacle) REFERENCES Spectacle(idSpectacle)
-);
-
 
 -- ### Script d'ajout de données dans la BDD ### --
 
@@ -72,15 +58,13 @@ VALUES
     (5, 'Soiree Big Snap', 5, '2024-11-19');
 
 
--- L'attribut duree est complété quand le spectacle est ajouté dans la table Programme (en récupérant l'heure de début et l'heure de fin)
--- grâce à un trigger
-INSERT INTO Spectacle (idSpectacle, nomSpectacle, style, artiste, descSpectacle, nomFichierVideo, nomFichierAudio) 
+INSERT INTO Spectacle (idSpectacle, nomSpectacle, style) 
 VALUES 
-    (1, 'Indochine', 'Rock', 'Indochine', 'Un super spectacle !', 'indochine2024.mp4', 'indochine2024.mp3', 'indochine2024.png'), 
-    (2, 'Daft Punk', 'Electro', 'Daft Punk', 'Un super spectacle !', 'daft_punk2024.mp4', 'daft_punk2024.mp3', 'daft_punk2024.png'),
-    (3, 'PNL', 'Rap', 'PNL', 'Un super spectacle !', 'pnl2024.mp4', 'pnl2024.mp3', 'pnl2024.png'),
-    (4, 'The Beatles', 'Rock', 'The Beatles', 'Un super spectacle !', 'the_beatles2024.mp4', 'the_beatles2024.mp3', 'the_beatles2024.png'),
-    (5, 'Naps', 'Rap', 'Naps', 'Une super spectacle !', 'naps2024.mp4', 'naps2024.mp3', 'naps2024.png');
+    (1, 'Indochine', 'Rock'), 
+    (2, 'Daft Punk', 'Electro'),
+    (3, 'PNL', 'Rap'),
+    (4, 'The Beatles', 'Rock'),
+    (5, 'Naps', 'Rap');
 
 
 INSERT INTO Programme (idSoiree, idSpectacle, heureD, heureF) 
@@ -101,11 +85,4 @@ VALUES
     (3,    'user3@mail.com',    '$2y$12$5dDqgRbmCN35XzhniJPJ1ejM5GIpBMzRizP730IDEHsSNAu24850S',    1),
     (4,    'user4@mail.com',    '$2y$12$ltC0A0zZkD87pZ8K0e6TYOJPJeN/GcTSkUbpqq0kBvx6XdpFqzzqq',    1),
     (5,    'admin@mail.com',    '$2y$12$JtV1W6MOy/kGILbNwGR2lOqBn8PAO3Z6MupGhXpmkeCXUPQ/wzD8a',    100); -- mdp = admin
-    
-INSERT INTO ListePreference (idUtilisateur, idSpectacle)
-VALUES
-    (1, 1),
-    (1, 3),
-    (2, 2),
-    (2, 5),
-    (4, 2);
+
