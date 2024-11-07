@@ -1,0 +1,14 @@
+{
+    "name": "s3/sae_dev_web",
+    "description": "",
+    "type": "project",
+
+    "autoload": {
+        "psr-4": {
+            "iutnc\\sae_dev_web\\" : "./src"
+        }
+    },
+  "require": {
+    "ext-pdo": "*"
+  }
+}
