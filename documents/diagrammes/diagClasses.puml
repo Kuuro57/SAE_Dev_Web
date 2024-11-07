@@ -1,0 +1,21 @@
+@startuml
+
+abstract class Repository {
+    - pdo
+    - __construct()
+    + setConfig()
+    + getInstance()
+}
+
+class SelectRepository {
+    
+}
+
+class InsertRepository {
+
+}
+
+Repository --> SelectRepository
+Repository --> InsertRepository
+
+@enduml
