@@ -4,6 +4,8 @@ namespace iutnc\sae_dev_web\dispatch;
 
 
 
+use iutnc\sae_dev_web\action\AddSpectacleAction;
+
 /**
  * Classe qui représente le dispatcher
  */
@@ -22,7 +24,7 @@ class Dispatcher {
                 break;
 
             default :
-                // TODO
+                $class = new AddSpectacleAction();
                 break;
 
         }
@@ -38,8 +40,15 @@ class Dispatcher {
      * Méthode qui ajoute le morceau de page à la page complète
      */
     private function renderPage(string $html) : void {
+        
+        echo <<<END
 
-        // TODO
+            <html lang="fr">
+                $html
+            </html>
+
+        END;
+
 
     }
 
