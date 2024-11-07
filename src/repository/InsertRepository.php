@@ -3,7 +3,7 @@
 namespace iutnc\sae_dev_web\repository;
 
 use iutnc\deefy\repository\DeefyRepository;
-
+use iutnc\sae_dev_web\festival\Spectacle;
 
 
 /**
