@@ -19,7 +19,8 @@ require_once 'vendor/autoload.php';
 //               USE
 // ################################
 use \iutnc\sae_dev_web\dispatch\Dispatcher;
-// use \iutnc\deefy\repository\DeefyRepository;
+use iutnc\sae_dev_web\repository\InsertRepository;
+use iutnc\sae_dev_web\repository\SelectRepository;
 
 
 
@@ -29,14 +30,20 @@ use \iutnc\sae_dev_web\dispatch\Dispatcher;
 
 
 session_start();
-/*
+
  try {
-    DeefyRepository::setConfig('conf.db.ini');
+    SelectRepository::setConfig('conf.db.ini');
+    InsertRepository::setConfig('conf.db.ini');
 // Erreur lors de la lecture du fichier de configuration
 } catch (Exception $e) {
     echo $e->getMessage();
 }
-*/
 
+
+/*
 $dispatcher = new Dispatcher();
 $dispatcher->run();
+*/
+
+$bd = SelectRepository::getInstance();
+$bd->
