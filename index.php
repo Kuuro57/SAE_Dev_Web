@@ -32,5 +32,13 @@ try {
     echo $e->getMessage();
 }
 
+$_GET['action'] = 'default';
+try {
+    InsertRepository::setConfig('conf.db.ini');
+    SelectRepository::setConfig('conf.db.ini');
+} catch (Exception $e) {
+    echo $e->getMessage();
+}
+
 $dispatcher = new Dispatcher();
 $dispatcher->run();
