@@ -39,6 +39,8 @@ CREATE TABLE Soiree (
     idLieu INT(4),
     estAnnule BOOLEAN NOT NULL DEFAULT FALSE,
     dateSoiree DATE NOT NULL,
+    heureD TIME NOT NULL,
+    heureF TIME NOT NULL,
     FOREIGN KEY (idLieu) REFERENCES Lieu(idLieu)
 );
 
