@@ -2,7 +2,17 @@
 
 CREATE TABLE Lieu (
     idLieu INT(4) PRIMARY KEY,
-    nomLieu VARCHAR(50) NOT NULL
+    nomLieu VARCHAR(50) NOT NULL,
+    adresse VARCHAR(50) NOT NULL,
+    nbPlacesAssises INT(5) NOT NULL,
+    nbPlacesDebout INT(5) NOT NULL
+);
+
+CREATE TABLE ImageLieu (
+    idLieu INT(4),
+    nomFichierImage VARCHAR(50) NOT NULL,
+    PRIMARY KEY (idLieu, nomFichierImage),
+    FOREIGN KEY (idLieu) REFERENCES Lieu(idLieu)
 );
 
 CREATE TABLE Spectacle (
@@ -13,8 +23,14 @@ CREATE TABLE Spectacle (
     duree INT(4),
     descSpectacle VARCHAR(50),
     nomFichierVideo VARCHAR(50),
-    nomFichierAudio VARCHAR(50),
-    nomFichierImage VARCHAR(50)
+    nomFichierAudio VARCHAR(50)
+);
+
+CREATE TABLE ImageSpectacle (
+    idSpectacle INT(4),
+    nomFichierImage VARCHAR(50) NOT NULL,
+    PRIMARY KEY (idSpectacle, nomFichierImage),
+    FOREIGN KEY (idSpectacle) REFERENCES Spectacle(idSpectacle)
 );
 
 CREATE TABLE Soiree (
@@ -52,15 +68,27 @@ CREATE TABLE ListePreference (
 );
 
 
+
+
+
 -- ### Script d'ajout de données dans la BDD ### --
 
-INSERT INTO Lieu (idLieu, nomLieu) 
+INSERT INTO Lieu (idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout) 
 VALUES 
-    (1, 'Parc de la Pépinière'),
-    (2, 'Place Stanislas'),
-    (3, 'Place Carnot'),
-    (4, 'L autre Canal'),
-    (5, 'Zénith de Nancy');
+    (1, 'Parc de la Pépinière', 'Boulevard du XXVI régiment d infenterie', 0, 1000),
+    (2, 'Place Stanislas', 'Place Stanislas', 0, 1000),
+    (3, 'Place Carnot', 'Place Carnot', 0, 500),
+    (4, 'L autre Canal', '45 Boulevard d Austrasie', 350, 1300),
+    (5, 'Zénith de Nancy', 'Rue du Zénith', 8000, 25000);
+
+
+INSERT INTO ImageLieu (idLieu, nomFichierImage)
+VALUES
+    (1, 'parc_pepiniere.png'),
+    (2, 'place_stan.png'),
+    (3, 'place_carnot.png'),
+    (4, 'autre_canal.png'),
+    (5, 'zenith_ncy.png');
 
 
 INSERT INTO Soiree (idSoiree, nomSoiree, idLieu, dateSoiree) 
@@ -76,11 +104,20 @@ VALUES
 -- grâce à un trigger
 INSERT INTO Spectacle (idSpectacle, nomSpectacle, style, artiste, descSpectacle, nomFichierVideo, nomFichierAudio) 
 VALUES 
-    (1, 'Indochine', 'Rock', 'Indochine', 'Un super spectacle !', 'indochine2024.mp4', 'indochine2024.mp3', 'indochine2024.png'), 
-    (2, 'Daft Punk', 'Electro', 'Daft Punk', 'Un super spectacle !', 'daft_punk2024.mp4', 'daft_punk2024.mp3', 'daft_punk2024.png'),
-    (3, 'PNL', 'Rap', 'PNL', 'Un super spectacle !', 'pnl2024.mp4', 'pnl2024.mp3', 'pnl2024.png'),
-    (4, 'The Beatles', 'Rock', 'The Beatles', 'Un super spectacle !', 'the_beatles2024.mp4', 'the_beatles2024.mp3', 'the_beatles2024.png'),
-    (5, 'Naps', 'Rap', 'Naps', 'Une super spectacle !', 'naps2024.mp4', 'naps2024.mp3', 'naps2024.png');
+    (1, 'Indochine', 'Rock', 'Indochine', 'Un super spectacle !', 'indochine2024.mp4', 'indochine2024.mp3'), 
+    (2, 'Daft Punk', 'Electro', 'Daft Punk', 'Un super spectacle !', 'daft_punk2024.mp4', 'daft_punk2024.mp3'),
+    (3, 'PNL', 'Rap', 'PNL', 'Un super spectacle !', 'pnl2024.mp4', 'pnl2024.mp3'),
+    (4, 'The Beatles', 'Rock', 'The Beatles', 'Un super spectacle !', 'the_beatles2024.mp4', 'the_beatles2024.mp3'),
+    (5, 'Naps', 'Rap', 'Naps', 'Une super spectacle !', 'naps2024.mp4', 'naps2024.mp3');
+
+
+INSERT INTO ImageSpectacle (idSpectacle, nomFichierImage)
+VALUES
+    (1, 'indochine2024.png'),
+    (2, 'daft_punk2024.png'),
+    (3, 'pnl2024.png'),
+    (4, 'the_beatles2024.png'),
+    (5, 'naps2024.png');
 
 
 INSERT INTO Programme (idSoiree, idSpectacle, heureD, heureF) 
