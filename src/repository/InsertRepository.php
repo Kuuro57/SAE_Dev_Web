@@ -14,11 +14,29 @@ class InsertRepository extends Repository {
     // Attribut
     private static ?InsertRepository $instance = null; // Instance unique de la classe InsertRepository
 
+    /**
+     * Constructeur de reprise du PDO parent
+     */
+    public function __construct(array $config) {
+
+        parent::__construct($config);
+
+    }
 
 
-    public static function getInstance(): InsertRepository
-    {
-        // TODO
+    /**
+     * Méthode de récupèration de l'instance définie
+     * @return InsertRepository l'instance
+     */
+    public static function getInstance(): InsertRepository {
+
+        if(self::$instance === null) {
+
+            self::$instance = new self(self::$config);
+
+        }
+
+        return self::$instance;
     }
 
 
@@ -28,7 +46,10 @@ class InsertRepository extends Repository {
      * @param Spectacle $spectacle Le spectacle à ajouter
      */
     public function ajouterSpectacle(Spectacle $spectacle): void {
-        // TODO
+
+        $req = 'INSERT INTO spectacle(idSpectacle, nomSpectacle, style, artiste, duree, descSpectacle, nomFichierVideo, nomFichierAudio) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+
+
     }
 
 
@@ -73,8 +94,5 @@ class InsertRepository extends Repository {
     public function ajouterUtilisateur(string $email, string $mdp, int $role) : void {
         // TODO
     }
-
-
-
 
 }
