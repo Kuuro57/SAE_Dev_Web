@@ -28,4 +28,9 @@ class Audio {
         $this->nomFichierAudio = $nomFichAudio;
     }
 
+    public function getNomFichierAudio()
+    {
+        return $this->nomFichierAudio;
+    }
+
 }
