@@ -4,6 +4,8 @@ namespace iutnc\sae_dev_web\repository;
 
 
 
+use Couchbase\IndexFailureException;
+
 /**
  * Classe qui récupère des informations auprès de la BDD
  */
@@ -13,9 +15,17 @@ class SelectRepository extends Repository {
     private static ?SelectRepository $instance = null; // Instance unique de la classe SelectRepository
 
 
-
+    /**
+     * Méthode getInstance qui retourne une instance de SelectRepository
+     * @return SelectRepository Une instance de la classe
+     */
     public static function getInstance(): SelectRepository {
-        // TODO
+
+        if(self::$instance === null) {
+            self::$instance = new SelectRepository(self::$config);
+        }
+        return self::$instance;
+
     }
 
 
@@ -25,8 +35,9 @@ class SelectRepository extends Repository {
      * @param string $filtre Filtre qui permet de savoir dans quel ordre afficher les spectacles
      * @return Spectacle[] La liste de tout les spectacles dans le bon ordre d'affichage
      */
-    public function getSpectacles(string $filtre) : array { //null
-        // TODO switch sur le filtre qui renvoie une requête SQL différente en fonction du filtre
+    //null TODO switch sur le filtre qui renvoie une requête SQL différente en fonction du filtre
+    public function getSpectacles(string $filtre) : array {
+        
     }
 
 
