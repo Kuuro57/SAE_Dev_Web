@@ -1,14 +1,15 @@
 {
-    "name": "s3/sae_dev_web",
-    "description": "",
-    "type": "project",
-
+    "name": "super/sae_dev_web",
     "autoload": {
         "psr-4": {
-            "iutnc\\sae_dev_web\\" : "./src"
+            "Super\\SaeDevWeb\\": "src/"
         }
     },
-  "require": {
-    "ext-pdo": "*"
-  }
+    "authors": [
+        {
+            "name": "armbrust5u",
+            "email": "SuperBidul1@gmail.com"
+        }
+    ],
+    "require": {}
 }

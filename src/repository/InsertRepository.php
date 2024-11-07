@@ -15,7 +15,10 @@ class InsertRepository extends Repository {
     private static ?InsertRepository $instance = null; // Instance unique de la classe InsertRepository
 
 
-
+    /**
+     * Méthode getInstance qui retourne une instance de InsertRepository
+     * @return InsertRepository Une instance de la classe
+     */
     public static function getInstance(): InsertRepository
     {
         // TODO
