@@ -1,7 +1,6 @@
 *.iml
 out/
 .idea/
-.idea/php.xml
 .DS_Store
 .class
 Thumbs.db
@@ -9,3 +8,8 @@ pom.xml
 db.conf.ini
 
 /vendor/
+
+# Fichiers de stockage des audios / images / vidéos
+audio/
+image/
+video/

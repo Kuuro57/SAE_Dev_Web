@@ -6,23 +6,12 @@ namespace iutnc\sae_dev_web\action;
 
 use iutnc\sae_dev_web\festival\Spectacle;
 use iutnc\sae_dev_web\repository\InsertRepository;
+use iutnc\sae_dev_web\repository\SelectRepository;
 
 /**
  * Classe qui représente l'action d'ajouter un spectacle
  */
 class AddSpectacleAction extends Action {
-
-    // Attribut
-    private string $formulaire = '<form method="post" name="" action="?action=add-spectacle" enctype="multipart/form-data">
-                                        <input type="text" name="nomSpec" placeholder="Nom du spectacle" required> <br>
-                                        <input type="text" name="style" placeholder="Style" required> <br>
-                                        <input type="text" name="artiste" placeholder="Artiste" required> <br>
-                                        <input type="text" name="descSpec" placeholder="Description" required> <br>
-                                        Fichier Video : <input type="file" name="fichierVideo" placeholder="<fichierVideo>"> <br>
-                                        Fichier Audio : <input type="file" name="fichierAudio" placeholder="<fichierAudio>"> <br>
-                                        Image : <input type="file" name="fichierImage" placeholder="<fichierImage>"> <br>
-                                        <button type="submit" name="valider" class="button"> Valider </button>
-                                  </form>';
 
 
 
@@ -30,8 +19,8 @@ class AddSpectacleAction extends Action {
         // Si la méthode HTTP est de type GET
         if ($this->http_method === 'GET') {
 
-            // Afficher une formulaire d'ajout d'une track
-            return $this->formulaire;
+            // Afficher une formulaire d'ajout d'un spectacle
+            return $this->getFormulaire();
 
         }
         // Sinon si la méthode HTTP est de type POST
@@ -42,24 +31,23 @@ class AddSpectacleAction extends Action {
             $style = filter_var($_POST['style'], FILTER_SANITIZE_SPECIAL_CHARS);
             $artiste = filter_var($_POST['artiste'], FILTER_SANITIZE_SPECIAL_CHARS);
             $description = filter_var($_POST['descSpec'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $nomFichierVideo = uniqid();
-            $nomFichierAudio = uniqid();
-            $nomFichierImage = uniqid();
+            $listeNomFichierVideo[] = uniqid();
+            $listeNomFichierAudio[] = uniqid();
+            $listeNomFichierImage[] = uniqid();
 
             // Si le fichier video est bon
-            if ($this->verifFichierVideo($nomFichierVideo)) {
+            if ($this->verifFichierVideo($listeNomFichierVideo[0])) {
 
                 // Si le fichier audio est bon
-                if ($this->verifFichierAudio($nomFichierAudio)) {
+                if ($this->verifFichierAudio($listeNomFichierAudio[0])) {
 
                     // Si le fichier image est bon
-                    if ($this->verifFichierImage($nomFichierImage)) {
+                    if ($this->verifFichierImage($listeNomFichierImage[0])) {
 
                         // On créé un objet de type Spectacle
-                        $spectacle = new Spectacle(null, $nomSpec, $style, $artiste, $description, $nomFichierVideo, $nomFichierAudio, $nomFichierImage);
+                        $spectacle = new Spectacle(null, $nomSpec, $style, $artiste, null, $description, $listeNomFichierVideo, $listeNomFichierAudio, $listeNomFichierImage);
                         // On ajoute le spectacle à la BDD
-                        $bd = InsertRepository::getInstance();
-                        $bd->ajouterSpectacle($spectacle);
+                        $this->insertRepo->ajouterSpectacle($spectacle);
                         // On informe que le spectacle à bien été créé
                         return '<p> Le spectacle à bien été créé et ajouté ! </p>';
                     }
@@ -86,7 +74,7 @@ class AddSpectacleAction extends Action {
         // Sinon
         else {
             // On informe d'une erreur
-            return "Erreur : Méthode inconnue : {$this->http_method}";
+            return "Erreur : Méthode HTTP inconnue : {$this->http_method}";
         }
     }
 
@@ -199,6 +187,44 @@ class AddSpectacleAction extends Action {
             // On renvoie false (fichier incorrect)
             return false;
         }
+    }
+
+
+
+    /**
+     * Méthode qui retourne le formulaire complété (avec tous les artistes et style que l'administrateur peut chosir)
+     * @return string Le formulaire au format HTML
+     */
+    private function getFormulaire() : string {
+        // On récupère la liste de tous les artistes dans la BDD
+        $listeArtistes = $this->selectRepo->getArtistes();
+        // On récupère la liste de tous les styles dans la BDD
+        $listeStyles = $this->selectRepo->getStyles();
+        // On créé la liste déroulante pour les artistes
+        $listeDeroulanteArtistes = '<select name="listeArtistes"> <option value=""> -- Choisissez un artiste -- </option>';
+        foreach ($listeArtistes as $artiste) {
+            $listeDeroulanteArtistes .= "<option value='$artiste'> $artiste </option>";
+        }
+        $listeDeroulanteArtistes .= '</select>';
+        // On créé la liste déroulante pour les styles
+        $listeDeroulanteStyle = '<select name="listeStyles"> <option value=""> -- Choisissez un style -- </option>';
+        foreach ($listeStyles as $style) {
+            $listeDeroulanteStyle .= "<option value='$style'> $style </option>";
+        }
+        $listeDeroulanteStyle .= '</select>';
+        // On ajoute les deux listes au formulaire et on le renvoie
+         return <<<END
+            <form method="post" name="" action="?action=add-spectacle" enctype="multipart/form-data">
+                <input type="text" name="nomSpec" placeholder="Nom du spectacle" required> <br>
+                $listeDeroulanteArtistes <br>
+                $listeDeroulanteStyle <br>
+                <input type="text" name="descSpec" placeholder="Description" required> <br>
+                Fichier Video : <input type="file" name="fichierVideo" placeholder="<fichierVideo>"> <br>
+                Fichier Audio : <input type="file" name="fichierAudio" placeholder="<fichierAudio>"> <br>
+                Image : <input type="file" name="fichierImage" placeholder="<fichierImage>"> <br>
+                <button type="submit" name="valider" class="button"> Valider </button>
+            </form>';
+            END;
     }
 
 }

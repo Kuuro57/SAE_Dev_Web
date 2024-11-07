@@ -19,7 +19,7 @@ class Spectacle {
     private array $listeVideos; // Liste qui contient les URLs des vidéos
     private array $listeAudios; // Liste qui contient le nom des fichiers audios
     private array $listeImages; // Liste qui contient les noms des fichiers des images qui représentent
-                                    // le spectacle
+                                // le spectacle
 
 
 
