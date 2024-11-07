@@ -13,15 +13,15 @@ use PDO;
 abstract class Repository {
 
     // Attributs
-    private PDO $pdo; // Objet permettant d'accéder à la BDD et d'executer les requêtes SQL
-    private static ?array $config = []; // Liste qui contient les configurations pour accéder à la BDD
+    protected PDO $pdo; // Objet permettant d'accéder à la BDD et d'executer les requêtes SQL
+    protected static ?array $config = []; // Liste qui contient les configurations pour accéder à la BDD
 
 
 
     /**
      * Constructeur de la classe
      */
-    private function __construct(array $config) {
+    protected function __construct(array $config) {
 
         $this->pdo = new PDO(
             $config['dns'],
