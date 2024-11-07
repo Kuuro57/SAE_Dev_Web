@@ -1,47 +1,84 @@
 -- ### Script de création des tables de la BDD ### --
 
 CREATE TABLE Lieu (
-    idLieu INT(4) PRIMARY KEY,
+    idLieu INT(4) PRIMARY KEY AUTO_INCREMENT,
     nomLieu VARCHAR(50) NOT NULL,
     adresse VARCHAR(50) NOT NULL,
     nbPlacesAssises INT(5) NOT NULL,
     nbPlacesDebout INT(5) NOT NULL
 );
 
+CREATE TABLE Artiste (
+    idArtiste INT(4) PRIMARY KEY AUTO_INCREMENT,
+    nomArtiste VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Style (
+    idStyle INT(4) PRIMARY KEY AUTO_INCREMENT,
+    nomStyle VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Spectacle (
+    idSpectacle INT(4) PRIMARY KEY AUTO_INCREMENT,
+    nomSpectacle VARCHAR(50) NOT NULL,
+    idStyle INT(4) NOT NULL,
+    idArtiste INT(4) NOT NULL,
+    duree INT(4),
+    descSpectacle VARCHAR(50),
+    FOREIGN KEY (idArtiste) REFERENCES Artiste(idArtiste),
+    FOREIGN KEY (idStyle) REFERENCES Style(idStyle)
+);
+
+CREATE TABLE ImageSpectacle (
+    idImage INT(4),
+    idSpectacle INT(4),
+    nomFichierImage VARCHAR(50) NOT NULL,
+    PRIMARY KEY (idImage, idSpectacle),
+    FOREIGN KEY (idSpectacle) REFERENCES Spectacle(idSpectacle)
+);
+
+CREATE TABLE AudioSpectacle (
+    idAudio INT(4),
+    idSpectacle INT(4),
+    nomFichierAudio VARCHAR(50) NOT NULL,
+    PRIMARY KEY (idAudio, idSpectacle),
+    FOREIGN KEY (idSpectacle) REFERENCES Spectacle(idSpectacle)
+);
+
+CREATE TABLE VideoSpectacle (
+    idVideo INT(4),
+    idSpectacle INT(4),
+    nomFichierVideo VARCHAR(50) NOT NULL,
+    PRIMARY KEY (idVideo, idSpectacle),
+    FOREIGN KEY (idSpectacle) REFERENCES Spectacle(idSpectacle)
+);
+
+CREATE TABLE ThematiqueSpectacle (
+    idThematique INT(4),
+    idSpectacle INT(4),
+    nomThematique VARCHAR(50) NOT NULL,
+    PRIMARY KEY (idThematique, idSpectacle),
+    FOREIGN KEY (idSpectacle) REFERENCES Spectacle(idSpectacle)
+);
+
 CREATE TABLE ImageLieu (
-    idLieu INT(4),
+    idLieu INT(4) AUTO_INCREMENT,
     nomFichierImage VARCHAR(50) NOT NULL,
     PRIMARY KEY (idLieu, nomFichierImage),
     FOREIGN KEY (idLieu) REFERENCES Lieu(idLieu)
 );
 
-CREATE TABLE Spectacle (
-    idSpectacle INT(4) PRIMARY KEY,
-    nomSpectacle VARCHAR(50) NOT NULL,
-    style VARCHAR(50) NOT NULL,
-    artiste VARCHAR(50) NOT NULL,
-    duree INT(4),
-    descSpectacle VARCHAR(50),
-    nomFichierVideo VARCHAR(50),
-    nomFichierAudio VARCHAR(50)
-);
-
-CREATE TABLE ImageSpectacle (
-    idSpectacle INT(4),
-    nomFichierImage VARCHAR(50) NOT NULL,
-    PRIMARY KEY (idSpectacle, nomFichierImage),
-    FOREIGN KEY (idSpectacle) REFERENCES Spectacle(idSpectacle)
-);
-
 CREATE TABLE Soiree (
-    idSoiree INT(4) PRIMARY KEY,
+    idSoiree INT(4) PRIMARY KEY AUTO_INCREMENT,
     nomSoiree VARCHAR(50) NOT NULL,
     idLieu INT(4),
+    idThematique INT(4),
     estAnnule BOOLEAN NOT NULL DEFAULT FALSE,
     dateSoiree DATE NOT NULL,
     heureD TIME NOT NULL,
     heureF TIME NOT NULL,
-    FOREIGN KEY (idLieu) REFERENCES Lieu(idLieu)
+    FOREIGN KEY (idLieu) REFERENCES Lieu(idLieu),
+    FOREIGN KEY (idThematique) REFERENCES ThematiqueSpectacle(idThematique)
 );
 
 CREATE TABLE Programme (
@@ -55,7 +92,7 @@ CREATE TABLE Programme (
 );
 
 CREATE TABLE Utilisateur (
-    idUtilisateur INT(4) PRIMARY KEY,
+    idUtilisateur INT(4) PRIMARY KEY AUTO_INCREMENT,
     email VARCHAR(50) UNIQUE NOT NULL,
     mdp VARCHAR(256) NOT NULL,
     role INT(3) NOT NULL
@@ -102,15 +139,31 @@ VALUES
     (5, 'Soiree Big Snap', 5, '2024-11-19');
 
 
+INSERT INTO Artiste (idArtiste, nomArtiste)
+VALUES
+    (1, 'Indochine'),
+    (2, 'Daft Punk'),
+    (3, 'PNL'),
+    (4, 'The Beatles'),
+    (5, 'Naps');
+
+
+INSERT INTO Style (idStyle, nomStyle)
+VALUES
+    (1, 'Rock'),
+    (2, 'Electro'),
+    (3, 'Rap');
+
+
 -- L'attribut duree est complété quand le spectacle est ajouté dans la table Programme (en récupérant l'heure de début et l'heure de fin)
 -- grâce à un trigger
-INSERT INTO Spectacle (idSpectacle, nomSpectacle, style, artiste, descSpectacle, nomFichierVideo, nomFichierAudio) 
+INSERT INTO Spectacle (idSpectacle, nomSpectacle, idStyle, idArtiste, descSpectacle) 
 VALUES 
-    (1, 'Indochine', 'Rock', 'Indochine', 'Un super spectacle !', 'indochine2024.mp4', 'indochine2024.mp3'), 
-    (2, 'Daft Punk', 'Electro', 'Daft Punk', 'Un super spectacle !', 'daft_punk2024.mp4', 'daft_punk2024.mp3'),
-    (3, 'PNL', 'Rap', 'PNL', 'Un super spectacle !', 'pnl2024.mp4', 'pnl2024.mp3'),
-    (4, 'The Beatles', 'Rock', 'The Beatles', 'Un super spectacle !', 'the_beatles2024.mp4', 'the_beatles2024.mp3'),
-    (5, 'Naps', 'Rap', 'Naps', 'Une super spectacle !', 'naps2024.mp4', 'naps2024.mp3');
+    (1, 'Indochine', 1, 1, 'Un super spectacle !'), 
+    (2, 'Daft Punk', 2, 2, 'Un super spectacle !'),
+    (3, 'PNL', 3, 3, 'Un super spectacle !'),
+    (4, 'The Beatles', 1, 4, 'Un super spectacle !'),
+    (5, 'Naps', 3, 4, 'Une super spectacle !');
 
 
 INSERT INTO ImageSpectacle (idSpectacle, nomFichierImage)
@@ -120,6 +173,33 @@ VALUES
     (3, 'pnl2024.png'),
     (4, 'the_beatles2024.png'),
     (5, 'naps2024.png');
+
+
+INSERT INTO AudioSpectacle (idAudio, idSpectacle, nomFichierAudio) 
+VALUES 
+    (1, 1, 'indochine2024_audio.mp3'),
+    (2, 2, 'daft_punk2024_audio.mp3'),
+    (3, 3, 'pnl2024_audio.mp3'),
+    (4, 4, 'the_beatles2024_audio.mp3'),
+    (5, 5, 'naps2024_audio.mp3');
+
+
+INSERT INTO VideoSpectacle (idVideo, idSpectacle, nomFichierVideo) 
+VALUES 
+    (1, 1, 'indochine2024_video.mp4'),
+    (2, 2, 'daft_punk2024_video.mp4'),
+    (3, 3, 'pnl2024_video.mp4'),
+    (4, 4, 'the_beatles2024_video.mp4'),
+    (5, 5, 'naps2024_video.mp4');
+
+
+INSERT INTO ThematiqueSpectacle (idThematique, idSpectacle, nomThematique) 
+VALUES 
+    (1, 1, 'Concert Rock'),
+    (2, 2, 'Electro Night'),
+    (3, 3, 'Rap Battle'),
+    (4, 4, 'British Rock'),
+    (5, 5, 'Hip-Hop Extravaganza');
 
 
 INSERT INTO Programme (idSoiree, idSpectacle, heureD, heureF) 
