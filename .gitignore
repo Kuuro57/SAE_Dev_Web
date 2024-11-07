@@ -6,3 +6,8 @@ out/
 Thumbs.db
 pom.xml
 db.conf.ini
+
+# Fichiers de stockage des audios / images / vidéos
+audio/
+image/
+video/
