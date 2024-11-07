@@ -1,6 +1,7 @@
 *.iml
 out/
 .idea/
+.idea/php.xml
 .DS_Store
 .class
 Thumbs.db
