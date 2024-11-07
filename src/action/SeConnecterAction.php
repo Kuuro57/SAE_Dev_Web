@@ -15,7 +15,7 @@ class SeConnecterAction extends Action {
                 <h1> Connexion </h1>
                 <form method="post" action="?action=se_connecter">
                 <input type="email" name="email" placeholder="email" class="input-field" autofocus>
-                <input type="password" name="password" placeholder="mot de passe" class="input-field">
+                <input type="password" name="mdp" placeholder="mot de passe" class="input-field">
                 <input type="submit" name="connex" value="Connexion" class="button">
                 </form>';
 
@@ -48,7 +48,7 @@ class SeConnecterAction extends Action {
         else {
             // On récupère l'email et le mot de passe
             $e = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-            $p = $_POST['password'];
+            $p = $_POST['mdp'];
             $bool = false;
 
             // On vérifie que l'utilisateur à bien rempli les champs
