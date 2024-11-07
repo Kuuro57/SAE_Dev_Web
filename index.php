@@ -26,8 +26,8 @@ use iutnc\sae_dev_web\repository\SelectRepository;
 // ################################
 session_start();
 try {
-    InsertRepository::setConfig('conf.db.ini');
-    SelectRepository::setConfig('conf.db.ini');
+    InsertRepository::setConfig('db.conf.ini');
+    SelectRepository::setConfig('db.conf.ini');
 } catch (Exception $e) {
     echo $e->getMessage();
 }

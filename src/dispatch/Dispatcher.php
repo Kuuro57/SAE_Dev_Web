@@ -5,7 +5,14 @@ namespace iutnc\sae_dev_web\dispatch;
 
 
 use iutnc\sae_dev_web\action\AddLieuAction;
+use iutnc\sae_dev_web\action\AddSoireeAction;
+use iutnc\sae_dev_web\action\AddSpectacleAction;
 use iutnc\sae_dev_web\action\AddUtilisateurAction;
+use iutnc\sae_dev_web\action\SeConnecterAction;
+use iutnc\sae_dev_web\action\SeDeconnecterAction;
+use iutnc\sae_dev_web\action\ChoixAfficherSoireesAction;
+use iutnc\sae_dev_web\action\ChoixAfficherSpectaclesAction;
+use iutnc\sae_dev_web\action\DefaultAction;
 
 /**
  * Classe qui représente le dispatcher
@@ -16,8 +23,11 @@ class Dispatcher {
      * Méthode qui lance le dispatcher
      */
     public function run() : void {
+        
+        if (!isset($_GET['action'])) {
+            $_GET['action'] = '';
+        }
 
-        // On regarde (avec un switch) quelle action faire en récupérant l'action
         switch ($_GET['action']) {
 
             case "add-lieu" :
@@ -51,7 +61,6 @@ class Dispatcher {
             case 'choix-affichage-spectacles' :
                 $class = new ChoixAfficherSpectaclesAction();
                 break;
-
 
             default :
                 $class = new DefaultAction();
@@ -98,7 +107,7 @@ class Dispatcher {
             </main>
             <br>
             <footer>
-                <p>@ALLART Noah, @ARMBRUSTER Loup, DE WASCH Clement, DENIS Oscar, MANGIN Adrien</p>
+                <p>@ALLART Noah, ARMBRUSTER Loup, DE WASCH Clement, DENIS Oscar, MANGIN Adrien</p>
                 <p>S3B 2024 - S3-02 SAE_Dev_Web</p>
             </footer>
         </body>
