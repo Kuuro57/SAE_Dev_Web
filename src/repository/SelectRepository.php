@@ -4,8 +4,6 @@ namespace iutnc\sae_dev_web\repository;
 
 
 
-use Couchbase\IndexFailureException;
-
 /**
  * Classe qui récupère des informations auprès de la BDD
  */
@@ -27,6 +25,7 @@ class SelectRepository extends Repository {
         return self::$instance;
 
     }
+
 
 
     /**
@@ -83,7 +82,7 @@ class SelectRepository extends Repository {
      */
     public function getSpectacle(int $id) : Spectacle {
         // Requête SQL qui récupère l'id du spectacle
-        $querySQL = "SELECT * FROM spectacle WHERE idSpectacle = ?";
+        $querySQL = "SELECT idSpectale FROM spectacle WHERE idSpectacle = ?";
         // Préparation de la requête
         $statement = $this->pdo->prepare($querySQL);
         $statement->bindParam(1, $id);
@@ -93,11 +92,54 @@ class SelectRepository extends Repository {
         // On récupère les données sorties par la requête
         $data = $statement->fetch(PDO::FETCH_ASSOC);
 
-        $spectacle = new Spectacle($data['idSpectacle'],
-            $data['nomSpectacle'], $data['idStyle'],
-            $data['idArtiste'], $data['descSpectacle']);
+        $spectacle = $this->findSpectacle((int) $data['idSpectacle']);
 
         return $spectacle;
+    }
+
+    public function findPlaylist(int $id) : Playlist {
+        $querySQL1 = 'SELECT id, nom FROM playlist WHERE id = :id';
+
+        $statement1 = $this->pdo->prepare($querySQL1);
+        $statement1->execute(['id' => $id]);
+
+        $row = $statement1->fetch();
+        $pl = new Playlist($row['nom'], []);
+        $pl->setId((int)$row['id']); // associe l'id à la playlist récupérée
+
+
+
+        $querySQL2 = 'SELECT * FROM playlist2track INNER JOIN track ON playlist2track.id_track = track.id
+                      WHERE id_pl = :id';
+
+        $statement2 = $this->pdo->prepare($querySQL2);
+        $statement2->execute(['id' => $id]);
+
+
+        foreach ($statement2->fetchAll() as $row) {
+            if ($row['type'] === 'P') {
+                $podcastTrack = new PodcastTrack($row['titre'], $row['filename']);
+                $podcastTrack->setId((int)$row['id']);
+                $podcastTrack->setGenre($row['genre']);
+                $podcastTrack->setDuree((int)$row['duree']);
+                $podcastTrack->setAuteur($row['auteur_podcast']);
+                $podcastTrack->setDate($row['date_posdcast']);
+
+                $pl->addTrack($podcastTrack);
+            }
+            else if ($row['type'] === 'A') {
+                $albumTrack = new AlbumTrack($row['titre'], $row['filename'], $row['titre_album'], (int)$row['id']);
+                $albumTrack->setArtiste($row['artiste_album']);
+                $albumTrack->setAnnee((int)$row['annee_album']);
+                $albumTrack->setGenre($row['genre']);
+                $albumTrack->setDuree((int)$row['duree']);
+
+                $pl->addTrack($albumTrack);
+            }
+
+        }
+
+        return $pl;
     }
 
     /**
@@ -134,11 +176,5 @@ class SelectRepository extends Repository {
         return $res;
     }
 
-    // TODO public function getDebutSpectacle
 
-    // TODO getArtistes()
-
-    // TODO getStyles()
-
-    // TODO getLieux() -> id + nom | ou tout
 }
