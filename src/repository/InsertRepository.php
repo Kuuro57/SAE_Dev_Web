@@ -76,7 +76,27 @@ class InsertRepository extends Repository {
      * @param Soiree $soiree La soiree à ajouter
      */
     public function ajouterSoiree(Soiree $soiree): void {
-        // TODO
+
+        $req = 'INSERT INTO soiree(idSoiree, nomSoiree, idLieu, idThematique, estAnnule, dateSoiree)';
+
+        $stmt = $this->pdo->prepare($req);
+
+        $idSoiree = $soiree->getId();
+        $nom = $soiree->getNom();
+        $idlieu = $soiree->getIdLieu()->getId();
+        $idTheme = $soiree->getThematique()->getId();
+        $annulee = $soiree->getEstAnnule();
+        $date = $soiree->getDate();
+
+        $stmt->bindParam(1, $idSoiree);
+        $stmt->bindParam(2, $nom);
+        $stmt->bindParam(3, $idlieu);
+        $stmt->bindParam(4, $idTheme);
+        $stmt->bindParam(5, $annulee);
+        $stmt->bindParam(6, $date);
+
+        $stmt->execute();
+
     }
 
 
@@ -87,7 +107,16 @@ class InsertRepository extends Repository {
      * @param int $idSoiree L'id de la soirée à ajouter
      */
     public function ajouterSpectacleToSoiree(int $idSpectacle, int $idSoiree): void {
-        // TODO
+
+        $req = 'INSERT INTO programme(idSoiree, idSpectacle) VALUES(?, ?)';
+
+        $stmt = $this->pdo->prepare($req);
+
+        $stmt->bindParam(1, $idSoiree);
+        $stmt->bindParam(2, $idSpectacle);
+
+        $stmt->execute();
+
     }
 
 
@@ -96,8 +125,26 @@ class InsertRepository extends Repository {
      * Méthode qui ajoute une nouveau lieu
      * @param string $nomLieu Nom du lieu à ajouter
      */
-    public function ajouterLieu(string $nomLieu): void {
-        // TODO
+    public function ajouterLieu(Lieu $lieu): void {
+
+        $req = 'INSERT INTO lieu(idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout)';
+
+        $stmt = $this->pdo->prepare($req);
+
+        $idLieu = $lieu->getId();
+        $nom = $lieu->getNom();
+        $adresse = $lieu->getAdresse();
+        $nbPlacesAssises = $lieu->getNbPlacesAssises();
+        $nbPlacesDebout = $lieu->getNbPlacesDebout();
+
+        $stmt->bindParam(1, $idLieu);
+        $stmt->bindParam(2, $nom);
+        $stmt->bindParam(3, $adresse);
+        $stmt->bindParam(4, $nbPlacesAssises);
+        $stmt->bindParam(5, $nbPlacesDebout);
+
+        $stmt->execute();
+
     }
 
 
@@ -109,7 +156,17 @@ class InsertRepository extends Repository {
      * @param int $role Le role de l'utilisateur
      */
     public function ajouterUtilisateur(string $email, string $mdp, int $role) : void {
-        // TODO
+
+        $req = 'INSERT INTO utilisateur(email, mdp, role) VALUES(?, ?, ?)';
+
+        $stmt = $this->pdo->prepare($req);
+
+        $stmt->bindParam(1, $email);
+        $stmt->bindParam(2, $mdp);
+        $stmt->bindParam(3, $role);
+
+        $stmt->execute();
+
     }
 
 }
