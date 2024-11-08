@@ -89,7 +89,7 @@ class Dispatcher {
     
         <!DOCTYPE html>
         <html lang="fr">
-        
+        <link rel="stylesheet" type="text/css" href="../ladéco/style.css"/>
         <body>
             <header>
                 <h1>NRV - Nancy Rock Vibration</h1>
