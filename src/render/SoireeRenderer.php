@@ -2,6 +2,7 @@
 
 namespace iutnc\sae_dev_web\render;
 
+use iutnc\sae_dev_web\festival\Soiree;
 use iutnc\sae_dev_web\festival\Spectacle;
 
 class SoireeRenderer implements Renderer {
@@ -57,14 +58,14 @@ class SoireeRenderer implements Renderer {
 
     public function renderLong() : string {
         $nom = $this->soiree->getNom();
-        $theme = $this->soiree->getTheme();
+        $theme = $this->soiree->getThematique();
         $date = $this->soiree->getDate();
         $heureD = $this->soiree->getHeureDebut();
         $heureF = $this->soiree->getHeureFin();
         $horraire = $heureD . "-" . $heureF;
         $lieu = $this->soiree->getLieu();
         $tarif = $this->soiree->getTarif();
-        $spectaclesListe = $this->soiree->getListeSpectacles();
+        $spectaclesListe = $this->soiree->getListeSpectacle();
 
         if (count($spectaclesListe) > 0) {
             $spectacles = "";
