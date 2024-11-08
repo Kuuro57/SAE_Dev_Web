@@ -52,6 +52,8 @@ class SpectacleRenderer implements Renderer {
         $heureD = SelectRepository::getInstance()->getDebutSpectacle($this->spectacle->getId());
         $heureF =  $heureD + $this->spectacle->getDuree();
         $lieu = $this->spectacle->getLieu();
+        $date = SelectRepository::getInstance()->getDateSpectacle($this->spectacle->getId());
+
 
 
         $imagestab = $this->spectacle->getListeImages();
@@ -70,7 +72,7 @@ class SpectacleRenderer implements Renderer {
         return "
             <div id='spectacle'>
                 <p><strong>{$this->spectacle->getNom()}</strong> <br>
-                <strong>Date</strong> - {$this->spectacle->get()}</p> <br>
+                <strong>Date</strong> - $date </p> <br>
                 <p>
                     <strong>Heure</strong> - $heureD. ' - ' . $heureF <br>
                     <strong>Lieu</strong> - $lieu <br>
