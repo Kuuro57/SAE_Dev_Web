@@ -5,7 +5,6 @@ namespace iutnc\sae_dev_web\repository;
 use iutnc\sae_dev_web\festival\Artiste;
 use iutnc\sae_dev_web\festival\Audio;
 use iutnc\sae_dev_web\festival\Lieu;
-use iutnc\sae_dev_web\festival\Soiree;
 use iutnc\sae_dev_web\festival\Spectacle;
 use iutnc\sae_dev_web\festival\Style;
 use iutnc\sae_dev_web\festival\Image;
@@ -94,7 +93,7 @@ class SelectRepository extends Repository
     {
         // Requête SQL qui récupère l'id du spectacle
         $querySQL = "SELECT idSpectacle, nomSpectacle, idStyle, idArtiste, duree, heureD, descSpectacle 
-                     FROM spectacle WHERE idSpectacle = ?";
+                     FROM Spectacle WHERE idSpectacle = ?";
         // Préparation de la requête
         $statement = $this->pdo->prepare($querySQL);
         $statement->bindParam(1, $id);
@@ -116,6 +115,7 @@ class SelectRepository extends Repository
             $this->getAudios((int) $data['idSpectacle']),
             $this->getImages((int) $data['idSpectacle'])
         );
+
     }
 
 
@@ -129,7 +129,7 @@ class SelectRepository extends Repository
     public function findExistingEmail(string $email): array
     {
         // Requête SQL
-        $querySQL = "SELECT mdp, role FROM utilisateur WHERE email = ? ";
+        $querySQL = "SELECT mdp, role FROM Utilisateur WHERE email = ? ";
         // Préparation de la requête
         $statement = $this->pdo->prepare($querySQL);
         $statement->bindParam(1, $email);
@@ -233,7 +233,7 @@ class SelectRepository extends Repository
     public function getStyle(int $id): Style
     {
         // Requête SQL qui récupère l'id du spectacle
-        $querySQL = "SELECT idStyle, nomStyle FROM style WHERE idStyle = ?";
+        $querySQL = "SELECT idStyle, nomStyle FROM Style WHERE idStyle = ?";
         // Préparation de la requête
         $statement = $this->pdo->prepare($querySQL);
         $statement->bindParam(1, $id);
@@ -255,7 +255,7 @@ class SelectRepository extends Repository
      */
     public function getLieux() : array {
         // Requête SQL qui récupère les attributs d'artistes
-        $querySQL = "Select idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout FROM lieux";
+        $querySQL = "Select idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout FROM Lieu";
 
         // Préparation de la requête
         $statement = $this->pdo->prepare($querySQL);
@@ -288,7 +288,7 @@ class SelectRepository extends Repository
      */
     public function getImages(int $id) : array {
         // Requête SQL qui récupère les attributs d'images du spectacle
-        $querySQL = "Select idImage, idSpectacle, nomFichierImage FROM imageSpectacle WHERE idImage = ?";
+        $querySQL = "Select idImage, idSpectacle, nomFichierImage FROM ImageSpectacle WHERE idImage = ?";
 
         // Préparation de la requête
         $statement = $this->pdo->prepare($querySQL);
@@ -320,7 +320,7 @@ class SelectRepository extends Repository
      */
     public function getAudios(int $id) : array {
         // Requête SQL qui récupère les attributs audios du spectacle
-        $querySQL = "Select idAudio, idSpectacle, nomFichierAudio FROM audioSpectacle WHERE idAudio = ?";
+        $querySQL = "Select idAudio, idSpectacle, nomFichierAudio FROM AudioSpectacle WHERE idAudio = ?";
 
         // Préparation de la requête
         $statement = $this->pdo->prepare($querySQL);
@@ -352,7 +352,7 @@ class SelectRepository extends Repository
      */
     public function getVideos(int $id) : array {
         // Requête SQL qui récupère les attributs vidéos du spectacle
-        $querySQL = "Select idVideo, idSpectacle, nomFichierVideo FROM videoSpectacle WHERE idVideo = ?";
+        $querySQL = "Select idVideo, idSpectacle, nomFichierVideo FROM VideoSpectacle WHERE idVideo = ?";
 
         // Préparation de la requête
         $statement = $this->pdo->prepare($querySQL);
@@ -382,7 +382,7 @@ class SelectRepository extends Repository
      */
     public function getThematiques() : array {
         // Requête SQL qui récupère les attributs de thematique
-        $querySQL = "Select idThematique, nomThematique FROM thematiqueSoiree";
+        $querySQL = "Select idThematique, nomThematique FROM ThematiqueSoiree";
 
         // Préparation de la requête
         $statement = $this->pdo->prepare($querySQL);
@@ -487,22 +487,6 @@ class SelectRepository extends Repository
     }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
