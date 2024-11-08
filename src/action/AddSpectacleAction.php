@@ -203,13 +203,13 @@ class AddSpectacleAction extends Action {
         // On créé la liste déroulante pour les artistes
         $listeDeroulanteArtistes = '<select name="listeArtistes"> <option value=""> -- Choisissez un artiste -- </option>';
         foreach ($listeArtistes as $artiste) {
-            $listeDeroulanteArtistes .= "<option value='$artiste'> $artiste </option>";
+            $listeDeroulanteArtistes .= "<option value='{$artiste->getNom()}'> {$artiste->getNom()} </option>";
         }
         $listeDeroulanteArtistes .= '</select>';
         // On créé la liste déroulante pour les styles
         $listeDeroulanteStyle = '<select name="listeStyles"> <option value=""> -- Choisissez un style -- </option>';
         foreach ($listeStyles as $style) {
-            $listeDeroulanteStyle .= "<option value='$style'> $style </option>";
+            $listeDeroulanteStyle .= "<option value='{$style->getNom()}'> {$style->getNom()} </option>";
         }
         $listeDeroulanteStyle .= '</select>';
         // On ajoute les deux listes au formulaire et on le renvoie
