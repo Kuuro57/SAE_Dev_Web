@@ -4,7 +4,11 @@ namespace iutnc\sae_dev_web\repository;
 
 
 
+use iutnc\sae_dev_web\festival\Artiste;
+use iutnc\sae_dev_web\festival\Lieu;
 use iutnc\sae_dev_web\festival\Spectacle;
+use iutnc\sae_dev_web\festival\Style;
+use PDO;
 
 /**
  * Classe qui récupère des informations auprès de la BDD
@@ -14,6 +18,7 @@ class SelectRepository extends Repository
 
     // Attribut
     private static ?SelectRepository $instance = null; // Instance unique de la classe SelectRepository
+
 
 
     /**
@@ -31,12 +36,12 @@ class SelectRepository extends Repository
     }
 
 
+
     /**
      * Méthode qui renvoie une liste de tout les spectacles de la BDD
      * @param string $filtre Filtre qui permet de savoir dans quel ordre afficher les spectacles
      * @return Spectacle[] La liste de tout les spectacles dans le bon ordre d'affichage
      */
-
     public function getSpectacles(string $filtre): array
     {  //default affiche ordre date | date ordre date |lieu ordre lieu| style ordre style
         // Requête SQL en fonction du filtre
@@ -72,11 +77,12 @@ class SelectRepository extends Repository
         $res = [];
         // on boucle en prenant l'id du spectacle et on crée un objet spectacle avec cet id dans l'ordre du filtre
         foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $data) {
-            $spectacle = new Spectacle($this->getSpectacle($data['idSpectacle']));
+            $spectacle = $this->getSpectacle($data['idSpectacle']);
             $res[] = $spectacle;
         }
         return $res;
     }
+
 
 
     /**
@@ -87,7 +93,7 @@ class SelectRepository extends Repository
     public function getSpectacle(int $id): Spectacle
     {
         // Requête SQL qui récupère l'id du spectacle
-        $querySQL = "SELECT Spectacle.idSpectacle, Spectacle.idStyle, Spectacle.idArtiste, descSpectacle, 
+        $querySQL = "SELECT idSpectacle, nomSpectacle, idStyle, idArtiste, duree, heureD, descSpectacle 
                      FROM spectacle WHERE idSpectacle = ?";
         // Préparation de la requête
         $statement = $this->pdo->prepare($querySQL);
@@ -98,12 +104,16 @@ class SelectRepository extends Repository
         // On récupère les données sorties par la requête
         $data = $statement->fetch(PDO::FETCH_ASSOC);
 
-        $spectacle = new Spectacle($data['idSpectacle'],
+        $spectacle = new Spectacle(
+            $data['idSpectacle'],
             $data['nomSpectacle'], $data['idStyle'],
-            $data['idArtiste'], $data['descSpectacle']);
+            $data['idArtiste'], $data['descSpectacle']
+        );
 
         return $spectacle;
     }
+
+
 
     /**
      * Méthode qui regarde si l'email est déjà présent dans la BDD
@@ -139,6 +149,8 @@ class SelectRepository extends Repository
         return $res;
     }
 
+
+
     public function getArtistes() : array {
         // Requête SQL qui récupère les attributs d'artistes
         $querySQL = "Select Artiste.idArtiste, Artiste.nomArtiste FROM Artiste";
@@ -157,6 +169,7 @@ class SelectRepository extends Repository
         }
         return $res;
     }
+
 
 
     public function getStyles() : array {
@@ -179,9 +192,57 @@ class SelectRepository extends Repository
     }
 
 
+
     public function getLieux() : array {
         // Requête SQL qui récupère les attributs d'artistes
         $querySQL = "Select idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout FROM lieux";
+
+        // Préparation de la requête
+        $statement = $this->pdo->prepare($querySQL);
+
+        // Execution de la requête
+        $statement->execute();
+
+        // On récupère les données sorties par la requête
+        $res = [];
+        foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $data) {
+            //modifier par rapport au constructeur de style
+            $lieux = new Lieu($this->$data['idLieux'], $data['nomLieux'], $data['adresse'], $data['nbPlacesAssises'], $data['nbPlacesDebout']);
+            $res[] = $lieux;
+        }
+        return $res;
+    }
+
+
+
+    /**
+     * Méthode qui renvoie la liste des toutes les images d'un spectacle
+     * @return array Liste d'images
+     */
+    public function getImages(int $id) : array {
+        // TODO
+    }
+
+
+
+    /**
+     * Méthode qui renvoie la liste des toutes les audios d'un spectacle
+     * @return array Liste d'audios
+     */
+    public function getAudios(int $id) : array {
+        // TODO
+    }
+
+
+
+    /**
+     * Méthode qui renvoie la liste des toutes les videos d'un spectacle
+     * @return array Liste de videos
+     */
+    public function getVideos(int $id) : array {
+        // TODO
+    }
+
 
 
     /**
@@ -202,22 +263,5 @@ class SelectRepository extends Repository
         // On retourne l'heure de début
         return $statement->fetch()['heureD'];
 
-    }
-
-
-        // Préparation de la requête
-        $statement = $this->pdo->prepare($querySQL);
-
-        // Execution de la requête
-        $statement->execute();
-
-        // On récupère les données sorties par la requête
-        $res = [];
-        foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $data) {
-            //modifier par rapport au constructeur de style
-            $lieux = new Style($this->$data['idLieux'], $data['nomLieux'], $data['adresse'], $data['nbPlacesAssises'], $data['nbPlacesDebout']);
-            $res[] = $lieux;
-        }
-        return $res;
     }
 }

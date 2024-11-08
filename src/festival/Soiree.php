@@ -7,8 +7,10 @@ class Soiree {
     // Attributs
     private ?int $id; // Id de la soirée
     private string $nom; // Nom de la soirée
+    private float $tarif; // Tarif de la soirée
     private Lieu $lieu; // Lieu où se déroule la soirée
     private Thematique  $thematique; // Thématique de la soirée
+    private ?array $listeSpectacle; // Liste qui contient tout les spectacles présents dans la soirée
     private bool $estAnulee; // Vrai si la soirée est annulée, faux sinon
     private string $date; // Date à laquelle se déroule la soirée
     private string $heureDebut; // Heure de début de la soirée
@@ -20,14 +22,16 @@ class Soiree {
      * Constructeur de la classe
      * @param int|null $i Id de la soirée
      * @param string $n Nom de la soirée
+     * @param float $ta Tarif de la soirée
      * @param Lieu $l Lieu où se déroule la soirée
      * @param Thematique $t Thématique de la soirée
+     * @param Spectacle[]|null $lS Liste qui contient tout les spectacles présents dans la soirée
      * @param bool $eA Booléen qui détermine si la soirée est annulée ou non
      * @param string $d Date à laquelle se déroule la soirée
      * @param string $hD Heure de début
      * @param string $hF Heure de fin
      */
-    public function __construct(?int $i, string $n, Lieu $l, Thematique $t, bool $eA = false, string $d, string $hD, string $hF) {
+    public function __construct(?int $i, string $n, float $ta, Lieu $l, Thematique $t, ?array $lS, bool $eA = false, string $d, string $hD, string $hF) {
         $this->id = $i;
         $this->nom = $n;
         $this->lieu = $l;
@@ -43,9 +47,13 @@ class Soiree {
 
     public function getNom() : string { return $this->nom; }
 
+    public function getTarif(): float { return $this->tarif; }
+
     public function getLieu(): Lieu { return $this->lieu; }
 
     public function getThematique(): Thematique { return $this->thematique; }
+
+    public function getListeSpectacle(): ?array { return $this->listeSpectacle; }
 
     public function getEstAnulee() : bool { return $this->estAnulee; }
 
