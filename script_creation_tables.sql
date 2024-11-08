@@ -24,6 +24,7 @@ CREATE TABLE Spectacle (
     idStyle INT(4) NOT NULL,
     idArtiste INT(4) NOT NULL,
     duree INT(4),
+    heureD TIME NOT NULL,
     descSpectacle VARCHAR(50),
     FOREIGN KEY (idArtiste) REFERENCES Artiste(idArtiste),
     FOREIGN KEY (idStyle) REFERENCES Style(idStyle)
@@ -73,8 +74,6 @@ CREATE TABLE Soiree (
     idThematique INT(4),
     estAnnule BOOLEAN NOT NULL DEFAULT FALSE,
     dateSoiree DATE NOT NULL,
-    heureD TIME NOT NULL,
-    heureF TIME NOT NULL,
     FOREIGN KEY (idLieu) REFERENCES Lieu(idLieu),
     FOREIGN KEY (idThematique) REFERENCES ThematiqueSoiree(idThematique)
 );
@@ -136,13 +135,13 @@ VALUES
     (5, 'Hip-Hop Extravaganza');
 
 
-INSERT INTO Soiree (idSoiree, nomSoiree, idLieu, idThematique, dateSoiree, heureD, heureF) 
+INSERT INTO Soiree (idSoiree, nomSoiree, idLieu, idThematique, dateSoiree) 
 VALUES 
-    (1, 'Soiree Grande Bulle', 3, 2, '2024-11-06', '19:00', '01:00'),
-    (2, 'Soiree Mente', 4, 5, '2024-11-06', '19:00', '21:00'),
-    (3, 'Soiree Rock Paper Scicor', 1, 1, '2024-11-12', '17:00', '22:00'),
-    (4, 'Soiree Rock-Embolesque', 3, 1, '2024-11-13', '20:00', '23:00'),
-    (5, 'Soiree Big Snap', 5, 3, '2024-11-19', '20:00', '23:00');
+    (1, 'Soiree Grande Bulle', 3, 2, '2024-11-06'),
+    (2, 'Soiree Mente', 4, 5, '2024-11-06'),
+    (3, 'Soiree Rock Paper Scicor', 1, 1, '2024-11-12'),
+    (4, 'Soiree Rock-Embolesque', 3, 1, '2024-11-13'),
+    (5, 'Soiree Big Snap', 5, 3, '2024-11-19');
 
 
 INSERT INTO Artiste (idArtiste, nomArtiste)
