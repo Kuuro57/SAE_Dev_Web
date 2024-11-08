@@ -108,8 +108,8 @@ class SelectRepository extends Repository
         $spectacle = new Spectacle(
             $data['idSpectacle'],
             $data['nomSpectacle'],
-            getStyle($data['idStyle']),
-            getArtiste($data['idArtiste']),
+            $this->getStyle($data['idStyle']),
+            $this->getArtiste($data['idArtiste']),
             $data['duree'],
             $data['heureD'],
             $data['descSpectacle'],
@@ -248,12 +248,10 @@ class SelectRepository extends Repository
         // On récupère les données sorties par la requête
         $data = $statement->fetch(PDO::FETCH_ASSOC);
 
-        $style = new Style(
+        return new Style(
             $data['idStyle'],
             $data['nomStyle']
         );
-
-        return $style;
     }
 
     /**

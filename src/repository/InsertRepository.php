@@ -3,6 +3,8 @@
 namespace iutnc\sae_dev_web\repository;
 
 use iutnc\deefy\repository\DeefyRepository;
+use iutnc\sae_dev_web\festival\Lieu;
+use iutnc\sae_dev_web\festival\Soiree;
 use iutnc\sae_dev_web\festival\Spectacle;
 
 
@@ -83,7 +85,7 @@ class InsertRepository extends Repository {
 
         $idSoiree = $soiree->getId();
         $nom = $soiree->getNom();
-        $idlieu = $soiree->getIdLieu()->getId();
+        $idlieu = $soiree->getLieu()->getId();
         $idTheme = $soiree->getThematique()->getId();
         $annulee = $soiree->getEstAnnule();
         $date = $soiree->getDate();
@@ -123,7 +125,7 @@ class InsertRepository extends Repository {
 
     /**
      * Méthode qui ajoute une nouveau lieu
-     * @param string $nomLieu Nom du lieu à ajouter
+     * @param Lieu $lieu Objet Lieu à ajouter
      */
     public function ajouterLieu(Lieu $lieu): void {
 
