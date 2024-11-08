@@ -4,7 +4,7 @@ abstract class Repository {
     - pdo : PDO
     - config : array
     - __construct(Array) : void
-    + setConfig(String) : void
+    + setConfig(string) : void
     + <i>getInstance() : Repository
 }
 
@@ -12,7 +12,7 @@ class SelectRepository {
     - instance : SelectRepository
     + getInstance() : SelectRepository
     + getSpectacle(int) : Spectacle
-    + findExistingEmail(String) : array
+    + findExistingEmail(string) : array
 }
 
 class InsertRepository {
@@ -20,9 +20,108 @@ class InsertRepository {
     + getInstance() : InsertRepository
     + ajouterSpectacle(Spectacle) : void
     + ajouterSpectacleToSoiree(int, int) : void
-    + ajouterLieu(String) : void
-    + ajouterUtilisateur(String, String, int) : void
+    + ajouterLieu(string) : void
+    + ajouterUtilisateur(string, string, int) : void
+}
 
+class Artiste {
+    - id : int
+    - nom : string
+    + __construct(int, string) : void
+    + getId() : int
+    + getNom() : string
+}
+
+class Audio {
+    - idAudio : int
+    - idSpectacle : int
+    - nomFichierAudio : string
+    + __construct(int, int, string) : void
+    + getIdAudio(int) : int
+    + setIdAudio(int) : void
+    + getIdSpectacle() : int
+    + getNomFichierAudio() : string
+}
+
+class Image {
+    - idImage : int
+    - idSpectacle : int
+    - nomFichierAudio : string
+    + __construct(int, int, string) : void
+    + getIdImage(int) : int
+    + setIdImage(int) : void
+    + getIdSpectacle() : int
+    + getNomFichierImage() : string
+}
+
+class Lieu {
+    - id : int
+    - nom : string
+    - adresse : string
+    - nbPlacesAssises : int
+    - nbPlacesDebout : int
+    + __construct(int, string, string, int, int) : void
+    + getId() : int
+    + setId(int) : void
+    + getNom() : string
+    + getAdresse() : string
+    + getNbPlacesAssises() : int
+    + getNbPlacesDebout() : int
+}
+
+class Spectacle {
+    - id : int
+    - nom : string
+    - style : Style
+    - artiste : Artiste
+    - duree : int
+    - heureDebut : string
+    - description : string
+    - listeVideos : array
+    - listeAudios : array
+    - listeImages : array
+    + __construct(int, string, Style, Artiste, int, string, string, array, array, array) : void
+    + getId() : int
+    + setId() : void
+    + getNom() : string
+    + getStyle() : Style
+    + getArtiste() : Artiste
+    + getDuree() : int
+    + setDuree() : void
+    + getHeureDebut() : int
+    + getDescription() : string
+    + getListeVideos(): array
+    + getListeAudio() : array
+    + getListeImages() : array
+}
+
+class Style {
+  - id : int
+  - nom : string
+  + __construct(int, string) : void
+  + getId() : int
+  + setId(int) : void
+  + getNom() : string
+}
+
+class Thematique {
+  - id : int
+  - nom : string
+  + __construct(int, string) : void
+  + getId() : int
+  + setId(int) : void
+  + getNom() : string
+}
+
+class Video {
+    - idVideo : int
+    - idSpectacle : int
+    - url : string
+    + __construct(int, int, string): void
+    + getIdVideo() : int
+    + setIdVideo(int) : void
+    + getIdSpectacle() : int
+    + getUrl() : string
 }
 
 Repository --> SelectRepository
