@@ -24,7 +24,6 @@ class SelectRepository extends Repository
     private static ?SelectRepository $instance = null; // Instance unique de la classe SelectRepository
 
 
-
     /**
      * Méthode getInstance qui retourne une instance de SelectRepository
      * @return SelectRepository Une instance de la classe
@@ -38,7 +37,6 @@ class SelectRepository extends Repository
         return self::$instance;
 
     }
-
 
 
     /**
@@ -76,12 +74,11 @@ class SelectRepository extends Repository
         $res = [];
         // on boucle en prenant l'id du spectacle et on crée un objet spectacle avec cet id dans l'ordre du filtre
         foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $data) {
-            $spectacle = $this->getSpectacle((int) $data['idSpectacle']);
+            $spectacle = $this->getSpectacle((int)$data['idSpectacle']);
             $res[] = $spectacle;
         }
         return $res;
     }
-
 
 
     /**
@@ -104,20 +101,19 @@ class SelectRepository extends Repository
         $data = $statement->fetch(PDO::FETCH_ASSOC);
 
         return new Spectacle(
-            (int) $data['idSpectacle'],
+            (int)$data['idSpectacle'],
             $data['nomSpectacle'],
-            $this->getStyle((int) $data['idStyle']),
-            $this->getArtiste((int) $data['idArtiste']),
-            (int) $data['duree'],
+            $this->getStyle((int)$data['idStyle']),
+            $this->getArtiste((int)$data['idArtiste']),
+            (int)$data['duree'],
             $data['heureD'],
             $data['descSpectacle'],
-            $this->getVideos((int) $data['idSpectacle']),
-            $this->getAudios((int) $data['idSpectacle']),
-            $this->getImages((int) $data['idSpectacle'])
+            $this->getVideos((int)$data['idSpectacle']),
+            $this->getAudios((int)$data['idSpectacle']),
+            $this->getImages((int)$data['idSpectacle'])
         );
 
     }
-
 
 
     /**
@@ -159,7 +155,8 @@ class SelectRepository extends Repository
      * Méthode qui renvoie la liste de tous les artistes
      * @return array Liste d'artiste
      */
-    public function getArtistes() : array {
+    public function getArtistes(): array
+    {
         // Requête SQL qui récupère les attributs d'artistes
         $querySQL = "Select Artiste.idArtiste FROM Artiste";
 
@@ -172,7 +169,7 @@ class SelectRepository extends Repository
         // On récupère les données sorties par la requête
         $res = [];
         foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $data) {
-            $artiste = $this->getArtiste((int) $data['idArtiste']);
+            $artiste = $this->getArtiste((int)$data['idArtiste']);
             $res[] = $artiste;
         }
         return $res;
@@ -197,7 +194,7 @@ class SelectRepository extends Repository
         $data = $statement->fetch(PDO::FETCH_ASSOC);
 
         return new Artiste(
-            (int) $data['idArtiste'],
+            (int)$data['idArtiste'],
             $data['nomArtiste']
         );
     }
@@ -206,7 +203,8 @@ class SelectRepository extends Repository
      * Méthode qui renvoie la liste de tous les styles
      * @return array Liste de styles
      */
-    public function getStyles() : array {
+    public function getStyles(): array
+    {
         // Requête SQL qui récupère les attributs d'artistes
         $querySQL = "Select Style.idStyle FROM Style";
 
@@ -219,7 +217,7 @@ class SelectRepository extends Repository
         // On récupère les données sorties par la requête
         $res = [];
         foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $data) {
-            $style = $this->getStyle((int) $data['idStyle']);
+            $style = $this->getStyle((int)$data['idStyle']);
             $res[] = $style;
         }
         return $res;
@@ -244,16 +242,17 @@ class SelectRepository extends Repository
         $data = $statement->fetch(PDO::FETCH_ASSOC);
 
         return new Style(
-            (int) $data['idStyle'],
+            (int)$data['idStyle'],
             $data['nomStyle']
         );
     }
 
     /**
      * Méthode qui renvoie la liste de tous les lieux
-     * @return array Liste de lieux
+     * @return Lieu Liste de lieux
      */
-    public function getLieux() : array {
+    public function getLieux(): array
+    {
         // Requête SQL qui récupère les attributs d'artistes
         $querySQL = "Select idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout FROM Lieu";
 
@@ -267,18 +266,40 @@ class SelectRepository extends Repository
         $res = [];
         foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $data) {
             //modifier par rapport au constructeur de style
-            $lieux = new Lieu(
-                (int) $data['idLieux'],
-                $data['nomLieux'],
+            $l = new Lieu(
+                (int)$data['idLieu'],
+                $data['nomLieu'],
                 $data['adresse'],
-                (int) $data['nbPlacesAssises'],
-                (int) $data['nbPlacesDebout']);
-
-            $res[] = $lieux;
+                (int)$data['nbPlacesAssises'],
+                (int)$data['nbPlacesDebout']
+            );
+            $res[] = $l;
         }
-
         return $res;
     }
+
+    public function getLieu(int $id): Lieu
+    {
+        // Requête SQL qui récupère les attributs d'artistes
+        $querySQL = "Select idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout FROM Lieu WHERE idLieu = ?";
+
+        // Préparation de la requête
+        $statement = $this->pdo->prepare($querySQL);
+        $statement->bindParam(1, $id);
+
+        $statement->execute();
+
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return new Lieu(
+            (int)$data['idLieu'],
+            $data['nomLieu'],
+            $data['adresse'],
+            (int)$data['nbPlacesAssises'],
+            (int)$data['nbPlacesDebout']
+        );
+    }
+
 
 
 
@@ -403,6 +424,24 @@ class SelectRepository extends Repository
         return $res;
     }
 
+    public function getThematique(int $id) : Thematique {
+        // Requête SQL qui récupère les attributs de thematique
+        $querySQL = "Select idThematique, nomThematique FROM ThematiqueSoiree WHERE idThematique = ?";
+
+        // Préparation de la requête
+        $statement = $this->pdo->prepare($querySQL);
+        $statement->bindParam(1, $id);
+
+        // Execution de la requête
+        $statement->execute();
+
+        // On récupère les données sorties par la requête
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return new Thematique(
+            (int) $data['idThematique'],
+            $data['nomThematique']);
+    }
 
 
     /**

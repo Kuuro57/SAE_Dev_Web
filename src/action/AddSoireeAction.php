@@ -13,64 +13,63 @@ use PDOException;
  */
 class AddSoireeAction extends Action {
 
-    private string $formulaire;
-
     public function getForm(): string {
-        $lieuOptions = $this->getLieuOptions();
-        return '<form method="post" action="?action=add-soiree">
-            <input type="text" name="FnomSoiree" placeholder="Nom" class="input-field" required autofocus>
-            <select name="FidLieu" class="input-field" required>' . $lieuOptions . '</select>
-            <input type="checkbox" name="FestAnnule" placeholder="Est annulé ?" required>
-            <input type="date" name="FdateSoiree" placeholder="date soirée" required>
-            <input type="submit" name="connex" value="Ajouter" class="button">
-        </form>';
+
+        $listeLieu = SelectRepository::getInstance()->getLieux();
+        $listeThematique = SelectRepository::getInstance()->getThematiques();
+
+        $listeDeroulanteLieux = '<select name="listeLieux"> <option value=""> -- Choisissez un artiste -- </option>';
+        foreach ($listeLieu as $lieu) {
+            $listeDeroulanteLieux .= '<option value="' . $lieu->getId() . '">' . $lieu->getNom() . '</option>';
+        }
+        $listeDeroulanteLieux .= '</select>';
+
+        $listeDeroulanteThematiques = '<select name="listeThematiques"> <option value=""> -- Choisissez une thématique -- </option>';
+        foreach ($listeThematique as $thematique) {
+            $listeDeroulanteThematiques .= '<option value="' . $thematique->getId() . '">' . $thematique->getNom() . '</option>';
+        }
+        $listeDeroulanteThematiques .= '</select>';
+
+        return <<<END
+            <form method="post" name="" action="?action=add-soiree" enctype="multipart/form-data">
+                <input type="text" name="nomSoiree" placeholder="Nom de la soirée" required> <br>
+                $listeDeroulanteLieux <br>
+                $listeDeroulanteThematiques<br>
+                <input type="number" name="tarif" placeholder="Tarif" required> <br>
+                <input type ="date" name="dateSoiree" placeholder="Date de la soirée" required> <br>
+                <button type="submit" name="valider" class="button"> Valider </button>
+            </form>
+            END;
+        // TODO : Checkbox pour l'ajouter directement annulée ?
     }
 
-    private function getLieuOptions(): string {
-        $repo = SelectRepository::getInstance();
-        $lieux = $repo->getLieux();
-        $options = '';
-        foreach ($lieux as $lieu) {
-            $options .= '<option value="' . htmlspecialchars($lieu->getId) . '">' . htmlspecialchars($lieu->nom) . '</option>';
-        }
-        return $options;
-    }
 
-    private function getThematiqueOptions(): string {
-        $repo = SelectRepository::getInstance();
-        $thematiques = $repo->getThematiques();
-        $options = '';
-        foreach ($thematiques as $thematique) {
-            $options .= '<option value="' . htmlspecialchars($thematique->id) . '">' . htmlspecialchars($thematique->nom) . '</option>';
-        }
-        return $options;
-    }
 
     public function execute(): string {
         if ($this->http_method == "GET") {
-            $formulaires = $this->getForm();
+            $res = '<h1>Ajouter une soirée</h1>' . $this->getForm();
 
-            $res = '<h1>Ajouter une soirée</h1>' . $this->formulaire;
         } else {
-            $nomSoiree = filter_var($_POST['FnomSoiree'], FILTER_SANITIZE_STRING);
-            $idLieu = filter_var($_POST['FidLieu'], FILTER_SANITIZE_NUMBER_INT);
-            $dateSoiree = filter_var($_POST['FdateSoiree'], FILTER_SANITIZE_STRING); // FILTRER DATE ?
-            $estAnnule = filter_var($_POST['FestAnnule'], FILTER_SANITIZE_NUMBER_INT); // FILTRER BOOL ?
+            $nomSoiree = filter_input(INPUT_POST, 'nomSoiree', FILTER_SANITIZE_SPECIAL_CHARS);
+            $lieu = (int) filter_input(INPUT_POST, 'listeLieux', FILTER_SANITIZE_SPECIAL_CHARS);
+            $thematique = (int) filter_input(INPUT_POST, 'listeThematiques', FILTER_SANITIZE_SPECIAL_CHARS);
+            $tarif = (float) filter_input(INPUT_POST, 'tarif', FILTER_SANITIZE_SPECIAL_CHARS);
+            $dateSoiree = filter_input(INPUT_POST, 'dateSoiree', FILTER_SANITIZE_SPECIAL_CHARS);
 
-            $dbSelect = SelectRepository::getInstance();
-            $lieu = $dbSelect->getLieu($idLieu);
+            $lieuOb = SelectRepository::getInstance()->getLieu($lieu);
+            $thematiqueOb = SelectRepository::getInstance()->getThematique($thematique);
 
-            $soiree = new Soiree(null, $nomSoiree, $lieu, $dateSoiree, $estAnnule);
+            $soiree = new Soiree(null, $nomSoiree, $tarif, $lieuOb, $thematiqueOb, null, false, $dateSoiree);
 
-
-            $dbInsert = InsertRepository::getInstance();
-            try {
-                $dbInsert->ajouterSoiree($nomSoiree, $idLieu, $dateSoiree, $estAnnule);
-                $res = '<h1>Soirée ajouté</hh1>';
-            } catch (PDOException $e) {
-                $res = '<h1>Erreur lors de lajout de la soiree</h1>';
-            }
+            // try {
+                InsertRepository::getInstance()->ajouterSoiree($soiree);
+                $res = '<p> La soirée a bien été ajoutée ! </p>';
+            //} catch (PDOException $e) {
+            //    $res = '<p> La soirée n\'a pas pu être ajoutée ! </p>';
+            //}
         }
+
         return $res;
+
     }
 }

@@ -78,21 +78,28 @@ class InsertRepository extends Repository {
      */
     public function ajouterSoiree(Soiree $soiree): void {
 
-        $req = 'INSERT INTO Soiree (nomSoiree, idLieu, idThematique, estAnnule, dateSoiree) VALUES (?, ?, ?, ?, ?)';
+        $req = 'INSERT INTO Soiree (nomSoiree, idLieu, idThematique, tarif, dateSoiree, estAnnule) VALUES (?, ?, ?, ?, ?, ?)';
 
         $stmt = $this->pdo->prepare($req);
 
         $nom = $soiree->getNom();
         $idLieu = $soiree->getLieu()->getId();
         $idTheme = $soiree->getThematique()->getId();
-        $annulee = $soiree->getEstAnnule();
+        $tarif = $soiree->getTarif();
         $date = $soiree->getDate();
+        $annulee = $soiree->getEstAnnule();
+        if (!isset($annulee)) {
+            $annulee = false;
+        } else {
+            $annulee = true;
+        }
 
         $stmt->bindParam(1, $nom);
         $stmt->bindParam(2, $idLieu);
         $stmt->bindParam(3, $idTheme);
-        $stmt->bindParam(4, $annulee);
+        $stmt->bindParam(4, $tarif);
         $stmt->bindParam(5, $date);
+        $stmt->bindParam(6, $annulee);
 
         $stmt->execute();
 

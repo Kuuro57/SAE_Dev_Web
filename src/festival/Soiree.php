@@ -13,7 +13,7 @@ class Soiree {
     private Lieu $lieu; // Lieu où se déroule la soirée
     private Thematique  $thematique; // Thématique de la soirée
     private ?array $listeSpectacle; // Liste qui contient tout les spectacles présents dans la soirée
-    private bool $estAnulee; // Vrai si la soirée est annulée, faux sinon
+    private bool $estAnnulee; // Vrai si la soirée est annulée, faux sinon
     private string $date; // Date à laquelle se déroule la soirée
 
 
@@ -32,9 +32,10 @@ class Soiree {
     public function __construct(?int $i, string $n, float $ta, Lieu $l, Thematique $t, ?array $lS, bool $eA = false, string $d) {
         $this->id = $i;
         $this->nom = $n;
+        $this->tarif = $ta;
         $this->lieu = $l;
         $this->thematique = $t;
-        $this->estAnulee = $eA;
+        $this->estAnnulee = $eA;
         $this->date = $d;
     }
 
@@ -104,7 +105,7 @@ class Soiree {
 
     public function getListeSpectacle(): ?array { return $this->listeSpectacle; }
 
-    public function getEstAnnule() : bool { return $this->estAnulee; }
+    public function getEstAnnule() : bool { return $this->estAnnulee; }
 
     public function getDate() : string { return $this->date; }
 
