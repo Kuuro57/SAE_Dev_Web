@@ -78,7 +78,7 @@ class InsertRepository extends Repository {
      */
     public function ajouterSoiree(Soiree $soiree): Soiree {
 
-        $req = 'INSERT INTO soiree(idSoiree, nomSoiree, idLieu, idThematique, estAnnule, dateSoiree)';
+        $req = 'INSERT INTO soiree(idSoiree, nomSoiree, idLieu, idThematique, estAnnule, dateSoiree) VALUES(?, ?, ?, ?, ?, ?)';
 
         $stmt = $this->pdo->prepare($req);
 
@@ -134,7 +134,7 @@ class InsertRepository extends Repository {
      */
     public function ajouterLieu(Lieu $lieu): void {
 
-        $req = 'INSERT INTO lieu(idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout)';
+        $req = 'INSERT INTO lieu(idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout) VALUES (?, ?, ?, ?, ?)';
 
         $stmt = $this->pdo->prepare($req);
 
