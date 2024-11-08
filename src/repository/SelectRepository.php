@@ -10,6 +10,8 @@ use iutnc\sae_dev_web\festival\Spectacle;
 use iutnc\sae_dev_web\festival\Style;
 use PDO;
 
+
+
 /**
  * Classe qui récupère des informations auprès de la BDD
  */
