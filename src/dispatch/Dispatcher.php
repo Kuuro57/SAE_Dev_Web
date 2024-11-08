@@ -7,6 +7,7 @@ namespace iutnc\sae_dev_web\dispatch;
 use iutnc\sae_dev_web\action\AddLieuAction;
 use iutnc\sae_dev_web\action\AddSoireeAction;
 use iutnc\sae_dev_web\action\AddSpectacleAction;
+use iutnc\sae_dev_web\action\AddStyleAction;
 use iutnc\sae_dev_web\action\AddUtilisateurAction;
 use iutnc\sae_dev_web\action\SeConnecterAction;
 use iutnc\sae_dev_web\action\SeDeconnecterAction;
@@ -30,6 +31,10 @@ class Dispatcher {
         }
 
         switch ($_GET['action']) {
+
+            case "add-style" :
+                $class = new AddStyleAction();
+                break;
 
             case "add-lieu" :
                 $class = new AddLieuAction();
@@ -101,6 +106,7 @@ class Dispatcher {
                         <li><a href="?action=add-soiree">Ajouter une soirée</a></li>
                         <li><a href="?action=add-spectacle">Ajouter un spectacle</a></li>
                         <li><a href="?action=add-lieu">Ajouter un lieu</a></li>
+                        <li><a href="?action=add-style">Ajouter un style</a></li>
                         <li><a href="?action=add-utilisateur">Ajouter un utilisateur</a></li>
                         <li><a href="?action=se-connecter">Se connecter</a></li>
                         <li><a href="?action=se-deconnecter">Se déconnecter</a></li>
