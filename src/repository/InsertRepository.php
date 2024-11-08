@@ -5,6 +5,7 @@ namespace iutnc\sae_dev_web\repository;
 use iutnc\sae_dev_web\festival\Lieu;
 use iutnc\sae_dev_web\festival\Soiree;
 use iutnc\sae_dev_web\festival\Spectacle;
+use iutnc\sae_dev_web\festival\Style;
 
 
 /**
@@ -123,7 +124,7 @@ class InsertRepository extends Repository {
 
 
     /**
-     * Méthode qui ajoute une nouveau lieu
+     * Méthode qui ajoute un nouveau lieu
      * @param Lieu $lieu Objet Lieu à ajouter
      */
     public function ajouterLieu(Lieu $lieu): void {
@@ -148,7 +149,23 @@ class InsertRepository extends Repository {
 
     }
 
+    /**
+     * Méthode qui ajoute un nouveau style
+     * @param Style $style Objet Style à ajouter
+     */
+    public function ajouterStyle(Style $style): void {
 
+        $req = 'INSERT INTO style(nomStyle) VALUES (?)';
+
+        $stmt = $this->pdo->prepare($req);
+
+        $nom = $style->getNom();
+
+        $stmt->bindParam(1, $nom);
+
+        $stmt->execute();
+
+    }
 
     /**
      * Méthode qui ajoute un utilisateur à la BDD
