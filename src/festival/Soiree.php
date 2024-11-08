@@ -2,6 +2,8 @@
 
 namespace iutnc\sae_dev_web\festival;
 
+use DateTime;
+
 class Soiree {
 
     // Attributs
@@ -13,8 +15,6 @@ class Soiree {
     private ?array $listeSpectacle; // Liste qui contient tout les spectacles présents dans la soirée
     private bool $estAnulee; // Vrai si la soirée est annulée, faux sinon
     private string $date; // Date à laquelle se déroule la soirée
-    private string $heureDebut; // Heure de début de la soirée
-    private string $heureFin; // Heure de fin de la soirée
 
 
 
@@ -28,19 +28,68 @@ class Soiree {
      * @param Spectacle[]|null $lS Liste qui contient tout les spectacles présents dans la soirée
      * @param bool $eA Booléen qui détermine si la soirée est annulée ou non
      * @param string $d Date à laquelle se déroule la soirée
-     * @param string $hD Heure de début
-     * @param string $hF Heure de fin
      */
-    public function __construct(?int $i, string $n, float $ta, Lieu $l, Thematique $t, ?array $lS, bool $eA = false, string $d, string $hD, string $hF) {
+    public function __construct(?int $i, string $n, float $ta, Lieu $l, Thematique $t, ?array $lS, bool $eA = false, string $d) {
         $this->id = $i;
         $this->nom = $n;
         $this->lieu = $l;
         $this->thematique = $t;
         $this->estAnulee = $eA;
         $this->date = $d;
-        $this->heureDebut = $hD;
-        $this->heureFin = $hF;
     }
+
+
+    /**
+     * Méthode qui calcul l'heure de début de la soirée
+     * @return string|null Heure la plus tôt de tout les specatacles
+     * @throws \DateMalformedStringException
+     */
+    public function calculHeureDebut() : ?string {
+
+        // On initialise l'heure minimale avec une valeur très grande
+        $heureMin = new DateTime('23:59:59');
+
+        // Parcours de la liste des spectacles pour trouver l'heure la plus tôt
+        foreach ($this->listeSpectacle as $spectacle) {
+            $heure = new DateTime($spectacle->getHeureDebut());
+            if ($heure < $heureMin && $heure < '00:00:00') {
+                $heureMin = $heure;
+            }
+        }
+
+        // Retourne l'heure de début
+        return $heureMin->format('H:i');
+    }
+
+
+    /**
+     * Méthode qui calcul l'heure de fin de la soirée en ajoutant la durée du spectacle
+     * @return string Heure la plus tard de tout les specatacles
+     * @throws \DateMalformedStringException
+     */
+    public function calculHeureFin() : string {
+
+        // On initialise l'heure maximale avec une valeur très basse
+        $heureMax = new DateTime('00:00:00');
+        $dureeMax = 0;
+
+        // Parcours de la liste des spectacles pour trouver l'heure la plus tard et sa durée
+        foreach ($this->listeSpectacle as $spectacle) {
+            $heure = new DateTime($spectacle->getHeureDebut());
+            if ($heure > $heureMax) {
+                $heureMax = $heure;
+                $dureeMax = $spectacle->getDuree(); // Durée en minutes
+            }
+        }
+
+        // Ajoute la durée du spectacle le plus tardif
+        $heureMax->modify("+{$dureeMax} minutes");
+
+        // Retourne l'heure de fin
+        return $heureMax->format('H:i');
+    }
+
+
 
     public function getId() : int { return $this->id; }
     public function setId(?int $id): void { $this->id = $id; }

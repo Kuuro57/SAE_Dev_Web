@@ -70,6 +70,7 @@ CREATE TABLE ImageLieu (
 CREATE TABLE Soiree (
     idSoiree INT(4) PRIMARY KEY AUTO_INCREMENT,
     nomSoiree VARCHAR(50) NOT NULL,
+    tarif NUMBER(5, 2) NOT NULL,
     idLieu INT(4),
     idThematique INT(4),
     estAnnule BOOLEAN NOT NULL DEFAULT FALSE,
