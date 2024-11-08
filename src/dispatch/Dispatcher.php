@@ -89,6 +89,7 @@ class Dispatcher {
     
         <!DOCTYPE html>
         <head lang="fr">
+        <title>SAE WEB</title>
         <meta charset="UTF-8">
         <head>
             <link rel="stylesheet" type="text/css" href="../ladéco/style.css"/>
