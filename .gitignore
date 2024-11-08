@@ -5,6 +5,6 @@ out/
 db.conf.ini
 
 # Fichiers de stockage des audios / images / vidéos
-audio/
+udio/
 image/
 video/

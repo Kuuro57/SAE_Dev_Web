@@ -2,11 +2,9 @@
 
 namespace iutnc\sae_dev_web\action;
 
-
-
 use iutnc\sae_dev_web\festival\Spectacle;
-use iutnc\sae_dev_web\repository\InsertRepository;
-use iutnc\sae_dev_web\repository\SelectRepository;
+
+
 
 /**
  * Classe qui représente l'action d'ajouter un spectacle
@@ -28,8 +26,10 @@ class AddSpectacleAction extends Action {
 
             // On récupère et filtre les données du formulaire
             $nomSpec = filter_var($_POST['nomSpec'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $style = filter_var($_POST['style'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $artiste = filter_var($_POST['artiste'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $duree = (int) filter_var($_POST['duree'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $heureD = filter_var($_POST['heureD'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $style = $this->selectRepo->getStyle((int) filter_var($_POST['style'], FILTER_SANITIZE_SPECIAL_CHARS));
+            $artiste = $this->selectRepo->getArtiste((int) filter_var($_POST['artiste'], FILTER_SANITIZE_SPECIAL_CHARS));
             $description = filter_var($_POST['descSpec'], FILTER_SANITIZE_SPECIAL_CHARS);
             $listeNomFichierVideo[] = uniqid();
             $listeNomFichierAudio[] = uniqid();
@@ -45,7 +45,7 @@ class AddSpectacleAction extends Action {
                     if ($this->verifFichierImage($listeNomFichierImage[0])) {
 
                         // On créé un objet de type Spectacle
-                        $spectacle = new Spectacle(null, $nomSpec, $style, $artiste, null, $description, $listeNomFichierVideo, $listeNomFichierAudio, $listeNomFichierImage);
+                        $spectacle = new Spectacle(null, $nomSpec, $style, $artiste, $duree, $heureD, $description, $listeNomFichierVideo, $listeNomFichierAudio, $listeNomFichierImage);
                         // On ajoute le spectacle à la BDD
                         $this->insertRepo->ajouterSpectacle($spectacle);
                         // On informe que le spectacle à bien été créé
@@ -201,21 +201,23 @@ class AddSpectacleAction extends Action {
         // On récupère la liste de tous les styles dans la BDD
         $listeStyles = $this->selectRepo->getStyles();
         // On créé la liste déroulante pour les artistes
-        $listeDeroulanteArtistes = '<select name="listeArtistes"> <option value=""> -- Choisissez un artiste -- </option>';
+        $listeDeroulanteArtistes = '<select name="artiste"> <option value=""> -- Choisissez un artiste -- </option>';
         foreach ($listeArtistes as $artiste) {
-            $listeDeroulanteArtistes .= "<option value='{$artiste->getNom()}'> {$artiste->getNom()} </option>";
+            $listeDeroulanteArtistes .= "<option value='{$artiste->getId()}'> {$artiste->getNom()} </option>";
         }
         $listeDeroulanteArtistes .= '</select>';
         // On créé la liste déroulante pour les styles
-        $listeDeroulanteStyle = '<select name="listeStyles"> <option value=""> -- Choisissez un style -- </option>';
+        $listeDeroulanteStyle = '<select name="style"> <option value=""> -- Choisissez un style -- </option>';
         foreach ($listeStyles as $style) {
-            $listeDeroulanteStyle .= "<option value='{$style->getNom()}'> {$style->getNom()} </option>";
+            $listeDeroulanteStyle .= "<option value='{$style->getId()}'> {$style->getNom()} </option>";
         }
         $listeDeroulanteStyle .= '</select>';
         // On ajoute les deux listes au formulaire et on le renvoie
          return <<<END
             <form method="post" name="" action="?action=add-spectacle" enctype="multipart/form-data">
                 <input type="text" name="nomSpec" placeholder="Nom du spectacle" required> <br>
+                <input type="time" name="heureD" placeholder="Heure de début" required> <br>
+                <input type="number" name="duree" placeholder="Duree (en minutes)" required> <br>
                 $listeDeroulanteArtistes <br>
                 $listeDeroulanteStyle <br>
                 <input type="text" name="descSpec" placeholder="Description" required> <br>
@@ -223,7 +225,7 @@ class AddSpectacleAction extends Action {
                 Fichier Audio : <input type="file" name="fichierAudio" placeholder="<fichierAudio>"> <br>
                 Image : <input type="file" name="fichierImage" placeholder="<fichierImage>"> <br>
                 <button type="submit" name="valider" class="button"> Valider </button>
-            </form>';
+            </form>
             END;
     }
 

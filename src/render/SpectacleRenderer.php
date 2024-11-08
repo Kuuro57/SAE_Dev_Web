@@ -95,12 +95,13 @@ class SpectacleRenderer implements Renderer {
      */
 
     public function renderLong() {
+
         // Récupération de l'heure de début sous forme de DateTime
         $heureD = SelectRepository::getInstance()->getHeureDebutSpectacle($this->spectacle->getId());
         $heureD = new DateTime($heureD);
 
         // Supposons que $this->spectacle->getDuree() retourne la durée en minutes
-        $dureeMinutes = (int) $this->spectacle->getDuree();
+        $dureeMinutes = $this->spectacle->getDuree();
 
         // Calcul des heures et minutes
         $heures = intdiv($dureeMinutes, 60);  // Nombre d'heures
@@ -113,10 +114,26 @@ class SpectacleRenderer implements Renderer {
         $heureF = (clone $heureD)->add($dureeInterval);
 
         // le lieu est obtenu en utilisant la méthode getLieuSpectacle de la classe SelectRepository jointure avec Lieu, Soiree et Spectacle
-        $nomLieu = SelectRepository::getInstance()->getLieuSpectacle($this->spectacle->getId())->getNom();
+
+        if (SelectRepository::getInstance()->getLieuSpectacle($this->spectacle->getId()) === null){
+            $nomLieu = "Lieu non défini";
+        } else {
+            $nomLieu = SelectRepository::getInstance()->getLieuSpectacle($this->spectacle->getId())->getNom();
+
+        }
+
+
         $artistes = $this->spectacle->getArtiste();
         $description = $this->spectacle->getDescription();
-        $style = $this->spectacle->getStyle();
+
+
+        if (!($this->spectacle->getStyle() === null)){
+            $style = $this->spectacle->getStyle()->getNom();
+
+        } else {
+            $style = "style non défini";
+        }
+
         $date = SelectRepository::getInstance()->getDateSpectacle($this->spectacle->getId());
         $duree = $this->spectacle->getDuree();
         $imagestab = $this->spectacle->getListeImages();
@@ -136,7 +153,6 @@ class SpectacleRenderer implements Renderer {
         // array des video
         $video = $this->spectacle->getListeVideos();
         $artiste = $this->spectacle->getArtiste()->getNom();
-        $style = $this->spectacle->getStyle()->getNom();
 
         $audioListe = "";
         $videoListe = "";

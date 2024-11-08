@@ -43,10 +43,10 @@ class SelectRepository extends Repository
 
     /**
      * Méthode qui renvoie une liste de tous les spectacles de la BDD
-     * @param string $filtre Filtre qui permet de savoir dans quel ordre afficher les spectacles
+     * @param string|null $filtre Filtre qui permet de savoir dans quel ordre afficher les spectacles
      * @return Spectacle[] La liste de tous les spectacles dans le bon ordre d'affichage
      */
-    public function getSpectacles(string $filtre): array
+    public function getSpectacles(?string $filtre): array
     {  //default affiche ordre date | date ordre date |lieu ordre lieu| style ordre style
         // Requête SQL en fonction du filtre
         switch ($filtre) {
@@ -230,7 +230,7 @@ class SelectRepository extends Repository
      * @param int $id Id du style
      * @return Style Un objet de type style
      */
-    public function getStyle(int $id): Style
+    public function getStyle(int $id): ?Style
     {
         // Requête SQL qui récupère l'id du spectacle
         $querySQL = "SELECT idStyle, nomStyle FROM Style WHERE idStyle = ?";
@@ -243,10 +243,15 @@ class SelectRepository extends Repository
         // On récupère les données sorties par la requête
         $data = $statement->fetch(PDO::FETCH_ASSOC);
 
+        if (empty($data)){
+            return null;
+        }
+        else {
+
         return new Style(
             (int) $data['idStyle'],
             $data['nomStyle']
-        );
+        );}
     }
 
     /**
@@ -430,9 +435,9 @@ class SelectRepository extends Repository
     /**
      * Méthode qui récupère le lieu d'un spectacle
      * @param int $idSpectacle Id du spectacle
-     * @return Lieu Objet de type lieu
+     * @return Lieu|null Objet de type lieu
      */
-    public function getLieuSpectacle(int $idSpectacle) : Lieu {
+    public function getLieuSpectacle(int $idSpectacle) : ?Lieu {
 
         // Requête SQL qui récupère les données du lieu
         $querySQL = "SELECT Lieu.idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout FROM Lieu 
@@ -448,6 +453,9 @@ class SelectRepository extends Repository
         // On récupère les données
         $data = $statement->fetch(PDO::FETCH_ASSOC);
 
+        if (empty($data)) {
+            return null;
+        }
         // On retourne un objet de type Lieu
         return new Lieu(
             (int) $data['idLieu'],
@@ -481,8 +489,14 @@ class SelectRepository extends Repository
         // On récupère les données
         $data = $statement->fetch(PDO::FETCH_ASSOC);
 
-        // On retourne la date
-        return $data['dateSoiree'];
+        // Si le spectacle n'a pas de soirée
+        if (!empty($data)) {
+            // On retourne la date
+            return $data['dateSoiree'];
+        }
+        else {
+            return 'Date non définie';
+        }
 
     }
 
