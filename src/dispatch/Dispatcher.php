@@ -88,8 +88,11 @@ class Dispatcher {
         echo <<<END
     
         <!DOCTYPE html>
-        <html lang="fr">
-        <link rel="stylesheet" type="text/css" href="../ladéco/style.css"/>
+        <head lang="fr">
+        <meta charset="UTF-8">
+        <head>
+            <link rel="stylesheet" type="text/css" href="../ladéco/style.css"/>
+        </head>
         <body>
             <header>
                 <h1>NRV - Nancy Rock Vibration</h1>
