@@ -53,12 +53,10 @@ CREATE TABLE VideoSpectacle (
     FOREIGN KEY (idSpectacle) REFERENCES Spectacle(idSpectacle)
 );
 
-CREATE TABLE ThematiqueSpectacle (
+CREATE TABLE ThematiqueSoiree (
     idThematique INT(4),
-    idSpectacle INT(4),
     nomThematique VARCHAR(50) NOT NULL,
-    PRIMARY KEY (idThematique, idSpectacle),
-    FOREIGN KEY (idSpectacle) REFERENCES Spectacle(idSpectacle)
+    PRIMARY KEY (idThematique)
 );
 
 CREATE TABLE ImageLieu (
@@ -78,7 +76,7 @@ CREATE TABLE Soiree (
     heureD TIME NOT NULL,
     heureF TIME NOT NULL,
     FOREIGN KEY (idLieu) REFERENCES Lieu(idLieu),
-    FOREIGN KEY (idThematique) REFERENCES ThematiqueSpectacle(idThematique)
+    FOREIGN KEY (idThematique) REFERENCES ThematiqueSoiree(idThematique)
 );
 
 CREATE TABLE Programme (
@@ -129,13 +127,22 @@ VALUES
     (5, 'zenith_ncy.png');
 
 
-INSERT INTO Soiree (idSoiree, nomSoiree, idLieu, dateSoiree) 
+INSERT INTO ThematiqueSoiree (idThematique, nomThematique) 
 VALUES 
-    (1, 'Soiree Grande Bulle', 3, '2024-11-06'),
-    (2, 'Soiree Mente', 4, '2024-11-06'),
-    (3, 'Soiree Rock Paper Scicor', 1, '2024-11-12'),
-    (4, 'Soiree Rock-Embolesque', 3, '2024-11-13'),
-    (5, 'Soiree Big Snap', 5, '2024-11-19');
+    (1, 'Concert Rock'),
+    (2, 'Electro Night'),
+    (3, 'Rap Battle'),
+    (4, 'British Rock'),
+    (5, 'Hip-Hop Extravaganza');
+
+
+INSERT INTO Soiree (idSoiree, nomSoiree, idLieu, idThematique, dateSoiree, heureD, heureF) 
+VALUES 
+    (1, 'Soiree Grande Bulle', 3, 2, '2024-11-06', '19:00', '01:00'),
+    (2, 'Soiree Mente', 4, 5, '2024-11-06', '19:00', '21:00'),
+    (3, 'Soiree Rock Paper Scicor', 1, 1, '2024-11-12', '17:00', '22:00'),
+    (4, 'Soiree Rock-Embolesque', 3, 1, '2024-11-13', '20:00', '23:00'),
+    (5, 'Soiree Big Snap', 5, 3, '2024-11-19', '20:00', '23:00');
 
 
 INSERT INTO Artiste (idArtiste, nomArtiste)
@@ -188,15 +195,6 @@ VALUES
     (3, 3, 'pnl2024_video.mp4'),
     (4, 4, 'the_beatles2024_video.mp4'),
     (5, 5, 'naps2024_video.mp4');
-
-
-INSERT INTO ThematiqueSpectacle (idThematique, idSpectacle, nomThematique) 
-VALUES 
-    (1, 1, 'Concert Rock'),
-    (2, 2, 'Electro Night'),
-    (3, 3, 'Rap Battle'),
-    (4, 4, 'British Rock'),
-    (5, 5, 'Hip-Hop Extravaganza');
 
 
 INSERT INTO Programme (idSoiree, idSpectacle, heureD) 
