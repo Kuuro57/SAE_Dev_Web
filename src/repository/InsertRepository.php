@@ -49,24 +49,23 @@ class InsertRepository extends Repository {
      */
     public function ajouterSpectacle(Spectacle $spectacle): void {
 
-        $req = 'INSERT INTO Spectacle (idSpectacle, nomSpectacle, idStyle, idArtiste, duree, descSpectacle) VALUES (?, ?, ?, ?, ?, ?)';
+        $req = 'INSERT INTO Spectacle (nomSpectacle, idStyle, idArtiste, heureD, duree, descSpectacle) VALUES (?, ?, ?, ?, ?, ?)';
 
         $stmt = $this->pdo->prepare($req);
 
-        $idSpec = $spectacle->getId();
         $nom = $spectacle->getNom();
         $style = $spectacle->getStyle()->getId();
         $artiste = $spectacle->getArtiste()->getId();
+        $heureD = $spectacle->getHeureDebut();
         $duree = $spectacle->getDuree();
         $desc = $spectacle->getDescription();
 
-        $stmt->bindParam(1, $idSpec);
-        $stmt->bindParam(2, $nom);
-        $stmt->bindParam(3, $style);
-        $stmt->bindParam(4, $artiste);
+        $stmt->bindParam(1, $nom);
+        $stmt->bindParam(2, $style);
+        $stmt->bindParam(3, $artiste);
+        $stmt->bindParam(4, $heureD);
         $stmt->bindParam(5, $duree);
         $stmt->bindParam(6, $desc);
-
         $stmt->execute();
 
     }
@@ -79,23 +78,21 @@ class InsertRepository extends Repository {
      */
     public function ajouterSoiree(Soiree $soiree): void {
 
-        $req = 'INSERT INTO soiree(idSoiree, nomSoiree, idLieu, idThematique, estAnnule, dateSoiree)';
+        $req = 'INSERT INTO Soiree (nomSoiree, idLieu, idThematique, estAnnule, dateSoiree) VALUES (?, ?, ?, ?, ?)';
 
         $stmt = $this->pdo->prepare($req);
 
-        $idSoiree = $soiree->getId();
         $nom = $soiree->getNom();
-        $idlieu = $soiree->getLieu()->getId();
+        $idLieu = $soiree->getLieu()->getId();
         $idTheme = $soiree->getThematique()->getId();
         $annulee = $soiree->getEstAnnule();
         $date = $soiree->getDate();
 
-        $stmt->bindParam(1, $idSoiree);
-        $stmt->bindParam(2, $nom);
-        $stmt->bindParam(3, $idlieu);
-        $stmt->bindParam(4, $idTheme);
-        $stmt->bindParam(5, $annulee);
-        $stmt->bindParam(6, $date);
+        $stmt->bindParam(1, $nom);
+        $stmt->bindParam(2, $idLieu);
+        $stmt->bindParam(3, $idTheme);
+        $stmt->bindParam(4, $annulee);
+        $stmt->bindParam(5, $date);
 
         $stmt->execute();
 
@@ -129,23 +126,22 @@ class InsertRepository extends Repository {
      */
     public function ajouterLieu(Lieu $lieu): void {
 
-        $req = 'INSERT INTO lieu(idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout)';
+        $req = 'INSERT INTO Lieu (nomLieu, adresse, nbPlacesAssises, nbPlacesDebout) VALUES (?, ?, ?, ?)';
 
         $stmt = $this->pdo->prepare($req);
 
-        $idLieu = $lieu->getId();
         $nom = $lieu->getNom();
         $adresse = $lieu->getAdresse();
         $nbPlacesAssises = $lieu->getNbPlacesAssises();
         $nbPlacesDebout = $lieu->getNbPlacesDebout();
 
-        $stmt->bindParam(1, $idLieu);
-        $stmt->bindParam(2, $nom);
-        $stmt->bindParam(3, $adresse);
-        $stmt->bindParam(4, $nbPlacesAssises);
-        $stmt->bindParam(5, $nbPlacesDebout);
+        $stmt->bindParam(1, $nom);
+        $stmt->bindParam(2, $adresse);
+        $stmt->bindParam(3, $nbPlacesAssises);
+        $stmt->bindParam(4, $nbPlacesDebout);
 
         $stmt->execute();
+
 
     }
 
