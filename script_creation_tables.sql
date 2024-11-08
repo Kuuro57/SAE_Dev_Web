@@ -61,7 +61,7 @@ CREATE TABLE ThematiqueSoiree (
 );
 
 CREATE TABLE ImageLieu (
-    idLieu INT(4) AUTO_INCREMENT,
+    idLieu INT(4),
     nomFichierImage VARCHAR(50) NOT NULL,
     PRIMARY KEY (idLieu, nomFichierImage),
     FOREIGN KEY (idLieu) REFERENCES Lieu(idLieu)
@@ -70,7 +70,7 @@ CREATE TABLE ImageLieu (
 CREATE TABLE Soiree (
     idSoiree INT(4) PRIMARY KEY AUTO_INCREMENT,
     nomSoiree VARCHAR(50) NOT NULL,
-    tarif NUMBER(5, 2) NOT NULL,
+    tarif FLOAT(5, 2) NOT NULL,
     idLieu INT(4),
     idThematique INT(4),
     estAnnule BOOLEAN NOT NULL DEFAULT FALSE,
@@ -80,11 +80,11 @@ CREATE TABLE Soiree (
 );
 
 CREATE TABLE Programme (
-    idSoiree INT(4),
-    idSpectacle INT(4),
-    PRIMARY KEY (idSoiree, idSpectacle),
-    FOREIGN KEY (idSoiree) REFERENCES Soiree(idSoiree),
-    FOREIGN KEY (idSpectacle) REFERENCES Spectacle(idSpectacle)
+                           idSoiree INT(4),
+                           idSpectacle INT(4),
+                           PRIMARY KEY (idSoiree, idSpectacle),
+                           FOREIGN KEY (idSoiree) REFERENCES Soiree(idSoiree),
+                           FOREIGN KEY (idSpectacle) REFERENCES Spectacle(idSpectacle)
 );
 
 CREATE TABLE Utilisateur (
@@ -126,8 +126,8 @@ VALUES
     (5, 'zenith_ncy.png');
 
 
-INSERT INTO ThematiqueSoiree (idThematique, nomThematique) 
-VALUES 
+INSERT INTO ThematiqueSoiree (idThematique, nomThematique)
+VALUES
     (1, 'Concert Rock'),
     (2, 'Electro Night'),
     (3, 'Rap Battle'),
@@ -135,13 +135,13 @@ VALUES
     (5, 'Hip-Hop Extravaganza');
 
 
-INSERT INTO Soiree (idSoiree, nomSoiree, idLieu, idThematique, dateSoiree) 
-VALUES 
-    (1, 'Soiree Grande Bulle', 3, 2, '2024-11-06'),
-    (2, 'Soiree Mente', 4, 5, '2024-11-06'),
-    (3, 'Soiree Rock Paper Scicor', 1, 1, '2024-11-12'),
-    (4, 'Soiree Rock-Embolesque', 3, 1, '2024-11-13'),
-    (5, 'Soiree Big Snap', 5, 3, '2024-11-19');
+INSERT INTO Soiree (idSoiree, nomSoiree, idLieu, tarif, idThematique, dateSoiree)
+VALUES
+    (1, 'Soiree Grande Bulle', 3, 5.50, 2, '2024-11-06'),
+    (2, 'Soiree Mente', 4, 10.5, 5, '2024-11-06'),
+    (3, 'Soiree Rock Paper Scicor', 1, 2.0, 1, '2024-11-12'),
+    (4, 'Soiree Rock-Embolesque', 3, 1.0, 1, '2024-11-13'),
+    (5, 'Soiree Big Snap', 5, 6.2, 3, '2024-11-19');
 
 
 INSERT INTO Artiste (idArtiste, nomArtiste)
@@ -162,11 +162,11 @@ VALUES
 
 INSERT INTO Spectacle (idSpectacle, nomSpectacle, idStyle, idArtiste, heureD, duree, descSpectacle) 
 VALUES 
-    (1, 'Indochine', 1, 1, '19:00', 2, 'Un super spectacle !'), 
-    (2, 'Daft Punk', 2, 2, '19:30', 3, 'Un super spectacle !'),
-    (3, 'PNL', 3, 3, '23:00', 2, 'Un super spectacle !'),
-    (4, 'The Beatles', 1, 4, '20:00', 2, 'Un super spectacle !'),
-    (5, 'Naps', 3, 4, '20:00', 3, 'Une super spectacle !');
+    (1, 'Indochine', 1, 1, '19:00', 120, 'Un super spectacle !'),
+    (2, 'Daft Punk', 2, 2, '19:30', 180, 'Un super spectacle !'),
+    (3, 'PNL', 3, 3, '23:00', 120, 'Un super spectacle !'),
+    (4, 'The Beatles', 1, 4, '20:00', 120, 'Un super spectacle !'),
+    (5, 'Naps', 3, 4, '20:00', 180, 'Une super spectacle !');
 
 
 INSERT INTO ImageSpectacle (idSpectacle, nomFichierImage)
@@ -178,8 +178,8 @@ VALUES
     (5, 'naps2024.png');
 
 
-INSERT INTO AudioSpectacle (idAudio, idSpectacle, nomFichierAudio) 
-VALUES 
+INSERT INTO AudioSpectacle (idAudio, idSpectacle, nomFichierAudio)
+VALUES
     (1, 1, 'indochine2024_audio.mp3'),
     (2, 2, 'daft_punk2024_audio.mp3'),
     (3, 3, 'pnl2024_audio.mp3'),
@@ -187,8 +187,8 @@ VALUES
     (5, 5, 'naps2024_audio.mp3');
 
 
-INSERT INTO VideoSpectacle (idVideo, idSpectacle, nomFichierVideo) 
-VALUES 
+INSERT INTO VideoSpectacle (idVideo, idSpectacle, nomFichierVideo)
+VALUES
     (1, 1, 'indochine2024_video.mp4'),
     (2, 2, 'daft_punk2024_video.mp4'),
     (3, 3, 'pnl2024_video.mp4'),
@@ -196,9 +196,9 @@ VALUES
     (5, 5, 'naps2024_video.mp4');
 
 
-INSERT INTO Programme (idSoiree, idSpectacle) 
-VALUES 
-    (1, 2), 
+INSERT INTO Programme (idSoiree, idSpectacle)
+VALUES
+    (1, 2),
     (1, 3),
     (2, 1),
     (3, 4),
@@ -207,14 +207,14 @@ VALUES
     (5, 5);
 
 
-INSERT INTO Utilisateur (idUtilisateur, email, mdp, role) 
-VALUES 
+INSERT INTO Utilisateur (idUtilisateur, email, mdp, role)
+VALUES
     (1,    'user1@mail.com',    '$2y$12$e9DCiDKOGpVs9s.9u2ENEOiq7wGvx7sngyhPvKXo2mUbI3ulGWOdC',    1),
     (2,    'user2@mail.com',    '$2y$12$4EuAiwZCaMouBpquSVoiaOnQTQTconCP9rEev6DMiugDmqivxJ3AG',    1),
     (3,    'user3@mail.com',    '$2y$12$5dDqgRbmCN35XzhniJPJ1ejM5GIpBMzRizP730IDEHsSNAu24850S',    1),
     (4,    'user4@mail.com',    '$2y$12$ltC0A0zZkD87pZ8K0e6TYOJPJeN/GcTSkUbpqq0kBvx6XdpFqzzqq',    1),
     (5,    'admin@mail.com',    '$2y$12$JtV1W6MOy/kGILbNwGR2lOqBn8PAO3Z6MupGhXpmkeCXUPQ/wzD8a',    100); -- mdp = admin
-    
+
 INSERT INTO ListePreference (idUtilisateur, idSpectacle)
 VALUES
     (1, 1),

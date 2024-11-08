@@ -1,14 +1,14 @@
 {
-    "name": "super/sae_dev_web",
+    "name": "iutnc/sae_dev_web",
     "autoload": {
         "psr-4": {
-            "Super\\SaeDevWeb\\": "src/"
+            "iutnc\\sae_dev_web\\": "src/"
         }
     },
     "authors": [
         {
-            "name": "armbrust5u",
-            "email": "SuperBidul1@gmail.com"
+            "name": "Kuuro57",
+            "email": "noah.allart9@etu.univ-lorraine.fr"
         }
     ],
     "require": {

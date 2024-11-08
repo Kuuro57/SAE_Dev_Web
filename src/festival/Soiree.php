@@ -104,7 +104,7 @@ class Soiree {
 
     public function getListeSpectacle(): ?array { return $this->listeSpectacle; }
 
-    public function getEstAnulee() : bool { return $this->estAnulee; }
+    public function getEstAnnule() : bool { return $this->estAnulee; }
 
     public function getDate() : string { return $this->date; }
 
