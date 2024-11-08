@@ -2,6 +2,10 @@
 
 namespace iutnc\sae_dev_web\repository;
 
+
+
+use iutnc\sae_dev_web\festival\Spectacle;
+
 /**
  * Classe qui récupère des informations auprès de la BDD
  */
@@ -174,10 +178,32 @@ class SelectRepository extends Repository
         return $res;
     }
 
-    
+
     public function getLieux() : array {
         // Requête SQL qui récupère les attributs d'artistes
         $querySQL = "Select idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout FROM lieux";
+
+
+    /**
+     * Méthode qui récupère l'heure de début d'un spectacle
+     * @param int $id Id du spectacle
+     * @return string Heure de début du spectacle (HH:MM:SS)
+     */
+    public function getHeureDebutSpectacle(int $id) : string {
+
+        // Requête SQL qui récupère l'heure de début d'un spectacle
+        $querySQL = "SELECT heureD FROM Spectacle WHERE idSpectacle = :id";
+
+        // On prépare la requête et on l'execute
+        $statement = $this->pdo->prepare($querySQL);
+        $statement->bindParam(":id", $id);
+        $statement->execute();
+
+        // On retourne l'heure de début
+        return $statement->fetch()['heureD'];
+
+    }
+
 
         // Préparation de la requête
         $statement = $this->pdo->prepare($querySQL);
