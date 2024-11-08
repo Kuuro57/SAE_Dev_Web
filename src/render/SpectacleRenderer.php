@@ -2,6 +2,8 @@
 
 namespace iutnc\sae_dev_web\render;
 
+use DateInterval;
+use DateTime;
 use iutnc\sae_dev_web\festival\Spectacle;
 use iutnc\sae_dev_web\repository\SelectRepository;
 
@@ -89,16 +91,29 @@ class SpectacleRenderer implements Renderer {
      *
      * Affichage détaillé d’un spectacle : titre, artistes, description, style, durée, image(s),
      * extrait audio/vidéo,
+     * @throws \DateMalformedStringException
      */
 
-    public function renderLong()
-    {
-        // l'heure de départ est obtenue en utilisant la méthode getDebutSpectacle de la classe SelectRepository
-        // qui prend en paramètre l'id du spectacle et retourne l'heure de début du spectacle avec la jointure de la table Programme
+    public function renderLong() {
+        // Récupération de l'heure de début sous forme de DateTime
         $heureD = SelectRepository::getInstance()->getHeureDebutSpectacle($this->spectacle->getId());
-        $heureF =  (int)$heureD + $this->spectacle->getDuree();
+        $heureD = new DateTime($heureD);
+
+        // Supposons que $this->spectacle->getDuree() retourne la durée en minutes
+        $dureeMinutes = (int) $this->spectacle->getDuree();
+
+        // Calcul des heures et minutes
+        $heures = intdiv($dureeMinutes, 60);  // Nombre d'heures
+        $minutes = $dureeMinutes % 60;              // Nombre de minutes restantes
+
+        // Création d'un intervalle de temps pour la durée
+        $dureeInterval = new DateInterval("PT{$heures}H{$minutes}M");
+
+        // Ajout de la durée à l'heure de début pour obtenir l'heure de fin
+        $heureF = (clone $heureD)->add($dureeInterval);
+
         // le lieu est obtenu en utilisant la méthode getLieuSpectacle de la classe SelectRepository jointure avec Lieu, Soiree et Spectacle
-        $lieu = SelectRepository::getInstance()->getLieuSpectacle($this->spectacle->getId());
+        $nomLieu = SelectRepository::getInstance()->getLieuSpectacle($this->spectacle->getId())->getNom();
         $artistes = $this->spectacle->getArtiste();
         $description = $this->spectacle->getDescription();
         $style = $this->spectacle->getStyle();
@@ -147,8 +162,8 @@ class SpectacleRenderer implements Renderer {
             <div id='spectacle'>
                 <p><strong>{$this->spectacle->getNom()}</strong> <br>
                 <strong>Date</strong> - $date <br>
-                <strong>Heure</strong> - $heureD. ' - ' . $heureF <br>
-                <strong>Lieu</strong> - $lieu <br>
+                <strong>Heure</strong> - {$heureD->format('H:i')} / {$heureF->format('H:i')} <br>
+                <strong>Lieu</strong> - $nomLieu <br>
                 <strong>Artistes</strong> - $artiste <br>
                 <strong>Description</strong> - $description <br>
                 <strong>Style</strong> - $style <br>

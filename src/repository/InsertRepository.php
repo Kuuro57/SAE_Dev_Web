@@ -2,7 +2,6 @@
 
 namespace iutnc\sae_dev_web\repository;
 
-use iutnc\deefy\repository\DeefyRepository;
 use iutnc\sae_dev_web\festival\Lieu;
 use iutnc\sae_dev_web\festival\Soiree;
 use iutnc\sae_dev_web\festival\Spectacle;
@@ -49,7 +48,7 @@ class InsertRepository extends Repository {
      */
     public function ajouterSpectacle(Spectacle $spectacle): void {
 
-        $req = 'INSERT INTO spectacle(idSpectacle, nomSpectacle, idStyle, idArtiste, duree, descSpectacle) VALUES(?, ?, ?, ?, ?, ?)';
+        $req = 'INSERT INTO Spectacle (idSpectacle, nomSpectacle, idStyle, idArtiste, duree, descSpectacle) VALUES (?, ?, ?, ?, ?, ?)';
 
         $stmt = $this->pdo->prepare($req);
 

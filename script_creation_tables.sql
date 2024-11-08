@@ -70,7 +70,7 @@ CREATE TABLE ImageLieu (
 CREATE TABLE Soiree (
     idSoiree INT(4) PRIMARY KEY AUTO_INCREMENT,
     nomSoiree VARCHAR(50) NOT NULL,
-    tarif NUMBER(5, 2) NOT NULL,
+    tarif FLOAT(5, 2) NOT NULL,
     idLieu INT(4),
     idThematique INT(4),
     estAnnule BOOLEAN NOT NULL DEFAULT FALSE,
@@ -162,11 +162,11 @@ VALUES
 
 INSERT INTO Spectacle (idSpectacle, nomSpectacle, idStyle, idArtiste, heureD, duree, descSpectacle) 
 VALUES 
-    (1, 'Indochine', 1, 1, '19:00', 2, 'Un super spectacle !'), 
-    (2, 'Daft Punk', 2, 2, '19:30', 3, 'Un super spectacle !'),
-    (3, 'PNL', 3, 3, '23:00', 2, 'Un super spectacle !'),
-    (4, 'The Beatles', 1, 4, '20:00', 2, 'Un super spectacle !'),
-    (5, 'Naps', 3, 4, '20:00', 3, 'Une super spectacle !');
+    (1, 'Indochine', 1, 1, '19:00', 120, 'Un super spectacle !'),
+    (2, 'Daft Punk', 2, 2, '19:30', 180, 'Un super spectacle !'),
+    (3, 'PNL', 3, 3, '23:00', 120, 'Un super spectacle !'),
+    (4, 'The Beatles', 1, 4, '20:00', 120, 'Un super spectacle !'),
+    (5, 'Naps', 3, 4, '20:00', 180, 'Une super spectacle !');
 
 
 INSERT INTO ImageSpectacle (idSpectacle, nomFichierImage)

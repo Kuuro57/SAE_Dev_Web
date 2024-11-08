@@ -96,7 +96,7 @@ class Dispatcher {
                 <nav>
                     <ul>
                         <li><a href="?action=default">Accueil</a></li>
-                        <li><a href="?action=choix-affichage-soirees">Soirées</a></li>
+                        <li><a href="?action=afficher-soirees">Soirées</a></li>
                         <li><a href="?action=choix-affichage-spectacles">Spectacles</a></li>
                         <li><a href="?action=add-soiree">Ajouter une soirée</a></li>
                         <li><a href="?action=add-spectacle">Ajouter un spectacle</a></li>
