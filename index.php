@@ -1,4 +1,4 @@
-<?php declare (strict_types=1);
+<?php
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -25,12 +25,6 @@ use iutnc\sae_dev_web\repository\SelectRepository;
 //             MAIN
 // ################################
 session_start();
-try {
-    InsertRepository::setConfig('db.conf.ini');
-    SelectRepository::setConfig('db.conf.ini');
-} catch (Exception $e) {
-    echo $e->getMessage();
-}
 
 $_GET['action'] = 'default';
 try {
