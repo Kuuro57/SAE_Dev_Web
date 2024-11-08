@@ -1,10 +1,6 @@
-*.iml
 out/
 .idea/
-.DS_Store
-.class
-Thumbs.db
-pom.xml
+.idea/SAE_Dev_Web.iml
 db.conf.ini
 
 /vendor/
