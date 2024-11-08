@@ -47,8 +47,25 @@ class InsertRepository extends Repository {
      */
     public function ajouterSpectacle(Spectacle $spectacle): void {
 
-        $req = 'INSERT INTO spectacle(idSpectacle, nomSpectacle, style, artiste, duree, descSpectacle, nomFichierVideo, nomFichierAudio) VALUES(?, ?, ?, ?, ?, ?, ?, ?)';
+        $req = 'INSERT INTO spectacle(idSpectacle, nomSpectacle, idStyle, idArtiste, duree, descSpectacle) VALUES(?, ?, ?, ?, ?, ?)';
 
+        $stmt = $this->pdo->prepare($req);
+
+        $idSpec = $spectacle->getId();
+        $nom = $spectacle->getNom();
+        $style = $spectacle->getStyle()->getId();
+        $artiste = $spectacle->getArtiste()->getId();
+        $duree = $spectacle->getDuree();
+        $desc = $spectacle->getDescription();
+
+        $stmt->bindParam(1, $idSpec);
+        $stmt->bindParam(2, $nom);
+        $stmt->bindParam(3, $style);
+        $stmt->bindParam(4, $artiste);
+        $stmt->bindParam(5, $duree);
+        $stmt->bindParam(6, $desc);
+
+        $stmt->execute();
 
     }
 
