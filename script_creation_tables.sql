@@ -135,13 +135,13 @@ VALUES
     (5, 'Hip-Hop Extravaganza');
 
 
-INSERT INTO Soiree (idSoiree, nomSoiree, idLieu, idThematique, dateSoiree)
+INSERT INTO Soiree (idSoiree, nomSoiree, idLieu, tarif, idThematique, dateSoiree)
 VALUES
-    (1, 'Soiree Grande Bulle', 3, 2, '2024-11-06'),
-    (2, 'Soiree Mente', 4, 5, '2024-11-06'),
-    (3, 'Soiree Rock Paper Scicor', 1, 1, '2024-11-12'),
-    (4, 'Soiree Rock-Embolesque', 3, 1, '2024-11-13'),
-    (5, 'Soiree Big Snap', 5, 3, '2024-11-19');
+    (1, 'Soiree Grande Bulle', 3, 5.50, 2, '2024-11-06'),
+    (2, 'Soiree Mente', 4, 10.5, 5, '2024-11-06'),
+    (3, 'Soiree Rock Paper Scicor', 1, 2.0, 1, '2024-11-12'),
+    (4, 'Soiree Rock-Embolesque', 3, 1.0, 1, '2024-11-13'),
+    (5, 'Soiree Big Snap', 5, 6.2, 3, '2024-11-19');
 
 
 INSERT INTO Artiste (idArtiste, nomArtiste)
