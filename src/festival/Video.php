@@ -10,7 +10,7 @@ namespace iutnc\sae_dev_web\festival;
 class Video {
 
     // Attribut
-    private int $idVideo; // Id de la vidéo
+    private ?int $idVideo; // Id de la vidéo
     private int $idSpectacle; // Id du spectacle auquel appartient la vidéo
     private string $url; // Url de la vidéo
 
@@ -18,19 +18,23 @@ class Video {
 
     /**
      * Constructeur de la classe
-     * @param int $idV Id de la vidéo
+     * @param int|null $idV Id de la vidéo
      * @param int $idS Id du spectacle
      * @param string $url Url de la vidéo
      */
-    public function __construct(int $idV, int $idS, string $url) {
+    public function __construct(?int $idV, int $idS, string $url) {
         $this->idVideo = $idV;
         $this->idSpectacle = $idS;
         $this->url = $url;
     }
 
-    public function getUrl()
-    {
-        return $this->url;
-    }
+
+
+    public function getIdVideo() { return $this->idVideo; }
+    public function setIdVideo(?int $idVideo): void { $this->idVideo = $idVideo; }
+
+    public function getIdSpectacle() { return $this->idSpectacle; }
+
+    public function getUrl() { return $this->url; }
 
 }

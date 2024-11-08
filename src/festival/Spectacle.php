@@ -15,6 +15,7 @@ class Spectacle {
     private Style $style; // Style du spectacle
     private Artiste $artiste; // Nom de l'artiste qui se représente pendant ce spectacle
     private ?int $duree; // Duree du spectacle (en minutes)
+    private string $heureDebut; // Heure du début du spectacle
     private string $description; // Description du spectacle
     private array $listeVideos; // Liste qui contient les URLs des vidéos
     private array $listeAudios; // Liste qui contient le nom des fichiers audios
@@ -30,17 +31,19 @@ class Spectacle {
      * @param Style $s Style du spectacle
      * @param Artiste $a Artiste qui se réprésente dans ce spectacle
      * @param int|null $du Durée du spectacle
+     * @param string $hD Heure de début du spectacle
      * @param string $de Description du spectacle
      * @param Video[] $lV Liste qui contient les URLs des vidéos du spectacle
      * @param Audio[] $lA Liste qui contient les noms des fichiers audio du spectacle
      * @param Image[] $lI Liste qui contient les noms des fichiers des images du spectacle
      */
-    public function __construct(?int $i, string $n, Style $s, Artiste $a, ?int $du, string $de, array $lV, array $lA, array $lI) {
+    public function __construct(?int $i, string $n, Style $s, Artiste $a, ?int $du, string $hD, string $de, array $lV, array $lA, array $lI) {
         $this->id = $i;
         $this->nom = $n;
         $this->style = $s;
         $this->artiste = $a;
         $this->duree = $du;
+        $this->heureDebut = $hD;
         $this->description = $de;
         $this->listeVideos = $lV;
         $this->listeAudios = $lA;
@@ -51,6 +54,7 @@ class Spectacle {
 
 
     public function getId(): int { return $this->id; }
+    public function setId(?int $id): void { $this->id = $id; }
 
     public function getNom(): string { return $this->nom; }
 
@@ -60,6 +64,8 @@ class Spectacle {
 
     public function getDuree(): int { return $this->duree; }
     public function setDuree(int $duree): void { $this->duree = $duree; }
+
+    public function getHeureDebut(): string { return $this->heureDebut; }
 
     public function getDescription(): string { return $this->description; }
 
