@@ -10,8 +10,9 @@ use iutnc\sae_dev_web\action\AddSpectacleAction;
 use iutnc\sae_dev_web\action\AddUtilisateurAction;
 use iutnc\sae_dev_web\action\SeConnecterAction;
 use iutnc\sae_dev_web\action\SeDeconnecterAction;
-use iutnc\sae_dev_web\action\ChoixAfficherSoireesAction;
-use iutnc\sae_dev_web\action\ChoixAfficherSpectaclesAction;
+use iutnc\sae_dev_web\action\TriDateAction;
+use iutnc\sae_dev_web\action\TriLieuAction;
+use iutnc\sae_dev_web\action\TriStyleAction;
 use iutnc\sae_dev_web\action\DefaultAction;
 
 /**
@@ -54,12 +55,16 @@ class Dispatcher {
                 $class = new SeDeconnecterAction();
                 break;
 
-            case "choix-affichage-soirees" :
-                $class = new ChoixAfficherSoireesAction();
+            case "tri-date" :
+                $class = new TriDateAction();
                 break;
 
-            case 'choix-affichage-spectacles' :
-                $class = new ChoixAfficherSpectaclesAction();
+            case "tri-lieu" :
+                $class = new TriLieuAction();
+                break;
+
+            case "tri-style" :
+                $class = new TriStyleAction();
                 break;
 
             default :
@@ -99,6 +104,9 @@ class Dispatcher {
                         <li><a href="?action=add-utilisateur">Ajouter un utilisateur</a></li>
                         <li><a href="?action=se-connecter">Se connecter</a></li>
                         <li><a href="?action=se-deconnecter">Se déconnecter</a></li>
+                        <li><a href="?action=tri-date">Trier par date</a></li>
+                        <li><a href="?action=tri-lieu">Trier par lieu</a></li>
+                        <li><a href="?action=tri-style">Trier par style</a></li>
                     </ul>
                 </nav>
             </header>

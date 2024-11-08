@@ -2,6 +2,7 @@
 
 namespace iutnc\sae_dev_web\action;
 
+use iutnc\sae_dev_web\festival\Soiree;
 use iutnc\sae_dev_web\repository\InsertRepository;
 use iutnc\sae_dev_web\repository\SelectRepository;
 use PDOException;
@@ -21,7 +22,6 @@ class AddSoireeAction extends Action {
             <select name="FidLieu" class="input-field" required>' . $lieuOptions . '</select>
             <input type="checkbox" name="FestAnnule" placeholder="Est annulé ?" required>
             <input type="date" name="FdateSoiree" placeholder="date soirée" required>
-            <input type="time" name="FheureDebut" placeholder="Heure début" class="input-field" required>
             <input type="submit" name="connex" value="Ajouter" class="button">
         </form>';
     }
@@ -31,7 +31,17 @@ class AddSoireeAction extends Action {
         $lieux = $repo->getLieux();
         $options = '';
         foreach ($lieux as $lieu) {
-            $options .= '<option value="' . htmlspecialchars($lieu['id']) . '">' . htmlspecialchars($lieu['nom']) . '</option>';
+            $options .= '<option value="' . htmlspecialchars($lieu->id) . '">' . htmlspecialchars($lieu->nom) . '</option>';
+        }
+        return $options;
+    }
+
+    private function getThematiqueOptions(): string {
+        $repo = SelectRepository::getInstance();
+        $thematiques = $repo->getThematiques();
+        $options = '';
+        foreach ($thematiques as $thematique) {
+            $options .= '<option value="' . htmlspecialchars($thematique->id) . '">' . htmlspecialchars($thematique->nom) . '</option>';
         }
         return $options;
     }
@@ -45,14 +55,17 @@ class AddSoireeAction extends Action {
             $nomSoiree = filter_var($_POST['FnomSoiree'], FILTER_SANITIZE_STRING);
             $idLieu = filter_var($_POST['FidLieu'], FILTER_SANITIZE_NUMBER_INT);
             $dateSoiree = filter_var($_POST['FdateSoiree'], FILTER_SANITIZE_STRING); // FILTRER DATE ?
-            $heureDebut = filter_var($_POST['FheureDebut'], FILTER_SANITIZE_STRING); // FILTRER HEURE ?
             $estAnnule = filter_var($_POST['FestAnnule'], FILTER_SANITIZE_NUMBER_INT); // FILTRER BOOL ?
 
+            $dbSelect = SelectRepository::getInstance();
+            $lieu = $dbSelect->getLieu($idLieu);
+
+            $soiree = new Soiree(null, $nomSoiree, $lieu, $dateSoiree, $estAnnule);
 
 
-            $db = InsertRepository::getInstance();
+            $dbInsert = InsertRepository::getInstance();
             try {
-                $db->ajouterSoiree($nomSoiree, $idLieu, $dateSoiree, $estAnnule);
+                $dbInsert->ajouterSoiree($nomSoiree, $idLieu, $dateSoiree, $estAnnule);
                 $res = '<h1>Soirée ajouté</hh1>';
             } catch (PDOException $e) {
                 $res = '<h1>Erreur lors de lajout de la soiree</h1>';

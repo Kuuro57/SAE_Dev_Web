@@ -2,6 +2,7 @@
 
 namespace iutnc\sae_dev_web\action;
 
+use iutnc\sae_dev_web\festival\Artiste;
 use iutnc\sae_dev_web\repository\InsertRepository;
 use PDOException;
 
@@ -28,9 +29,11 @@ class AddLieuAction extends Action {
             $placesAssises = filter_var($_POST['FplacesAssises'], FILTER_SANITIZE_NUMBER_INT);
             $placesDebout = filter_var($_POST['FplacesDebout'], FILTER_SANITIZE_NUMBER_INT);
 
+            $lieu = new Lieu(null, $nomLieu, $adresse, $placesAssises, $placesDebout);
+
             $db = InsertRepository::getInstance();
             try {
-                $db->ajouterLieu($nomLieu, $adresse, $placesAssises, $placesDebout);
+                $db->ajouterLieu($lieu);
                 $res = '<h1>Lieu ajouté</hh1>';
             } catch (PDOException $e) {
                 $res = '<h1>Erreur lors de lajout du lieu</h1>';
