@@ -14,7 +14,7 @@ class Spectacle {
     private string $nom; // Nom du spectacle
     private Style $style; // Style du spectacle
     private Artiste $artiste; // Nom de l'artiste qui se représente pendant ce spectacle
-    private ?int $duree; // Duree du spectacle (en minutes)
+    private int $duree; // Duree du spectacle (en minutes)
     private string $heureDebut; // Heure du début du spectacle
     private string $description; // Description du spectacle
     private array $listeVideos; // Liste qui contient les URLs des vidéos
@@ -30,14 +30,14 @@ class Spectacle {
      * @param string $n Nom du spectacle
      * @param Style $s Style du spectacle
      * @param Artiste $a Artiste qui se réprésente dans ce spectacle
-     * @param int|null $du Durée du spectacle
+     * @param int $du Durée du spectacle
      * @param string $hD Heure de début du spectacle
      * @param string $de Description du spectacle
      * @param Video[] $lV Liste qui contient les URLs des vidéos du spectacle
      * @param Audio[] $lA Liste qui contient les noms des fichiers audio du spectacle
      * @param Image[] $lI Liste qui contient les noms des fichiers des images du spectacle
      */
-    public function __construct(?int $i, string $n, Style $s, Artiste $a, ?int $du, string $hD, string $de, array $lV, array $lA, array $lI) {
+    public function __construct(?int $i, string $n, Style $s, Artiste $a, int $du, string $hD, string $de, array $lV, array $lA, array $lI) {
         $this->id = $i;
         $this->nom = $n;
         $this->style = $s;

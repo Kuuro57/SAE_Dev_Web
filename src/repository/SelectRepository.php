@@ -107,10 +107,17 @@ class SelectRepository extends Repository
 
         $spectacle = new Spectacle(
             $data['idSpectacle'],
-            $data['nomSpectacle'], $data['idStyle'],
-            $data['idArtiste'], $data['descSpectacle']                      // TODO Mauvaise création de l'objet !
+            $data['nomSpectacle'],
+            getStyle($data['idStyle']),
+            getArtiste($data['idArtiste']),
+            $data['duree'],
+            $data['heureD'],
+            $data['descSpectacle'],
+            $this->getVideos($data['idSpectacle']),
+            $this->getAudios($data['idSpectacle']),
+            $this->getImages($data['idSpectacle'])
         );
-
+      
         return $spectacle;
     }
 
@@ -168,12 +175,37 @@ class SelectRepository extends Repository
         // On récupère les données sorties par la requête
         $res = [];
         foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $data) {
-            $artiste = new Artiste($data['idArtiste'], $data['nomArtiste']);
+            $artiste = $this->getArtiste($data['idArtiste']);
             $res[] = $artiste;
         }
         return $res;
     }
 
+    /**
+     * Méthode qui renvoie un artiste dans la BDD
+     * @param int $id Id du spectacle
+     * @return Artiste Un objet de type artiste
+     */
+    public function getArtiste(int $id): Artiste
+    {
+        // Requête SQL qui récupère l'id du spectacle
+        $querySQL = "SELECT Artiste.idArtiste, Artiste.nomArtiste FROM Artiste WHERE idSpectacle = ?";
+        // Préparation de la requête
+        $statement = $this->pdo->prepare($querySQL);
+        $statement->bindParam(1, $id);
+        // Execution de la requête
+        $statement->execute();
+
+        // On récupère les données sorties par la requête
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
+
+        $artiste = new Artiste(
+            $data['idArtiste'],
+            $data['nomArtiste']
+        );
+
+        return $artiste;
+    }
 
     /**
      * Méthode qui renvoie la liste de tous les styles
@@ -192,12 +224,37 @@ class SelectRepository extends Repository
         // On récupère les données sorties par la requête
         $res = [];
         foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $data) {
-            $style = new Style($data['idStyle'], $data['nomStyle']);
+            $style = $this->getStyle($data['idStyle']);
             $res[] = $style;
         }
         return $res;
     }
 
+    /**
+     * Méthode qui renvoie un style dans la BDD
+     * @param int $id Id du style
+     * @return Style Un objet de type style
+     */
+    public function getStyle(int $id): Style
+    {
+        // Requête SQL qui récupère l'id du spectacle
+        $querySQL = "SELECT idStyle, nomStyle FROM style WHERE idStyle = ?";
+        // Préparation de la requête
+        $statement = $this->pdo->prepare($querySQL);
+        $statement->bindParam(1, $id);
+        // Execution de la requête
+        $statement->execute();
+
+        // On récupère les données sorties par la requête
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
+
+        $style = new Style(
+            $data['idStyle'],
+            $data['nomStyle']
+        );
+
+        return $style;
+    }
 
     /**
      * Méthode qui renvoie la liste de tous les lieux
