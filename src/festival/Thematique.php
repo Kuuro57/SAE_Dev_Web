@@ -2,29 +2,23 @@
 
 namespace iutnc\sae_dev_web\festival;
 
-
-/**
- * Classe qui représente un style de spectacle
- */
-class Style {
+class Thematique {
 
     // Attributs
-    private ?int $id; // Id du style
-    private string $nom; // Nom du style
+    private ?int $id; // Id de la thématique
+    private string $nom; // Nom de la thématique
 
 
 
     /**
      * Constructeur de la classe
-     * @param int|null $i Id du style
-     * @param string $n Nom du style
+     * @param int|null $i Id de la thématique
+     * @param string $n Nom de la thématique
      */
     public function __construct(?int $i, string $n) {
         $this->id = $i;
         $this->nom = $n;
     }
-
-
 
     public function getId() : int { return $this->id; }
     public function setId(?int $id): void { $this->id = $id; }
