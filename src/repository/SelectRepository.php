@@ -29,18 +29,51 @@ class SelectRepository extends Repository {
     }
 
 
-
     /**
      * Méthode qui renvoie une liste de tout les spectacles de la BDD
      * @param string $filtre Filtre qui permet de savoir dans quel ordre afficher les spectacles
      * @return Spectacle[] La liste de tout les spectacles dans le bon ordre d'affichage
      */
-    //null TODO switch sur le filtre qui renvoie une requête SQL différente en fonction du filtre
-    public function getSpectacles(string $filtre) : array {
-        return [];
-        //TODO
-    }
 
+    public function getSpectacles(string $filtre) : array {  //default affiche ordre date | date ordre date |lieu ordre lieu| style ordre style
+        // Requête SQL en fonction du filtre
+        switch ($filtre){
+            case "date":
+                $querySQL = "SELECT Spectacle.idSpectacle, Spectacle.idStyle, Spectacle.idArtiste, descSpectacle, Soiree.dateSoiree
+                             FROM Spectacle INNER JOIN Programme ON Spectacle.idSpectacle = Programme.idSpectacle 
+                             INNER JOIN Soiree ON Programme.idSoiree = Soiree.idSoiree ORDER BY dateSoiree";
+                break;
+            case "lieu":
+                $querySQL = "SELECT Spectacle.idSpectacle, Spectacle.idStyle, Spectacle.idArtiste, descSpectacle, Soiree.nomLieu
+                             FROM Spectacle INNER JOIN Programme ON Spectacle.idSpectacle = Programme.idSpectacle 
+                             INNER JOIN Soiree ON Programme.idSoiree = Soiree.idSoiree 
+                             INNER JOIN Lieu ON Soiree.idLieu = Lieu.idLieu ORDER BY nomLieu";
+                break;
+            case "style":
+                $querySQL = "SELECT Spectacle.idSpectacle, Spectacle.idStyle, Spectacle.idArtiste, descSpectacle, Style.nomStyle 
+                             FROM Spectacle INNER JOIN Style ON Spectacle.idStyle = Style.idStyle ORDER BY nomStyle";
+                break;
+            default:
+                $querySQL = "SELECT Spectacle.idSpectacle, Spectacle.idStyle, Spectacle.idArtiste, descSpectacle, Soiree.dateSoiree
+                             FROM Spectacle INNER JOIN Programme ON Spectacle.idSpectacle = Programme.idSpectacle 
+                             INNER JOIN Soiree ON Programme.idSoiree = Soiree.idSoiree ORDER BY dateSoiree";
+                break;
+        }
+
+        // Préparation de la requête
+        $statement = $this->pdo->prepare($querySQL);
+
+        // Execution de la requête
+        $statement->execute();
+
+        $res = [];
+        // on boucle en prenant l'id du spectacle et on crée un objet spectacle avec cet id dans l'ordre du filtre
+        foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $data) {
+            $spectacle = new Spectacle($this->getSpectacle($data['idSpectacle']));
+            $res[] = $spectacle;
+        }
+        return $res;
+    }
 
 
     /**
@@ -61,9 +94,8 @@ class SelectRepository extends Repository {
         $data = $statement->fetch(PDO::FETCH_ASSOC);
 
         $spectacle = new Spectacle($data['idSpectacle'],
-            $data['nomSpectacle'], $data['description'],
-            $data['image'], $data['video'], $data['duree'],
-            $data['dateCreation'], $data['dateDerniereModif']);
+            $data['nomSpectacle'], $data['idStyle'],
+            $data['idArtiste'], $data['descSpectacle']);
 
         return $spectacle;
     }
@@ -101,4 +133,12 @@ class SelectRepository extends Repository {
         // On retourne le résultat
         return $res;
     }
+
+    // TODO public function getDebutSpectacle
+
+    // TODO getArtistes()
+
+    // TODO getStyles()
+
+    // TODO getLieux() -> id + nom | ou tout
 }
