@@ -95,7 +95,7 @@ class SpectacleRenderer implements Renderer {
     {
         // l'heure de départ est obtenue en utilisant la méthode getDebutSpectacle de la classe SelectRepository
         // qui prend en paramètre l'id du spectacle et retourne l'heure de début du spectacle avec la jointure de la table Programme
-        $heureD = SelectRepository::getInstance()->getDebutSpectacle($this->spectacle->getId());
+        $heureD = SelectRepository::getInstance()->getHeureDebutSpectacle($this->spectacle->getId());
         $heureF =  $heureD + $this->spectacle->getDuree();
         // le lieu est obtenu en utilisant la méthode getLieuSpectacle de la classe SelectRepository jointure avec Lieu, Soiree et Spectacle
         $lieu = SelectRepository::getInstance()->getLieuSpectacle($this->spectacle->getId());
@@ -109,7 +109,7 @@ class SpectacleRenderer implements Renderer {
         if (count($imagestab) > 0) {
             // pour chaque image du tab images on affiche l'image balise img avec la src de l'image
             foreach ($imagestab as $image) {
-                $images.="<img src='{$image}' alt='Image du spectacle'>";
+                $images.="<img src='{$image->getNomFichierImage()}' alt='Image du spectacle'>";
 
             }}
         else {
