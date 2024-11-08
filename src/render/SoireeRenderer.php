@@ -58,12 +58,12 @@ class SoireeRenderer implements Renderer {
 
     public function renderLong() : string {
         $nom = $this->soiree->getNom();
-        $theme = $this->soiree->getThematique();
+        $theme = $this->soiree->getThematique()->getNom();
         $date = $this->soiree->getDate();
         $heureD = $this->soiree->getHeureDebut();
         $heureF = $this->soiree->getHeureFin();
         $horraire = $heureD . "-" . $heureF;
-        $lieu = $this->soiree->getLieu();
+        $lieu = $this->soiree->getLieu()->getNom();
         $tarif = $this->soiree->getTarif();
         $spectaclesListe = $this->soiree->getListeSpectacle();
 
