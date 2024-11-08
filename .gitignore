@@ -4,6 +4,8 @@ out/
 .idea/SAE_Dev_Web.iml
 db.conf.ini
 
+*.lock
+*.phar
 /vendor/
 
 # Fichiers de stockage des audios / images / vidéos
