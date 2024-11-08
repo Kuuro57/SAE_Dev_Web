@@ -3,6 +3,7 @@
 namespace iutnc\sae_dev_web\repository;
 
 use iutnc\deefy\repository\DeefyRepository;
+use iutnc\sae_dev_web\festival\Soiree;
 use iutnc\sae_dev_web\festival\Spectacle;
 
 
@@ -75,7 +76,7 @@ class InsertRepository extends Repository {
      * Méthode qui insert un spectacle à la BDD
      * @param Soiree $soiree La soiree à ajouter
      */
-    public function ajouterSoiree(Soiree $soiree): void {
+    public function ajouterSoiree(Soiree $soiree): Soiree {
 
         $req = 'INSERT INTO soiree(idSoiree, nomSoiree, idLieu, idThematique, estAnnule, dateSoiree)';
 
@@ -96,6 +97,12 @@ class InsertRepository extends Repository {
         $stmt->bindParam(6, $date);
 
         $stmt->execute();
+
+        $id = (int) $this->pdo->lastInsertId();
+
+        $soiree->setId($id);
+
+        return $soiree;
 
     }
 
