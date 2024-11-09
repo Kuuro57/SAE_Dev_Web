@@ -2,7 +2,6 @@
 
 namespace iutnc\sae_dev_web\auth;
 
-use iutnc\sae_dev_web\exception\AuthException;
 use iutnc\sae_dev_web\repository\InsertRepository;
 use iutnc\sae_dev_web\repository\SelectRepository;
 
@@ -53,8 +52,8 @@ class Auth{
     public static function register(string $e, string $p): String {
 
         // On vérifie que l'utilisateur n'existe pas déjà dans la BDD
-        $bd = InsertRepository::getInstance();
-        $list = $bd->findExistingEmail($e);
+        $selectRepo = SelectRepository::getInstance();
+        $list = $selectRepo->findExistingEmail($e);
 
         // Si la liste n'est pas vide
         if (!($list === [])) {
@@ -64,7 +63,8 @@ class Auth{
         // On hash son mot de passe
         $hashpassw = password_hash($p, PASSWORD_DEFAULT);
         // On ajoute l'email et le mot de passe à la BDD avec le role 1 (rôle standard)
-        $bd->ajouterUtilisateur($e, $hashpassw, 1);
+        $insertRepo = InsertRepository::getInstance();
+        $insertRepo->ajouterUtilisateur($e, $hashpassw, 1);
         // On retourne un message qui indique que l'inscription s'est bien déroulée
         return '<b>Compte créé !</b>';
 
