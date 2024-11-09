@@ -7,14 +7,16 @@ namespace iutnc\sae_dev_web\dispatch;
 use iutnc\sae_dev_web\action\AddLieuAction;
 use iutnc\sae_dev_web\action\AddSoireeAction;
 use iutnc\sae_dev_web\action\AddSpectacleAction;
-use iutnc\sae_dev_web\action\AddStyleAction;
 use iutnc\sae_dev_web\action\AddUtilisateurAction;
 use iutnc\sae_dev_web\action\SeConnecterAction;
 use iutnc\sae_dev_web\action\SeDeconnecterAction;
+use iutnc\sae_dev_web\action\TriDateAction;
+use iutnc\sae_dev_web\action\TriLieuAction;
+use iutnc\sae_dev_web\action\TriStyleAction;
 use iutnc\sae_dev_web\action\DefaultAction;
 
 /**
- * Classe qui représente le dispatcher de l'index
+ * Classe qui représente le dispatcher
  */
 class DispatcherIndex {
 
@@ -22,16 +24,12 @@ class DispatcherIndex {
      * Méthode qui lance le dispatcher
      */
     public function run() : void {
-        
+
         if (!isset($_GET['action'])) {
             $_GET['action'] = '';
         }
 
         switch ($_GET['action']) {
-
-            case "add-style" :
-                $class = new AddStyleAction();
-                break;
 
             case "add-lieu" :
                 $class = new AddLieuAction();
@@ -55,6 +53,18 @@ class DispatcherIndex {
 
             case "se-deconnecter" :
                 $class = new SeDeconnecterAction();
+                break;
+
+            case "tri-date" :
+                $class = new TriDateAction();
+                break;
+
+            case "tri-lieu" :
+                $class = new TriLieuAction();
+                break;
+
+            case "tri-style" :
+                $class = new TriStyleAction();
                 break;
 
             default :
@@ -101,6 +111,8 @@ class DispatcherIndex {
             $btnCreationCompte = '<button name="action" value="add-utilisateur"> Créer son compte </button>';
         }
 
+        
+        
         // On affiche sur la page son contenu
         echo <<<END
     
@@ -109,13 +121,14 @@ class DispatcherIndex {
         
         <head>
             <meta charset="utf-8">
-            <title> NRV Festival </title>
+            <title> NRV Festival - Accueil </title>
             <link href="./css/style.css" rel="stylesheet">
         </head>
         
         <body>
             
                 <h1 id="mainTitle">NRV - Nancy Rock Vibration</h1>
+                <h2 id="secondTitle"> Accueil </h2>
                 
                 <form method="get">
                     $email
@@ -127,7 +140,6 @@ class DispatcherIndex {
                 </form>
                 
                 <nav>
-                        <a href="?action=default">Accueil</a>
                         <a href="afficherSoirees.php?action=default">Notre programme</a>
                         <a href="afficherSpectacles.php?action=default"> Nos spectacles </a>
                         <a href="?action=add-soiree">Ajouter une soirée</a>
@@ -136,18 +148,18 @@ class DispatcherIndex {
                         <a href="?action=add-style">Ajouter un style</a>
                 </nav>
             
-                <div class="container">
-                    $html
-                </div>
-                <br>
-                
+            <div class="container">
+                $html
+            </div>
+            
+            <br>
+            
             <footer>
                 <p>@ALLART Noah, ARMBRUSTER Loup, DE WASCH Clement, DENIS Oscar, MANGIN Adrien</p>
                 <p>S3B 2024 - S3-02 SAE_Dev_Web</p>
             </footer>
             
         </body>
-        
         </html>
 
 END;

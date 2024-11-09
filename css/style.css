@@ -5,7 +5,6 @@
 #mainTitle {
 
     justify-self: center;
-    padding: 0.5em;
 
 }
 
@@ -46,6 +45,16 @@ nav {
     margin-top: 1em;
     block-size: fit-content;
     display: inline-flex;
+
+}
+
+
+
+/* Affichage du titre secondaire de la page */
+#secondTitle {
+
+    justify-self: center;
+    padding-bottom: 0.5em;
 
 }
 

@@ -4,6 +4,7 @@ namespace iutnc\sae_dev_web\dispatch;
 
 
 
+use iutnc\sae_dev_web\action\AddUtilisateurAction;
 use iutnc\sae_dev_web\action\SeConnecterAction;
 use iutnc\sae_dev_web\action\SeDeconnecterAction;
 use iutnc\sae_dev_web\action\tri\TriDateAction;
@@ -32,6 +33,10 @@ class DispatcherAffichageSoirees {
 
             case "se-deconnecter" :
                 $class = new SeDeconnecterAction();
+                break;
+
+            case "add-utilisateur" :
+                $class = new AddUtilisateurAction();
                 break;
 
             case "tri-lieu" :
@@ -94,13 +99,14 @@ class DispatcherAffichageSoirees {
         
         <head>
             <meta charset="utf-8">
-            <title> NRV Festival </title>
+            <title> NRV Festival - Programme </title>
             <link href="./css/style.css" rel="stylesheet">
         </head>
         
         <body>
             
                 <h1 id="mainTitle">NRV - Nancy Rock Vibration</h1>
+                <h2 id="secondTitle"> Notre Programme / Soirees </h2>
                 
                 <form method="get">
                     $email
@@ -115,7 +121,7 @@ class DispatcherAffichageSoirees {
                         <a href="index.php?action=default">Accueil</a>
                         <a href="?action=tri-date">Trier par date</a>
                         <a href="?action=tri-lieu">Trier par lieu</a>
-                        <a href="?action=tri-style">Trier par style</a>
+                        <a href="?action=tri-style">Trier par thematique </a>
                 </nav>
             
                 <div class="container">
