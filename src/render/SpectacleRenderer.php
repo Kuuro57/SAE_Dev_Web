@@ -63,9 +63,9 @@ class SpectacleRenderer implements Renderer {
         if (count($imagestab) > 0) {
             // pour chaque image du tab images on affiche l'image balise img avec la src de l'image
             foreach ($imagestab as $image) {
-                $images.="<img src='{$image}' alt='Image du spectacle'>";
-
-            }}
+                $images .= "<img src='{image/{$image->getNomFichierImage()}' alt='Image du spectacle'>";
+            }
+        }
         else {
             $images = "<p>Image non disponible</p>";
         }
@@ -140,7 +140,7 @@ class SpectacleRenderer implements Renderer {
         if (count($imagestab) > 0) {
             // pour chaque image du tab images on affiche l'image balise img avec la src de l'image
             foreach ($imagestab as $image) {
-                $images.="<img src='{$image->getNomFichierImage()}' alt='Image du spectacle'>";
+                $images.="<img src='image/{$image->getNomFichierImage()}' alt='Image du spectacle'>";
 
             }}
         else {
@@ -160,7 +160,7 @@ class SpectacleRenderer implements Renderer {
         // pour chaque audio du tab audio on affiche l'audio balise audio avec la src de l'audio
         foreach ($audio as $aud) {
             $audioListe.="<audio controls>
-                <source src='{$aud->getNomFichierAudio()}' type='audio/mpeg'>
+                <source src='audio/{$aud->getNomFichierAudio()}' type='audio/mpeg'>
                 Your browser does not support the audio element.
             </audio>";
         }
@@ -168,7 +168,7 @@ class SpectacleRenderer implements Renderer {
         // pour chaque video du tab video on affiche la video balise video avec la src de la video
         foreach ($video as $vid) {
             $videoListe.="<video width='320' height='240' controls>
-                <source src='{$vid->getUrl()}' type='video/mp4'>
+                <source src='video/{$vid->getUrl()}' type='video/mp4'>
                 Your browser does not support the video tag.
             </video>";
         }

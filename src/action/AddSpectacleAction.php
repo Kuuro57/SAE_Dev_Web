@@ -4,7 +4,10 @@ namespace iutnc\sae_dev_web\action;
 
 
 
+use iutnc\sae_dev_web\festival\Audio;
+use iutnc\sae_dev_web\festival\Image;
 use iutnc\sae_dev_web\festival\Spectacle;
+use iutnc\sae_dev_web\festival\Video;
 use iutnc\sae_dev_web\repository\InsertRepository;
 use iutnc\sae_dev_web\repository\SelectRepository;
 
@@ -33,9 +36,9 @@ class AddSpectacleAction extends Action {
             $duree = filter_var($_POST['duree'], FILTER_SANITIZE_SPECIAL_CHARS);
             $heureD = filter_var($_POST['heureD'], FILTER_SANITIZE_SPECIAL_CHARS);
             $description = filter_var($_POST['descSpec'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $listeNomFichierVideo[] = uniqid();
-            $listeNomFichierAudio[] = uniqid();
-            $listeNomFichierImage[] = uniqid();
+            $nomFichierVideo = uniqid();
+            $nomFichierAudio = uniqid();
+            $nomFichierImage = uniqid();
 
             // Si la valeur du style est égale à 0
             if ((int) $style === 0) {
@@ -50,15 +53,15 @@ class AddSpectacleAction extends Action {
 
 
             // Si le fichier video est bon
-            if ($this->verifFichierVideo($listeNomFichierVideo[0])) {
+            if ($this->verifFichierVideo($nomFichierVideo)) {
 
                 // Si le fichier audio est bon
-                if ($this->verifFichierAudio($listeNomFichierAudio[0])) {
+                if ($this->verifFichierAudio($nomFichierAudio)) {
 
                     // Si le fichier image est bon
-                    if ($this->verifFichierImage($listeNomFichierImage[0])) {
+                    if ($this->verifFichierImage($nomFichierImage)) {
 
-                        // On créé un objet de type Spectacle
+                        // On créé un objet de type Spectacle (sans la video, l'audio et l'image)
                         $spectacle = new Spectacle(
                             null,
                             $nomSpec,
@@ -67,17 +70,35 @@ class AddSpectacleAction extends Action {
                             (int) $duree,
                             $heureD,
                             $description,
-                            $listeNomFichierVideo,
-                            $listeNomFichierAudio,
-                            $listeNomFichierImage);
-                        // On ajoute le spectacle à la BDD
-                        $this->insertRepo->ajouterSpectacle($spectacle);
+                            [],
+                            [],
+                            []);
+                        // On ajoute le spectacle à la BDD (en récupérant le nouvel objet spectacle avec son id)
+                        $spectacle = $this->insertRepo->ajouterSpectacle($spectacle);
 
-                        // TODO : On ajoute l'image à la BDD (voir TODO dans InsertRepository)
+                        // On ajoute l'image à la BDD (en construisant un objet Image)
+                        $image = new Image(
+                            null,
+                            $spectacle->getId(),
+                            $nomFichierImage
+                        );
+                        $this->insertRepo->ajouterImage($image);
 
-                        // TODO : On ajoute l'audio à la BDD (voir TODO dans InsertRepository)
+                        // On ajoute l'audio à la BDD (en construisant un objet Audio)
+                        $audio = new Audio(
+                            null,
+                            $spectacle->getId(),
+                            $nomFichierAudio
+                        );
+                        $this->insertRepo->ajouterAudio($audio);
 
-                        // TODO : On ajoute la vidéo à la BDD (voir TODO dans InsertRepository)
+                        // On ajoute la vidéo à la BDD (en construisant un objet Video)
+                        $video = new Video(
+                            null,
+                            $spectacle->getId(),
+                            $nomFichierVideo
+                        );
+                        $this->insertRepo->ajouterVideo($video);
 
                         // On informe que le spectacle à bien été créé
                         return '<p> Le spectacle à bien été créé et ajouté ! </p>';
@@ -121,7 +142,6 @@ class AddSpectacleAction extends Action {
         // Si aucun fichier n'a été envoyé
         if (count($_FILES) === 0) {
             // On renvoie false
-            echo 'oups1';
             return false;
         }
         // Si le fichier a été envoyé par la méthode POST
@@ -129,7 +149,6 @@ class AddSpectacleAction extends Action {
             // Si l'extension du fichier n'est pas en .mp4
             if (!(str_ends_with($_FILES['fichierVideo']['name'], '.mp4'))) {
                 // On renvoie false
-                echo 'oups2';
                 return false;
             }
             // On met comme type au fichier audio audio/mpeg-4
@@ -143,7 +162,6 @@ class AddSpectacleAction extends Action {
         // Sinon
         else {
             // On renvoie false (fichier incorrect)
-            echo 'oups3';
             return false;
         }
     }

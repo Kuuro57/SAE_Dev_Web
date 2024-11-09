@@ -9,6 +9,7 @@ use iutnc\sae_dev_web\festival\Soiree;
 use iutnc\sae_dev_web\festival\Spectacle;
 use iutnc\sae_dev_web\festival\Style;
 use iutnc\sae_dev_web\festival\Video;
+use iutnc\sae_dev_web\render\SpectacleRenderer;
 
 
 /**
@@ -49,8 +50,9 @@ class InsertRepository extends Repository {
     /**
      * Méthode qui insert un spectacle à la BDD
      * @param Spectacle $spectacle Le spectacle à ajouter
+     * @return Spectacle Nouvel objet spectacle avec son nouvel id
      */
-    public function ajouterSpectacle(Spectacle $spectacle): void {
+    public function ajouterSpectacle(Spectacle $spectacle): Spectacle {
 
         $req = 'INSERT INTO Spectacle (nomSpectacle, idStyle, idArtiste, heureD, duree, descSpectacle) VALUES (?, ?, ?, ?, ?, ?)';
 
@@ -70,6 +72,10 @@ class InsertRepository extends Repository {
         $stmt->bindParam(5, $duree);
         $stmt->bindParam(6, $desc);
         $stmt->execute();
+
+        // On ajoute le nouvel id à l'objet Spectacle et on le renvoie
+        $spectacle->setId((int) $this->pdo->lastInsertId());
+        return $spectacle;
 
     }
 
@@ -182,7 +188,21 @@ class InsertRepository extends Repository {
      * @param Image $image Objet image qui contient tout ce dont à besoin la BDD pour ajouter l'image
      */
     public function ajouterImage(Image $image) : void {
-        // TODO
+
+        // Requête SQL qui ajoute une image (nom de l'image) à la BDD
+        $querySQL = "INSERT INTO ImageSpectacle (idSpectacle, nomFichierImage) VALUES (?, ?)";
+
+        // On prépare et execute la requête
+        $stmt = $this->pdo->prepare($querySQL);
+
+        $nomFichier = $image->getNomFichierImage() . ".png";
+        $idSpectacle = $image->getIdSpectacle();
+
+        $stmt->bindParam(1, $idSpectacle);
+        $stmt->bindParam(2, $nomFichier);
+
+        $stmt->execute();
+
     }
 
 
@@ -192,7 +212,21 @@ class InsertRepository extends Repository {
      * @param Audio $audio Objet audio qui contient tout ce dont à besoin la BDD pour ajouter l'audio
      */
     public function ajouterAudio(Audio $audio) : void {
-        // TODO
+
+        // Requête SQL qui ajoute un audio (nom de l'audio) à la BDD
+        $querySQL = "INSERT INTO AudioSpectacle (idSpectacle, nomFichierAudio) VALUES (?, ?)";
+
+        // On prépare et execute la requête
+        $stmt = $this->pdo->prepare($querySQL);
+
+        $nomFichier = $audio->getNomFichierAudio() . ".mp3";
+        $idAudio = $audio->getIdSpectacle();
+
+        $stmt->bindParam(1, $idAudio);
+        $stmt->bindParam(2, $nomFichier);
+
+        $stmt->execute();
+
     }
 
 
@@ -202,7 +236,21 @@ class InsertRepository extends Repository {
      * @param Video $video Objet video qui contient tout ce dont à besoin la BDD pour ajouter la vidéo
      */
     public function ajouterVideo(Video $video) : void {
-        // TODO
+
+        // Requête SQL qui ajoute une video (url de la vidéo) à la BDD
+        $querySQL = "INSERT INTO VideoSpectacle (idSpectacle, nomFichierVideo) VALUES (?, ?)";
+
+        // On prépare et execute la requête
+        $stmt = $this->pdo->prepare($querySQL);
+
+        $nomFichier = $video->getUrl() . ".mp4";
+        $idVideo = $video->getIdSpectacle();
+
+        $stmt->bindParam(1, $idVideo);
+        $stmt->bindParam(2, $nomFichier);
+
+        $stmt->execute();
+
     }
 
 

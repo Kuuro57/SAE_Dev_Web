@@ -31,7 +31,7 @@ CREATE TABLE Spectacle (
 );
 
 CREATE TABLE ImageSpectacle (
-    idImage INT(4),
+    idImage INT(4) AUTO_INCREMENT,
     idSpectacle INT(4),
     nomFichierImage VARCHAR(50) NOT NULL,
     PRIMARY KEY (idImage, idSpectacle),
@@ -39,7 +39,7 @@ CREATE TABLE ImageSpectacle (
 );
 
 CREATE TABLE AudioSpectacle (
-    idAudio INT(4),
+    idAudio INT(4) AUTO_INCREMENT,
     idSpectacle INT(4),
     nomFichierAudio VARCHAR(50) NOT NULL,
     PRIMARY KEY (idAudio, idSpectacle),
@@ -47,7 +47,7 @@ CREATE TABLE AudioSpectacle (
 );
 
 CREATE TABLE VideoSpectacle (
-    idVideo INT(4),
+    idVideo INT(4) AUTO_INCREMENT,
     idSpectacle INT(4),
     nomFichierVideo VARCHAR(50) NOT NULL,
     PRIMARY KEY (idVideo, idSpectacle),
