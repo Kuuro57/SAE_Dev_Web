@@ -18,7 +18,7 @@ class AddSoireeAction extends Action {
         $listeLieu = SelectRepository::getInstance()->getLieux();
         $listeThematique = SelectRepository::getInstance()->getThematiques();
 
-        $listeDeroulanteLieux = '<select name="listeLieux"> <option value=""> -- Choisissez un artiste -- </option>';
+        $listeDeroulanteLieux = '<select name="listeLieux"> <option value=""> -- Choisissez un lieu -- </option>';
         foreach ($listeLieu as $lieu) {
             $listeDeroulanteLieux .= '<option value="' . $lieu->getId() . '">' . $lieu->getNom() . '</option>';
         }
