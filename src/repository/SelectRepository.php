@@ -5,6 +5,7 @@ namespace iutnc\sae_dev_web\repository;
 use iutnc\sae_dev_web\festival\Artiste;
 use iutnc\sae_dev_web\festival\Audio;
 use iutnc\sae_dev_web\festival\Lieu;
+use iutnc\sae_dev_web\festival\Soiree;
 use iutnc\sae_dev_web\festival\Spectacle;
 use iutnc\sae_dev_web\festival\Style;
 use iutnc\sae_dev_web\festival\Image;
@@ -22,7 +23,6 @@ class SelectRepository extends Repository
 
     // Attribut
     private static ?SelectRepository $instance = null; // Instance unique de la classe SelectRepository
-
 
 
     /**
@@ -51,17 +51,17 @@ class SelectRepository extends Repository
         // Requête SQL en fonction du filtre
         switch ($filtre) {
             case "lieu":
-                $querySQL = "SELECT Spectacle.idSpectacle, Spectacle.idStyle, Spectacle.idArtiste, descSpectacle, Lieu.nomLieu
+                $querySQL = "SELECT Spectacle.idSpectacle
                              FROM Spectacle INNER JOIN Programme ON Spectacle.idSpectacle = Programme.idSpectacle 
                              INNER JOIN Soiree ON Programme.idSoiree = Soiree.idSoiree 
                              INNER JOIN Lieu ON Soiree.idLieu = Lieu.idLieu ORDER BY nomLieu";
                 break;
             case "style":
-                $querySQL = "SELECT Spectacle.idSpectacle, Spectacle.idStyle, Spectacle.idArtiste, descSpectacle, Style.nomStyle 
+                $querySQL = "SELECT Spectacle.idSpectacle
                              FROM Spectacle INNER JOIN Style ON Spectacle.idStyle = Style.idStyle ORDER BY nomStyle";
                 break;
             default: // tri par date
-                $querySQL = "SELECT Spectacle.idSpectacle, Spectacle.idStyle, Spectacle.idArtiste, descSpectacle, Soiree.dateSoiree
+                $querySQL = "SELECT Spectacle.idSpectacle
                              FROM Spectacle INNER JOIN Programme ON Spectacle.idSpectacle = Programme.idSpectacle 
                              INNER JOIN Soiree ON Programme.idSoiree = Soiree.idSoiree ORDER BY dateSoiree";
                 break;
@@ -91,7 +91,7 @@ class SelectRepository extends Repository
      */
     public function getSpectacle(int $id): Spectacle
     {
-        // Requête SQL qui récupère l'id du spectacle
+        // Requête SQL qui récupère les données du spectacle
         $querySQL = "SELECT idSpectacle, nomSpectacle, idStyle, idArtiste, duree, heureD, descSpectacle 
                      FROM Spectacle WHERE idSpectacle = ?";
         // Préparation de la requête
@@ -104,17 +104,138 @@ class SelectRepository extends Repository
         $data = $statement->fetch(PDO::FETCH_ASSOC);
 
         return new Spectacle(
-            (int) $data['idSpectacle'],
+            (int)$data['idSpectacle'],
             $data['nomSpectacle'],
-            $this->getStyle((int) $data['idStyle']),
-            $this->getArtiste((int) $data['idArtiste']),
-            (int) $data['duree'],
+            $this->getStyle((int)$data['idStyle']),
+            $this->getArtiste((int)$data['idArtiste']),
+            (int)$data['duree'],
             $data['heureD'],
             $data['descSpectacle'],
-            $this->getVideos((int) $data['idSpectacle']),
-            $this->getAudios((int) $data['idSpectacle']),
-            $this->getImages((int) $data['idSpectacle'])
+            $this->getVideos((int)$data['idSpectacle']),
+            $this->getAudios((int)$data['idSpectacle']),
+            $this->getImages((int)$data['idSpectacle'])
         );
+
+    }
+
+
+
+    /**
+     * Méthode qui récupère la liste de toutes les soirées
+     * @param string $filtre Filtre qui donne l'ordre de la liste
+     * @return Soiree[] Une liste de soirées
+     */
+    public function getSoirees(string $filtre) : array {
+
+        // Requêtes SQL en fonction du filtre choisi
+        switch ($filtre) {
+            case "lieu":
+                $querySQL = "SELECT Soiree.idSoiree FROM Soiree
+                             INNER JOIN Lieu ON Soiree.idLieu = Lieu.idLieu
+                             ORDER BY Lieu.nomLieu";
+                break;
+            case "thematique":
+                $querySQL = "SELECT Soiree.idSoiree FROM Soiree
+                             INNER JOIN ThematiqueSoiree ON Soiree.idThematique = ThematiqueSoiree.idThematique
+                             ORDER BY ThematiqueSoiree.nomThematique";
+                break;
+            default: // tri par date
+                $querySQL = "SELECT Soiree.idSoiree FROM Soiree ORDER BY dateSoiree";
+                break;
+        }
+
+        // Préparation de la requête
+        $statement = $this->pdo->prepare($querySQL);
+
+        // Execution de la requête
+        $statement->execute();
+
+        // on boucle en prenant l'id de la soiree et on crée un objet Soiree avec cet id dans l'ordre du filtre
+        $res = [];
+        foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $data) {
+            $soiree = $this->getSoiree((int)$data['idSoiree']);
+            $res[] = $soiree;
+        }
+        return $res;
+
+    }
+
+
+
+    /**
+     * Méthode qui créé un objet Soiree à partir d'un id de soirée
+     * @param int $idSoiree Id de la soirée
+     * @return Soiree Objet de type Soiree
+     */
+    private function getSoiree(int $idSoiree) : Soiree {
+
+        // Requête SQL qui récupère les données de la soirée
+        $querySQL = "SELECT idSoiree, nomSoiree, tarif, idLieu, idThematique, estAnnule, dateSoiree FROM Soiree
+                     WHERE idSoiree = ?";
+        // Préparation de la requête
+        $statement = $this->pdo->prepare($querySQL);
+        $statement->bindParam(1, $idSoiree);
+        // Execution de la requête
+        $statement->execute();
+
+        // On récupère les données sorties par la requête
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return new Soiree(
+            (int) $data['idSoiree'],
+            $data['nomSoiree'],
+            (float) $data['tarif'],
+            $this->getLieu((int) $data['idLieu']),
+            $this->getThematique((int) $data['idThematique']),
+            $this->getSpectaclesFromSoiree((int) $data['idSoiree']),
+            $data['dateSoiree'],
+            (bool) $data['estAnnule']
+
+        );
+
+    }
+
+
+
+    /**
+     * Méthode qui renvoie une liste de spectacle étant dans une soirée
+     * @param int $idSoiree Id de la soirée dont on veut les spectacles
+     * @return Spectacle[] Liste des spectacles étant dans la soirée
+     */
+    private function getSpectaclesFromSoiree(int $idSoiree) : array {
+
+        // Requête SQL qui récupère toutes les donées des spectacles qui sont dans le programme d'une soirée
+        $querySQL = "SELECT Spectacle.idSpectacle, nomSpectacle, idStyle, idArtiste, duree, heureD, descSpectacle 
+                     FROM Spectacle 
+                     INNER JOIN Programme ON Spectacle.idSpectacle = Programme.idSpectacle
+                     WHERE idSoiree = ?";
+        // Préparation de la requête
+        $statement = $this->pdo->prepare($querySQL);
+        $statement->bindParam(1, $idSoiree);
+        // Execution de la requête
+        $statement->execute();
+
+        // On récupère les données sorties par la requête et on créé les spectacles en les ajoutant à une liste
+        $res = [];
+        foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $data) {
+
+            $res[] = new Spectacle(
+                (int)$data['idSpectacle'],
+                $data['nomSpectacle'],
+                $this->getStyle((int)$data['idStyle']),
+                $this->getArtiste((int)$data['idArtiste']),
+                (int)$data['duree'],
+                $data['heureD'],
+                $data['descSpectacle'],
+                $this->getVideos((int)$data['idSpectacle']),
+                $this->getAudios((int)$data['idSpectacle']),
+                $this->getImages((int)$data['idSpectacle'])
+            );
+
+        }
+
+        // On retourne le tableu
+        return $res;
 
     }
 
@@ -159,7 +280,8 @@ class SelectRepository extends Repository
      * Méthode qui renvoie la liste de tous les artistes
      * @return array Liste d'artiste
      */
-    public function getArtistes() : array {
+    public function getArtistes(): array
+    {
         // Requête SQL qui récupère les attributs d'artistes
         $querySQL = "Select Artiste.idArtiste FROM Artiste";
 
@@ -172,7 +294,7 @@ class SelectRepository extends Repository
         // On récupère les données sorties par la requête
         $res = [];
         foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $data) {
-            $artiste = $this->getArtiste((int) $data['idArtiste']);
+            $artiste = $this->getArtiste((int)$data['idArtiste']);
             $res[] = $artiste;
         }
         return $res;
@@ -197,7 +319,7 @@ class SelectRepository extends Repository
         $data = $statement->fetch(PDO::FETCH_ASSOC);
 
         return new Artiste(
-            (int) $data['idArtiste'],
+            (int)$data['idArtiste'],
             $data['nomArtiste']
         );
     }
@@ -206,7 +328,8 @@ class SelectRepository extends Repository
      * Méthode qui renvoie la liste de tous les styles
      * @return array Liste de styles
      */
-    public function getStyles() : array {
+    public function getStyles(): array
+    {
         // Requête SQL qui récupère les attributs d'artistes
         $querySQL = "Select Style.idStyle FROM Style";
 
@@ -219,7 +342,7 @@ class SelectRepository extends Repository
         // On récupère les données sorties par la requête
         $res = [];
         foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $data) {
-            $style = $this->getStyle((int) $data['idStyle']);
+            $style = $this->getStyle((int)$data['idStyle']);
             $res[] = $style;
         }
         return $res;
@@ -230,7 +353,7 @@ class SelectRepository extends Repository
      * @param int $id Id du style
      * @return Style Un objet de type style
      */
-    public function getStyle(int $id): ?Style
+    public function getStyle(int $id): Style
     {
         // Requête SQL qui récupère l'id du spectacle
         $querySQL = "SELECT idStyle, nomStyle FROM Style WHERE idStyle = ?";
@@ -243,22 +366,18 @@ class SelectRepository extends Repository
         // On récupère les données sorties par la requête
         $data = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if (empty($data)){
-            return null;
-        }
-        else {
-
         return new Style(
-            (int) $data['idStyle'],
+            (int)$data['idStyle'],
             $data['nomStyle']
-        );}
+        );
     }
 
     /**
      * Méthode qui renvoie la liste de tous les lieux
-     * @return array Liste de lieux
+     * @return Lieu Liste de lieux
      */
-    public function getLieux() : array {
+    public function getLieux(): array
+    {
         // Requête SQL qui récupère les attributs d'artistes
         $querySQL = "Select idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout FROM Lieu";
 
@@ -272,18 +391,40 @@ class SelectRepository extends Repository
         $res = [];
         foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $data) {
             //modifier par rapport au constructeur de style
-            $lieux = new Lieu(
-                (int) $data['idLieux'],
-                $data['nomLieux'],
+            $l = new Lieu(
+                (int)$data['idLieu'],
+                $data['nomLieu'],
                 $data['adresse'],
-                (int) $data['nbPlacesAssises'],
-                (int) $data['nbPlacesDebout']);
-
-            $res[] = $lieux;
+                (int)$data['nbPlacesAssises'],
+                (int)$data['nbPlacesDebout']
+            );
+            $res[] = $l;
         }
-
         return $res;
     }
+
+    public function getLieu(int $id): Lieu
+    {
+        // Requête SQL qui récupère les attributs d'artistes
+        $querySQL = "Select idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout FROM Lieu WHERE idLieu = ?";
+
+        // Préparation de la requête
+        $statement = $this->pdo->prepare($querySQL);
+        $statement->bindParam(1, $id);
+
+        $statement->execute();
+
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return new Lieu(
+            (int)$data['idLieu'],
+            $data['nomLieu'],
+            $data['adresse'],
+            (int)$data['nbPlacesAssises'],
+            (int)$data['nbPlacesDebout']
+        );
+    }
+
 
 
 
@@ -408,6 +549,24 @@ class SelectRepository extends Repository
         return $res;
     }
 
+    public function getThematique(int $id) : Thematique {
+        // Requête SQL qui récupère les attributs de thematique
+        $querySQL = "Select idThematique, nomThematique FROM ThematiqueSoiree WHERE idThematique = ?";
+
+        // Préparation de la requête
+        $statement = $this->pdo->prepare($querySQL);
+        $statement->bindParam(1, $id);
+
+        // Execution de la requête
+        $statement->execute();
+
+        // On récupère les données sorties par la requête
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return new Thematique(
+            (int) $data['idThematique'],
+            $data['nomThematique']);
+    }
 
 
     /**
@@ -453,9 +612,12 @@ class SelectRepository extends Repository
         // On récupère les données
         $data = $statement->fetch(PDO::FETCH_ASSOC);
 
+        // Si la requête n'a rien retournée
         if (empty($data)) {
+            // On renvoie null
             return null;
         }
+
         // On retourne un objet de type Lieu
         return new Lieu(
             (int) $data['idLieu'],
@@ -472,9 +634,9 @@ class SelectRepository extends Repository
     /**
      * Méthode qui récupère les données de la soirée
      * @param int $idSpectacle L'id du spectacle
-     * @return string Date du spectacle
+     * @return string|null Date du spectacle
      */
-    public function getDateSpectacle(int $idSpectacle) : string {
+    public function getDateSpectacle(int $idSpectacle) : ?string {
 
         // Requête SQL qui récupère la date de la soirée
         $querySQL = "SELECT dateSoiree FROM Soiree
@@ -489,14 +651,13 @@ class SelectRepository extends Repository
         // On récupère les données
         $data = $statement->fetch(PDO::FETCH_ASSOC);
 
-        // Si le spectacle n'a pas de soirée
-        if (!empty($data)) {
-            // On retourne la date
-            return $data['dateSoiree'];
+        // Si la requête ne renvoie rien
+        if (empty($data)) {
+            return null;
         }
-        else {
-            return 'Date non définie';
-        }
+
+        // On retourne la date
+        return $data['dateSoiree'];
 
     }
 

@@ -2,9 +2,11 @@
 
 namespace iutnc\sae_dev_web\action;
 
+
+
 use iutnc\sae_dev_web\festival\Spectacle;
-
-
+use iutnc\sae_dev_web\repository\InsertRepository;
+use iutnc\sae_dev_web\repository\SelectRepository;
 
 /**
  * Classe qui représente l'action d'ajouter un spectacle
@@ -26,14 +28,26 @@ class AddSpectacleAction extends Action {
 
             // On récupère et filtre les données du formulaire
             $nomSpec = filter_var($_POST['nomSpec'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $duree = (int) filter_var($_POST['duree'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $style = filter_var($_POST['style'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $artiste = filter_var($_POST['artiste'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $duree = filter_var($_POST['duree'], FILTER_SANITIZE_SPECIAL_CHARS);
             $heureD = filter_var($_POST['heureD'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $style = $this->selectRepo->getStyle((int) filter_var($_POST['style'], FILTER_SANITIZE_SPECIAL_CHARS));
-            $artiste = $this->selectRepo->getArtiste((int) filter_var($_POST['artiste'], FILTER_SANITIZE_SPECIAL_CHARS));
             $description = filter_var($_POST['descSpec'], FILTER_SANITIZE_SPECIAL_CHARS);
             $listeNomFichierVideo[] = uniqid();
             $listeNomFichierAudio[] = uniqid();
             $listeNomFichierImage[] = uniqid();
+
+            // Si la valeur du style est égale à 0
+            if ((int) $style === 0) {
+                // On retourne le formulaire + un message disant que le style n'a pas été renseignée
+                return "<h3><strong> Veuillez renseigner le style </strong></h3><br>" . $this->getFormulaire();
+            }
+            // Sinon si la valeur de l'artiste est égale à 0
+            elseif ((int) $artiste === 0) {
+                // On retourne le formulaire + un message disant que l'artiste n'a pas été renseignée
+                return "<h3><strong> Veuillez renseigner l'artiste </strong></h3><br>" . $this->getFormulaire();
+            }
+
 
             // Si le fichier video est bon
             if ($this->verifFichierVideo($listeNomFichierVideo[0])) {
@@ -45,9 +59,26 @@ class AddSpectacleAction extends Action {
                     if ($this->verifFichierImage($listeNomFichierImage[0])) {
 
                         // On créé un objet de type Spectacle
-                        $spectacle = new Spectacle(null, $nomSpec, $style, $artiste, $duree, $heureD, $description, $listeNomFichierVideo, $listeNomFichierAudio, $listeNomFichierImage);
+                        $spectacle = new Spectacle(
+                            null,
+                            $nomSpec,
+                            $this->selectRepo->getStyle((int) $style),
+                            $this->selectRepo->getArtiste((int) $artiste),
+                            (int) $duree,
+                            $heureD,
+                            $description,
+                            $listeNomFichierVideo,
+                            $listeNomFichierAudio,
+                            $listeNomFichierImage);
                         // On ajoute le spectacle à la BDD
                         $this->insertRepo->ajouterSpectacle($spectacle);
+
+                        // TODO : On ajoute l'image à la BDD (voir TODO dans InsertRepository)
+
+                        // TODO : On ajoute l'audio à la BDD (voir TODO dans InsertRepository)
+
+                        // TODO : On ajoute la vidéo à la BDD (voir TODO dans InsertRepository)
+
                         // On informe que le spectacle à bien été créé
                         return '<p> Le spectacle à bien été créé et ajouté ! </p>';
                     }
@@ -201,13 +232,13 @@ class AddSpectacleAction extends Action {
         // On récupère la liste de tous les styles dans la BDD
         $listeStyles = $this->selectRepo->getStyles();
         // On créé la liste déroulante pour les artistes
-        $listeDeroulanteArtistes = '<select name="artiste"> <option value=""> -- Choisissez un artiste -- </option>';
+        $listeDeroulanteArtistes = '<select name="artiste"> <option value="0"> -- Choisissez un artiste -- </option>';
         foreach ($listeArtistes as $artiste) {
             $listeDeroulanteArtistes .= "<option value='{$artiste->getId()}'> {$artiste->getNom()} </option>";
         }
         $listeDeroulanteArtistes .= '</select>';
         // On créé la liste déroulante pour les styles
-        $listeDeroulanteStyle = '<select name="style"> <option value=""> -- Choisissez un style -- </option>';
+        $listeDeroulanteStyle = '<select name="style"> <option value="0"> -- Choisissez un style -- </option>';
         foreach ($listeStyles as $style) {
             $listeDeroulanteStyle .= "<option value='{$style->getId()}'> {$style->getNom()} </option>";
         }
@@ -215,17 +246,17 @@ class AddSpectacleAction extends Action {
         // On ajoute les deux listes au formulaire et on le renvoie
          return <<<END
             <form method="post" name="" action="?action=add-spectacle" enctype="multipart/form-data">
-                <input type="text" name="nomSpec" placeholder="Nom du spectacle" required> <br>
-                <input type="time" name="heureD" placeholder="Heure de début" required> <br>
-                <input type="number" name="duree" placeholder="Duree (en minutes)" required> <br>
-                $listeDeroulanteArtistes <br>
-                $listeDeroulanteStyle <br>
-                <input type="text" name="descSpec" placeholder="Description" required> <br>
-                Fichier Video : <input type="file" name="fichierVideo" placeholder="<fichierVideo>"> <br>
-                Fichier Audio : <input type="file" name="fichierAudio" placeholder="<fichierAudio>"> <br>
-                Image : <input type="file" name="fichierImage" placeholder="<fichierImage>"> <br>
+                <input type="text" name="nomSpec" placeholder="Nom du spectacle" required> 
+                $listeDeroulanteArtistes 
+                $listeDeroulanteStyle
+                <input type="time" name ="heureD" required>
+                <input type="number" name="duree" min="0" placeholder="<Duree en minutes>" required>
+                <input type="text" name="descSpec" placeholder="Description" required>
+                Fichier Video : <input type="file" name="fichierVideo" placeholder="<fichierVideo>">
+                Fichier Audio : <input type="file" name="fichierAudio" placeholder="<fichierAudio>">
+                Image : <input type="file" name="fichierImage" placeholder="<fichierImage>">
                 <button type="submit" name="valider" class="button"> Valider </button>
-            </form>
+            </form>';
             END;
     }
 

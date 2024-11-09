@@ -11,7 +11,7 @@ class DefaultAction extends Action {
     
     public function execute(): string {
 
-        return '<h1> Bienvenue ! </h1>';
+        return '<h1> Accueil de notre site ! </h1>';
 
     }
 }

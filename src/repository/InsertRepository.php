@@ -2,9 +2,13 @@
 
 namespace iutnc\sae_dev_web\repository;
 
+use iutnc\sae_dev_web\festival\Audio;
+use iutnc\sae_dev_web\festival\Image;
 use iutnc\sae_dev_web\festival\Lieu;
 use iutnc\sae_dev_web\festival\Soiree;
 use iutnc\sae_dev_web\festival\Spectacle;
+use iutnc\sae_dev_web\festival\Style;
+use iutnc\sae_dev_web\festival\Video;
 
 
 /**
@@ -77,23 +81,28 @@ class InsertRepository extends Repository {
      */
     public function ajouterSoiree(Soiree $soiree): void {
 
-        $req = 'INSERT INTO Soiree (idSoiree, nomSoiree, idLieu, idThematique, estAnnule, dateSoiree) VALUES (?, ?, ?, ?, ?, ?)';
+        $req = 'INSERT INTO Soiree (nomSoiree, idLieu, idThematique, tarif, dateSoiree, estAnnule) VALUES (?, ?, ?, ?, ?, ?)';
 
         $stmt = $this->pdo->prepare($req);
 
-        $idSoiree = (int) $this->pdo->lastInsertId();
         $nom = $soiree->getNom();
         $idLieu = $soiree->getLieu()->getId();
         $idTheme = $soiree->getThematique()->getId();
-        $annulee = $soiree->getEstAnnule();
+        $tarif = $soiree->getTarif();
         $date = $soiree->getDate();
+        $annulee = $soiree->getEstAnnule();
+        if (!isset($annulee)) {
+            $annulee = false;
+        } else {
+            $annulee = true;
+        }
 
-        $stmt->bindParam(1, $idSoiree);
-        $stmt->bindParam(2, $nom);
-        $stmt->bindParam(3, $idLieu);
-        $stmt->bindParam(4, $idTheme);
-        $stmt->bindParam(5, $annulee);
-        $stmt->bindParam(6, $date);
+        $stmt->bindParam(1, $nom);
+        $stmt->bindParam(2, $idLieu);
+        $stmt->bindParam(3, $idTheme);
+        $stmt->bindParam(4, $tarif);
+        $stmt->bindParam(5, $date);
+        $stmt->bindParam(6, $annulee);
 
         $stmt->execute();
 
@@ -122,29 +131,78 @@ class InsertRepository extends Repository {
 
 
     /**
-     * Méthode qui ajoute une nouveau lieu
+     * Méthode qui ajoute un nouveau lieu
      * @param Lieu $lieu Objet Lieu à ajouter
      */
     public function ajouterLieu(Lieu $lieu): void {
 
-        $req = 'INSERT INTO Lieu (idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout) VALUES (?, ?, ?, ?, ?)';
+        $req = 'INSERT INTO Lieu (nomLieu, adresse, nbPlacesAssises, nbPlacesDebout) VALUES (?, ?, ?, ?)';
 
         $stmt = $this->pdo->prepare($req);
 
-        $idLieu = $this->pdo->lastInsertId() + 1;
         $nom = $lieu->getNom();
         $adresse = $lieu->getAdresse();
         $nbPlacesAssises = $lieu->getNbPlacesAssises();
         $nbPlacesDebout = $lieu->getNbPlacesDebout();
 
-        $stmt->bindParam(1, $idLieu);
-        $stmt->bindParam(2, $nom);
-        $stmt->bindParam(3, $adresse);
-        $stmt->bindParam(4, $nbPlacesAssises);
-        $stmt->bindParam(5, $nbPlacesDebout);
+        $stmt->bindParam(1, $nom);
+        $stmt->bindParam(2, $adresse);
+        $stmt->bindParam(3, $nbPlacesAssises);
+        $stmt->bindParam(4, $nbPlacesDebout);
 
-        $lieu->setId($idLieu);
+        $stmt->execute();
 
+
+    }
+
+
+
+    /**
+     * Méthode qui ajoute un nouveau style
+     * @param Style $style Objet Style à ajouter
+     */
+    public function ajouterStyle(Style $style): void {
+
+        $req = 'INSERT INTO style(nomStyle) VALUES (?)';
+
+        $stmt = $this->pdo->prepare($req);
+
+        $nom = $style->getNom();
+
+        $stmt->bindParam(1, $nom);
+
+        $stmt->execute();
+
+    }
+
+
+
+    /**
+     * Méthode qui ajoute une image à la BDD
+     * @param Image $image Objet image qui contient tout ce dont à besoin la BDD pour ajouter l'image
+     */
+    public function ajouterImage(Image $image) : void {
+        // TODO
+    }
+
+
+
+    /**
+     * Méthode qui ajoute un audio à la BDD
+     * @param Audio $audio Objet audio qui contient tout ce dont à besoin la BDD pour ajouter l'audio
+     */
+    public function ajouterAudio(Audio $audio) : void {
+        // TODO
+    }
+
+
+
+    /**
+     * Méthode qui ajoute une vidéo à la BDD
+     * @param Video $video Objet video qui contient tout ce dont à besoin la BDD pour ajouter la vidéo
+     */
+    public function ajouterVideo(Video $video) : void {
+        // TODO
     }
 
 

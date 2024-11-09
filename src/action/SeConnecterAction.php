@@ -13,7 +13,7 @@ class SeConnecterAction extends Action {
     // Attributs
     private string $formulaire = '
                 <h1> Connexion </h1>
-                <form method="post" action="?action=se_connecter">
+                <form method="post" action="?action=se-connecter">
                 <input type="email" name="email" placeholder="email" class="input-field" autofocus>
                 <input type="password" name="mdp" placeholder="mot de passe" class="input-field">
                 <input type="submit" name="connex" value="Connexion" class="button">

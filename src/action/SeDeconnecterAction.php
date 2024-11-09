@@ -22,7 +22,13 @@ class SeDeconnecterAction extends Action {
      * Méthode qui execute l'action
      * @return string Message indiquant que la déconnexion s'est bien déroulée
      */
-    public function execute() : string{
-        // TODO
+    public function execute() : string {
+
+        // On enlève l'email et le role stocké en session
+        $_SESSION['user'] = null;
+
+        // On retourne un message disant que la déconnexion s'est bien effectuée
+        return '<h3> Vous êtes déconnecté </h3>';
+
     }
 }

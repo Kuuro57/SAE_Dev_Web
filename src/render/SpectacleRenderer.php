@@ -95,13 +95,12 @@ class SpectacleRenderer implements Renderer {
      */
 
     public function renderLong() {
-
         // Récupération de l'heure de début sous forme de DateTime
         $heureD = SelectRepository::getInstance()->getHeureDebutSpectacle($this->spectacle->getId());
         $heureD = new DateTime($heureD);
 
         // Supposons que $this->spectacle->getDuree() retourne la durée en minutes
-        $dureeMinutes = $this->spectacle->getDuree();
+        $dureeMinutes = (int) $this->spectacle->getDuree();
 
         // Calcul des heures et minutes
         $heures = intdiv($dureeMinutes, 60);  // Nombre d'heures
@@ -114,28 +113,28 @@ class SpectacleRenderer implements Renderer {
         $heureF = (clone $heureD)->add($dureeInterval);
 
         // le lieu est obtenu en utilisant la méthode getLieuSpectacle de la classe SelectRepository jointure avec Lieu, Soiree et Spectacle
-
-        if (SelectRepository::getInstance()->getLieuSpectacle($this->spectacle->getId()) === null){
-            $nomLieu = "Lieu non défini";
-        } else {
-            $nomLieu = SelectRepository::getInstance()->getLieuSpectacle($this->spectacle->getId())->getNom();
-
+        $lieu = SelectRepository::getInstance()->getLieuSpectacle($this->spectacle->getId());
+        // Si le lieu n'est pas null
+        if (!is_null($lieu)) {
+            $nomLieu = $lieu->getNom();
         }
-
+        // Sinon
+        else {
+            $nomLieu = "Non défini";
+        }
 
         $artistes = $this->spectacle->getArtiste();
         $description = $this->spectacle->getDescription();
-
-
-        if (!($this->spectacle->getStyle() === null)){
-            $style = $this->spectacle->getStyle()->getNom();
-
-        } else {
-            $style = "style non défini";
-        }
+        $style = $this->spectacle->getStyle();
 
         $date = SelectRepository::getInstance()->getDateSpectacle($this->spectacle->getId());
+        // Si la date n'est pas null
+        if (is_null($date)) {
+            $date = "Non définie";
+        }
+
         $duree = $this->spectacle->getDuree();
+
         $imagestab = $this->spectacle->getListeImages();
         $images = "";
         if (count($imagestab) > 0) {
@@ -153,6 +152,7 @@ class SpectacleRenderer implements Renderer {
         // array des video
         $video = $this->spectacle->getListeVideos();
         $artiste = $this->spectacle->getArtiste()->getNom();
+        $style = $this->spectacle->getStyle()->getNom();
 
         $audioListe = "";
         $videoListe = "";

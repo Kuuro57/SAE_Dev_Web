@@ -20,7 +20,7 @@ require_once 'vendor/autoload.php';
 // ################################
 //               USE
 // ################################
-use iutnc\sae_dev_web\dispatch\DispatcherIndex;
+use iutnc\sae_dev_web\dispatch\DispatcherAffichageSoirees;
 use iutnc\sae_dev_web\repository\InsertRepository;
 use iutnc\sae_dev_web\repository\SelectRepository;
 
@@ -42,5 +42,5 @@ try {
     echo $e->getMessage();
 }
 
-$dispatcher = new DispatcherIndex();
+$dispatcher = new DispatcherAffichageSoirees();
 $dispatcher->run();

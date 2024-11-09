@@ -54,15 +54,16 @@ class SoireeRenderer implements Renderer {
      * Affichage du détail d’une soirée : nom de la soirée, thématique, date et horaire, lieu,
      * tarifs, ainsi que la liste des spectacles : titre, artistes, description, style de musique, vidéo,
      * @return string Un texte en format HTML
+     * @throws \DateMalformedStringException
      */
 
     public function renderLong() : string {
         $nom = $this->soiree->getNom();
         $theme = $this->soiree->getThematique()->getNom();
         $date = $this->soiree->getDate();
-        $heureD = $this->soiree->getHeureDebut();
-        $heureF = $this->soiree->getHeureFin();
-        $horraire = $heureD . "-" . $heureF;
+        $heureD = $this->soiree->calculHeureDebut();
+        $heureF = $this->soiree->calculHeureFin();
+        $horaire = $heureD . "-" . $heureF;
         $lieu = $this->soiree->getLieu()->getNom();
         $tarif = $this->soiree->getTarif();
         $spectaclesListe = $this->soiree->getListeSpectacle();
@@ -70,7 +71,8 @@ class SoireeRenderer implements Renderer {
         if (count($spectaclesListe) > 0) {
             $spectacles = "";
             foreach ($spectaclesListe as $spectacle) {
-                $spectacles .= $spectacle->render(Renderer::LONG);
+                $renderer = new SpectacleRenderer($spectacle);
+                $spectacles .= $renderer->render(Renderer::LONG);
             }
         }
         else {
@@ -84,11 +86,11 @@ class SoireeRenderer implements Renderer {
                         <p><strong>$nom</strong> <br>
                         <strong>Thématique</strong> - $theme <br>
                         <strong>Date</strong> - $date <br>
-                        <strong>Horraire</strong> - $horraire <br>
+                        <strong>Horraire</strong> - $horaire <br>
                         <strong>Lieu</strong> - $lieu <br>
                         <strong>Tarif</strong> - $tarif <br>
-                        <strong>Spectacles</strong> - $spectacles <br>";
-
+                        <strong>Spectacles</strong> - $spectacles <br>
+                      </div>";
 
 
         return $affichage;

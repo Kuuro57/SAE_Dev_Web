@@ -4,6 +4,7 @@ namespace iutnc\sae_dev_web\auth;
 
 use iutnc\sae_dev_web\exception\AuthException;
 use iutnc\sae_dev_web\repository\InsertRepository;
+use iutnc\sae_dev_web\repository\SelectRepository;
 
 
 /**
@@ -20,7 +21,7 @@ class Auth{
     public static function authenticate(string $e, string $p):bool{
 
         // On regarde si l'email est présent dans la BDD
-        $bd = InsertRepository::getInstance();
+        $bd = SelectRepository::getInstance();
         $res = $bd->findExistingEmail($e);
 
         // Si l'email n'existe pas

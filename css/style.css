@@ -1,0 +1,61 @@
+/* ### Fichier CSS pour l'affichage de la page ### */
+
+
+/* Affichage du titre principal */
+#mainTitle {
+
+    justify-self: center;
+    padding: 0.5em;
+
+}
+
+
+
+/* Affichage de ma barre de navigation (choix des actions) */
+nav {
+
+    border: solid black;
+    display: flex;
+    font-size: 1.3em;
+    flex-wrap: wrap;
+    gap: 1.7em; /* Espace entre les éléments */
+    padding: 1em;
+    justify-content: space-around;
+    width: auto; /* Pour que la barre occupe toute la largeur de l'écran */
+
+}
+
+
+
+/* Affichage de la zone où est renvoyé les actions  */
+.container {
+
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8em;
+    justify-content: space-around;
+
+}
+
+
+
+/* Affichage des éléments à l'intérieur de la zone container */
+.container>* {
+
+    border: solid black;
+    margin-top: 1em;
+    block-size: fit-content;
+    display: inline-flex;
+
+}
+
+
+
+/* Affichage du footer */
+footer {
+
+    border-top: solid black 2px;
+    justify-items: center;
+    margin-top: 2em;
+
+}

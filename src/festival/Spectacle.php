@@ -15,7 +15,7 @@ class Spectacle {
     private Style $style; // Style du spectacle
     private Artiste $artiste; // Nom de l'artiste qui se représente pendant ce spectacle
     private int $duree; // Duree du spectacle (en minutes)
-    private string $heureDebut; // Heure du début du spectacle (HH:MM)
+    private string $heureDebut; // Heure du début du spectacle
     private string $description; // Description du spectacle
     private array $listeVideos; // Liste qui contient les URLs des vidéos
     private array $listeAudios; // Liste qui contient le nom des fichiers audios
