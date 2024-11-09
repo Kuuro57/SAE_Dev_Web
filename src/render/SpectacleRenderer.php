@@ -99,15 +99,19 @@ class SpectacleRenderer implements Renderer {
         $heureD = SelectRepository::getInstance()->getHeureDebutSpectacle($this->spectacle->getId());
         $heureD = new DateTime($heureD);
 
-        // Supposons que $this->spectacle->getDuree() retourne la durée en minutes
-        $dureeMinutes = (int) $this->spectacle->getDuree();
-
         // Calcul des heures et minutes
+        $dureeMinutes = $this->spectacle->getDuree();
         $heures = intdiv($dureeMinutes, 60);  // Nombre d'heures
         $minutes = $dureeMinutes % 60;              // Nombre de minutes restantes
 
         // Création d'un intervalle de temps pour la durée
         $dureeInterval = new DateInterval("PT{$heures}H{$minutes}M");
+
+        // Si les minutes = 0
+        if ($minutes === 0) {
+            // On affichage pas les minutes
+            $minutes = '';
+        }
 
         // Ajout de la durée à l'heure de début pour obtenir l'heure de fin
         $heureF = (clone $heureD)->add($dureeInterval);
@@ -132,8 +136,6 @@ class SpectacleRenderer implements Renderer {
         if (is_null($date)) {
             $date = "Non définie";
         }
-
-        $duree = $this->spectacle->getDuree();
 
         $imagestab = $this->spectacle->getListeImages();
         $images = "";
@@ -183,17 +185,13 @@ class SpectacleRenderer implements Renderer {
                 <strong>Artistes</strong> - $artiste <br>
                 <strong>Description</strong> - $description <br>
                 <strong>Style</strong> - $style <br>
-                <strong>Durée</strong> - $duree <br>
+                <strong>Durée</strong> - {$heures}h{$minutes} <br>
                 <strong>Images</strong> - $images <br>
                 <strong>Audio</strong> - $audioListe <br>
                 <strong>Video</strong> - $videoListe <br>
             </div>
         ";
 
-
-
-
     }
-
 
 }
