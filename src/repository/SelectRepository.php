@@ -83,6 +83,31 @@ class SelectRepository extends Repository
     }
 
 
+    /**
+     * Méthode qui renvoie tous les spectacles dans la BDD
+     *
+     * @return Spectacle[] Un array d'objet de type spectacle
+     */
+    public function getAllSpectacles(): array
+    {  //default affiche ordre date | date ordre date |lieu ordre lieu| style ordre style
+                $querySQL = "SELECT Spectacle.idSpectacle
+                             FROM Spectacle";
+
+        // Préparation de la requête
+        $statement = $this->pdo->prepare($querySQL);
+
+        // Execution de la requête
+        $statement->execute();
+
+        $res = [];
+        // on boucle en prenant l'id du spectacle et on crée un objet spectacle avec cet id dans l'ordre du filtre
+        foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $data) {
+            $spectacle = $this->getSpectacle((int) $data['idSpectacle']);
+            $res[] = $spectacle;
+        }
+        return $res;
+    }
+
 
     /**
      * Méthode qui renvoie un spectacle dans la BDD

@@ -27,6 +27,7 @@ class SpectacleRenderer implements Renderer {
      * Méthode qui permet d'afficher en format HTML un objet
      * @param int $selector Entier qui correspond au mode d'affichage
      * @return string Un texte en format HTML
+     * @throws \DateMalformedStringException
      */
     public function render(int $selector = Renderer::COMPACT): string
     {
@@ -48,16 +49,32 @@ class SpectacleRenderer implements Renderer {
      */
 
     public function renderCompact() : string {
-
-
-
-        $heureD = SelectRepository::getInstance()->getDebutSpectacle($this->spectacle->getId());
-        $heureF =  $heureD + $this->spectacle->getDuree();
-        $lieu = $this->spectacle->getLieu();
+        $heureD = SelectRepository::getInstance()->getHeureDebutSpectacle($this->spectacle->getId());
+        $heureD = new DateTime($heureD);
+        // Calcul des heures et minutes
+        $dureeMinutes = $this->spectacle->getDuree();
+        $heures = intdiv($dureeMinutes, 60);  // Nombre d'heures
+        $minutes = $dureeMinutes % 60;              // Nombre de minutes restantes
+        // Création d'un intervalle de temps pour la durée
+        $dureeInterval = new DateInterval("PT{$heures}H{$minutes}M");
+        // Si les minutes = 0
+        if ($minutes === 0) {
+            // On affichage pas les minutes
+            $minutes = '';
+        }
+        // Ajout de la durée à l'heure de début pour obtenir l'heure de fin
+        $heureF = (clone $heureD)->add($dureeInterval);
+        $lieu = SelectRepository::getInstance()->getLieuSpectacle($this->spectacle->getId());
+        if (!is_null($lieu)) {
+            $lieu = $lieu->getNom();
+        }
+        else {
+            $lieu = "Non défini";
+        }
         $date = SelectRepository::getInstance()->getDateSpectacle($this->spectacle->getId());
-
-
-
+        if (is_null($date)) {
+            $date = "Non définie";
+        }
         $imagestab = $this->spectacle->getListeImages();
         $images = "";
         if (count($imagestab) > 0) {
@@ -69,14 +86,12 @@ class SpectacleRenderer implements Renderer {
         else {
             $images = "<p>Image non disponible</p>";
         }
-
-
         return "
             <div id='spectacle'>
                 <p><strong>{$this->spectacle->getNom()}</strong> <br>
                 <strong>Date</strong> - $date </p> <br>
                 <p>
-                    <strong>Heure</strong> - $heureD. ' - ' . $heureF <br>
+                    <strong>Heure</strong> - {$heureD->format('H:i')} / {$heureF->format('H:i')} <br>
                     <strong>Lieu</strong> - $lieu <br>
                     // pour chaque image du tab images on affiche l'image
                   
@@ -84,8 +99,6 @@ class SpectacleRenderer implements Renderer {
                 $images;
             </div>
         ";}
-
-
     /**
      * méthode renderLong qui permet d'afficher en format HTML long pour chaque spectacle,
      *
@@ -93,17 +106,14 @@ class SpectacleRenderer implements Renderer {
      * extrait audio/vidéo,
      * @throws \DateMalformedStringException
      */
-
     public function renderLong() {
         // Récupération de l'heure de début sous forme de DateTime
         $heureD = SelectRepository::getInstance()->getHeureDebutSpectacle($this->spectacle->getId());
         $heureD = new DateTime($heureD);
-
         // Calcul des heures et minutes
         $dureeMinutes = $this->spectacle->getDuree();
         $heures = intdiv($dureeMinutes, 60);  // Nombre d'heures
         $minutes = $dureeMinutes % 60;              // Nombre de minutes restantes
-
         // Création d'un intervalle de temps pour la durée
         $dureeInterval = new DateInterval("PT{$heures}H{$minutes}M");
 
@@ -129,7 +139,15 @@ class SpectacleRenderer implements Renderer {
 
         $artistes = $this->spectacle->getArtiste();
         $description = $this->spectacle->getDescription();
+
         $style = $this->spectacle->getStyle();
+        if (!is_null($style)) {
+            $style = $style->getNom();
+        }
+        else {
+            $style = "Non défini";
+        }
+
 
         $date = SelectRepository::getInstance()->getDateSpectacle($this->spectacle->getId());
         // Si la date n'est pas null
@@ -154,7 +172,6 @@ class SpectacleRenderer implements Renderer {
         // array des video
         $video = $this->spectacle->getListeVideos();
         $artiste = $this->spectacle->getArtiste()->getNom();
-        $style = $this->spectacle->getStyle()->getNom();
 
         $audioListe = "";
         $videoListe = "";
@@ -174,8 +191,6 @@ class SpectacleRenderer implements Renderer {
                 Your browser does not support the video tag.
             </video>";
         }
-
-
         return "
             <div id='spectacle'>
                 <p><strong>{$this->spectacle->getNom()}</strong> <br>
@@ -191,7 +206,5 @@ class SpectacleRenderer implements Renderer {
                 <strong>Video</strong> - $videoListe <br>
             </div>
         ";
-
     }
-
 }

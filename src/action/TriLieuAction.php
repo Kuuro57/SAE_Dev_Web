@@ -22,12 +22,29 @@ class TriLieuAction extends Action
     {
         // Récupération des spectacles
         $r = SelectRepository::getInstance();
-        $listeSpectacle = $r->getSpectacles("lieu");
-
-
-        $btn = "<a href='?=tri-lieu'>Trier par lieu</a>";
-
-
+        /** @var Spectacle[] $listeSpectacleAvecLieu */
+        $listeSpectacleAvecLieu = $r->getSpectacles("lieu"); // On récupère les spectacles avec date triés par lieu
+        /** @var Spectacle[] $listeTousSpectacles */
+        $listeTousSpectacles = $r->getSpectacles(); // On récupère tous les spectacles
+        // On crée un tableau de Spectacle qui ne contiendra que les spectacles sans date , ceux qui reste
+        $listeSpectaclesRestants = []; // Tableau de Spectacle qui contiendra les spectacles  sans dates
+        // pour vérifier si un spectacle est déjà dans le tableau on récupère l'id de chaque spectacle
+        // si l'id est dans le tableau avec date on ne l'ajoute pas dans ListeSpectaclesRestants
+        foreach ($listeTousSpectacles as $spectacle) {
+            $id = $spectacle->getId();
+            $trouve = false;
+            foreach ($listeSpectacleAvecLieu as $spectacleAvecLieu) {
+                if ($id == $spectacleAvecLieu->getId()) { // Si le spectacle est déjà dans le tableau avec date
+                    $trouve = true; // On le signale
+                    break; // On sort de la boucle
+                }
+            }
+            if (!$trouve) { // Si le spectacle n'est pas dans le tableau avec date
+                $listeSpectaclesRestants[] = $spectacle; // On ajoute le spectacle dans le tableau
+            }
+        }
+        // on crée un tableau qui contiendra les spectacles triés par date plus les spectacles restants
+        $listeSpectacle = array_merge($listeSpectacleAvecLieu, $listeSpectaclesRestants); // On fusionne les deux tableaux
         // On affiche la liste des spectacles
         $res = "";
         /** @var Spectacle $spectacle */
@@ -36,7 +53,5 @@ class TriLieuAction extends Action
             $res .= $renderer->render(2);
         }
         return $res;
-
-
     }
 }
