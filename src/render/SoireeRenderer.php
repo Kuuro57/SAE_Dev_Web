@@ -78,11 +78,7 @@ class SoireeRenderer implements Renderer {
         else {
             $spectacles = "<p>Aucun spectacle pour cette soirée</p>";
         }
-
-
-
-
-        $affichage = "<div id='soiree'>
+        return "<div id='soiree'>
                         <p><strong>$nom</strong> <br>
                         <strong>Thématique</strong> - $theme <br>
                         <strong>Date</strong> - $date <br>
@@ -91,11 +87,5 @@ class SoireeRenderer implements Renderer {
                         <strong>Tarif</strong> - $tarif <br>
                         <strong>Spectacles</strong> - $spectacles <br>
                       </div>";
-
-
-        return $affichage;
-
     }
-
-
 }
