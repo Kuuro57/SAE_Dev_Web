@@ -4,6 +4,7 @@ namespace iutnc\sae_dev_web\action\tri;
 
 use iutnc\sae_dev_web\action\Action;
 use iutnc\sae_dev_web\festival\Spectacle;
+use iutnc\sae_dev_web\render\SoireeRenderer;
 use iutnc\sae_dev_web\render\SpectacleRenderer;
 use iutnc\sae_dev_web\repository\SelectRepository;
 
@@ -29,23 +30,23 @@ class TriLieuAction extends Action
         $nomClasse = strrchr($nomClasseAppelee, '\\');
         $nomClasse = substr($nomClasse, 1);
 
-        // Si la classe est DispatcherAffichageSpectacles
+        // Si la classe est DispatcherAffichageSoirees
         if ($nomClasse === "DispatcherAffichageSoirees") {
 
-            // Récupération des spectacles
+            // Récupération des soirees
             $r = SelectRepository::getInstance();
-            $listeSpectacle = $r->getSoirees('lieu');
+            $listeSoirees = $r->getSoirees('lieu');
 
 
-            // On affiche la liste des spectacles
+            // On affiche la liste des soirees
             $res = "";
-            foreach ($listeSpectacle as $spectacle) {
-                $renderer = new SpectacleRenderer($spectacle);
+            foreach ($listeSoirees as $soiree) {
+                $renderer = new SoireeRenderer($soiree);
                 $res .= $renderer->render(2);
             }
 
             return $res;
-        } // Sinon si la classe est DispatcherAffichageSoiree
+        } // Sinon si la classe est DispatcherAffichageSpectacles
         elseif ($nomClasse === "DispatcherAffichageSpectacles") {
 
 
