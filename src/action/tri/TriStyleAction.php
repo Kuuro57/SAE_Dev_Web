@@ -17,6 +17,32 @@ class TriStyleAction extends Action
      */
     public function execute(): string
     {
+
+        // On récupère le nom de la classe qui appel cette méthode
+        $nomClasseAppelee = debug_backtrace()[1]['class'];
+        $nomClasse = strrchr($nomClasseAppelee, '\\');
+        $nomClasse = substr($nomClasse, 1);
+
+        // Si la classe est DispatcherAffichageSpectacles
+        if ($nomClasse === "DispatcherAffichageSoirees") {
+
+            // Récupération des spectacles
+            $r = SelectRepository::getInstance();
+            $listeSpectacle = $r->getSoirees('style');
+
+
+            // On affiche la liste des spectacles
+            $res = "";
+            foreach ($listeSpectacle as $spectacle) {
+                $renderer = new SpectacleRenderer($spectacle);
+                $res .= $renderer->render(2);
+            }
+
+            return $res;
+        } // Sinon si la classe est DispatcherAffichageSoiree
+        elseif ($nomClasse === "DispatcherAffichageSpectacles") {
+
+
         // Récupération des spectacles
         $r = SelectRepository::getInstance();
         /** @var Spectacle[] $listeSpectacleAvecStyle */
@@ -49,6 +75,7 @@ class TriStyleAction extends Action
             $renderer = new SpectacleRenderer($spectacle);
             $res .= $renderer->render(2);
         }
-        return $res;
+
+    } return $res;
     }
 }
