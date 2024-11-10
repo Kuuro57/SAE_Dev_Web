@@ -1,7 +1,8 @@
 <?php
 
-namespace iutnc\sae_dev_web\action;
+namespace iutnc\sae_dev_web\action\tri;
 
+use iutnc\sae_dev_web\action\Action;
 use iutnc\sae_dev_web\festival\Spectacle;
 use iutnc\sae_dev_web\render\SpectacleRenderer;
 use iutnc\sae_dev_web\repository\SelectRepository;

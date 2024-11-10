@@ -8,12 +8,12 @@ use iutnc\sae_dev_web\action\AddLieuAction;
 use iutnc\sae_dev_web\action\AddSoireeAction;
 use iutnc\sae_dev_web\action\AddSpectacleAction;
 use iutnc\sae_dev_web\action\AddUtilisateurAction;
+use iutnc\sae_dev_web\action\DefaultAction;
 use iutnc\sae_dev_web\action\SeConnecterAction;
 use iutnc\sae_dev_web\action\SeDeconnecterAction;
-use iutnc\sae_dev_web\action\TriDateAction;
-use iutnc\sae_dev_web\action\TriLieuAction;
-use iutnc\sae_dev_web\action\TriStyleAction;
-use iutnc\sae_dev_web\action\DefaultAction;
+use iutnc\sae_dev_web\action\tri\TriDateAction;
+use iutnc\sae_dev_web\action\tri\TriLieuAction;
+use iutnc\sae_dev_web\action\tri\TriStyleAction;
 
 /**
  * Classe qui représente le dispatcher

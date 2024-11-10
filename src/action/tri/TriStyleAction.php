@@ -1,7 +1,8 @@
 <?php
 
-namespace iutnc\sae_dev_web\action;
+namespace iutnc\sae_dev_web\action\tri;
 
+use iutnc\sae_dev_web\action\Action;
 use iutnc\sae_dev_web\festival\Spectacle;
 use iutnc\sae_dev_web\render\SpectacleRenderer;
 use iutnc\sae_dev_web\repository\SelectRepository;
@@ -20,7 +21,7 @@ class TriStyleAction extends Action
         // Récupération des spectacles
         $r = SelectRepository::getInstance();
         /** @var Spectacle[] $listeSpectacleAvecStyle */
-        $listeSpectacleAvecDate = $r->getSpectacles("style"); // On récupère les spectacles avec date triés par date
+        $listeSpectacleAvecStyle = $r->getSpectacles("style"); // On récupère les spectacles avec date triés par date
         /** @var Spectacle[] $listeTousSpectacles */
         $listeTousSpectacles = $r->getSpectacles(null); // On récupère tous les spectacles
         // On crée un tableau de Spectacle qui ne contiendra que les spectacles sans date , ceux qui reste
