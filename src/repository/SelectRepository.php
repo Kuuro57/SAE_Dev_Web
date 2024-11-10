@@ -47,7 +47,7 @@ class SelectRepository extends Repository
      * @return Spectacle[] La liste de tous les spectacles dans le bon ordre d'affichage
      */
     public function getSpectacles(?string $filtre): array
-    {  //default affiche ordre date | date ordre date |lieu ordre lieu| style ordre style
+    {  //default affiche ordre nomSpectacle | date ordre date |lieu ordre lieu| style ordre style
         // Requête SQL en fonction du filtre
         switch ($filtre) {
             case "lieu":
@@ -60,10 +60,15 @@ class SelectRepository extends Repository
                 $querySQL = "SELECT Spectacle.idSpectacle
                              FROM Spectacle INNER JOIN Style ON Spectacle.idStyle = Style.idStyle ORDER BY nomStyle";
                 break;
-            default: // tri par date
+
+            case "date": // tri par date
                 $querySQL = "SELECT Spectacle.idSpectacle
                              FROM Spectacle INNER JOIN Programme ON Spectacle.idSpectacle = Programme.idSpectacle 
                              INNER JOIN Soiree ON Programme.idSoiree = Soiree.idSoiree ORDER BY dateSoiree";
+                break;
+            default:
+                $querySQL = "SELECT Spectacle.idSpectacle
+                             FROM Spectacle ORDER BY nomSpectacle";
                 break;
         }
 
