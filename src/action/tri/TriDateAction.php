@@ -21,38 +21,65 @@ class TriDateAction extends Action
 
     public function execute(): string
     {
-        // Récupération des spectacles
-        $r = SelectRepository::getInstance();
-        /** @var Spectacle[] $listeSpectacleAvecDate */
-        $listeSpectacleAvecDate = $r->getSpectacles("date"); // On récupère les spectacles avec date triés par date
-        /** @var Spectacle[] $listeTousSpectacles */
-        $listeTousSpectacles = $r->getSpectacles(null); // On récupère tous les spectacles
-        // On crée un tableau de Spectacle qui ne contiendra que les spectacles sans date , ceux qui reste
-        $listeSpectaclesRestants = []; // Tableau de Spectacle qui contiendra les spectacles  sans dates
-        // pour vérifier si un spectacle est déjà dans le tableau on récupère l'id de chaque spectacle
-        // si l'id est dans le tableau avec date on ne l'ajoute pas dans ListeSpectaclesRestants
-        foreach ($listeTousSpectacles as $spectacle) {
-            $id = $spectacle->getId();
-            $trouve = false;
-            foreach ($listeSpectacleAvecDate as $spectacleAvecDate) {
-                if ($id == $spectacleAvecDate->getId()) { // Si le spectacle est déjà dans le tableau avec date
-                    $trouve = true; // On le signale
-                    break; // On sort de la boucle
+
+        // On récupère le nom de la classe qui appel cette méthode
+        $nomClasseAppelee = debug_backtrace()[1]['class'];
+        $nomClasse = strrchr($nomClasseAppelee, '\\');
+        $nomClasse = substr($nomClasse, 1);
+
+        // Si la classe est DispatcherAffichageSpectacles
+        if ($nomClasse === "DispatcherAffichageSoirees") {
+
+            // Récupération des spectacles
+            $r = SelectRepository::getInstance();
+            $listeSpectacle = $r->getSoirees(null);
+
+
+            // On affiche la liste des spectacles
+            $res = "";
+            foreach ($listeSpectacle as $spectacle) {
+                $renderer = new SpectacleRenderer($spectacle);
+                $res .= $renderer->render(2);
+            }
+
+            return $res;
+        } // Sinon si la classe est DispatcherAffichageSoiree
+        elseif ($nomClasse === "DispatcherAffichageSpectacles") {
+
+
+            // Récupération des spectacles
+            $r = SelectRepository::getInstance();
+            /** @var Spectacle[] $listeSpectacleAvecDate */
+            $listeSpectacleAvecDate = $r->getSpectacles("date"); // On récupère les spectacles avec date triés par date
+            /** @var Spectacle[] $listeTousSpectacles */
+            $listeTousSpectacles = $r->getSpectacles(null); // On récupère tous les spectacles
+            // On crée un tableau de Spectacle qui ne contiendra que les spectacles sans date , ceux qui reste
+            $listeSpectaclesRestants = []; // Tableau de Spectacle qui contiendra les spectacles  sans dates
+            // pour vérifier si un spectacle est déjà dans le tableau on récupère l'id de chaque spectacle
+            // si l'id est dans le tableau avec date on ne l'ajoute pas dans ListeSpectaclesRestants
+            foreach ($listeTousSpectacles as $spectacle) {
+                $id = $spectacle->getId();
+                $trouve = false;
+                foreach ($listeSpectacleAvecDate as $spectacleAvecDate) {
+                    if ($id == $spectacleAvecDate->getId()) { // Si le spectacle est déjà dans le tableau avec date
+                        $trouve = true; // On le signale
+                        break; // On sort de la boucle
+                    }
+                }
+                if (!$trouve) { // Si le spectacle n'est pas dans le tableau avec date
+                    $listeSpectaclesRestants[] = $spectacle; // On ajoute le spectacle dans le tableau
                 }
             }
-            if (!$trouve) { // Si le spectacle n'est pas dans le tableau avec date
-                $listeSpectaclesRestants[] = $spectacle; // On ajoute le spectacle dans le tableau
+            // on crée un tableau qui contiendra les spectacles triés par date plus les spectacles restants
+            $listeSpectacle = array_merge($listeSpectacleAvecDate, $listeSpectaclesRestants); // On fusionne les deux tableaux
+            // On affiche la liste des spectacles
+            $res = "";
+            /** @var Spectacle $spectacle */
+            foreach ($listeSpectacle as $spectacle) {
+                $renderer = new SpectacleRenderer($spectacle);
+                $res .= $renderer->render(2);
             }
-        }
-        // on crée un tableau qui contiendra les spectacles triés par date plus les spectacles restants
-        $listeSpectacle = array_merge($listeSpectacleAvecDate, $listeSpectaclesRestants); // On fusionne les deux tableaux
-        // On affiche la liste des spectacles
-        $res = "";
-        /** @var Spectacle $spectacle */
-        foreach ($listeSpectacle as $spectacle) {
-            $renderer = new SpectacleRenderer($spectacle);
-            $res .= $renderer->render(2);
-        }
-        return $res;
+
+        }return $res;
     }
 }

@@ -152,10 +152,10 @@ class SelectRepository extends Repository
 
     /**
      * Méthode qui récupère la liste de toutes les soirées
-     * @param string $filtre Filtre qui donne l'ordre de la liste
+     * @param ?string $filtre| null Filtre qui donne l'ordre de la liste
      * @return Soiree[] Une liste de soirées
      */
-    public function getSoirees(string $filtre) : array {
+    public function getSoirees(?string $filtre) : array {
 
         // Requêtes SQL en fonction du filtre choisi
         switch ($filtre) {
