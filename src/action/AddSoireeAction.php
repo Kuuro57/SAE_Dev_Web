@@ -59,7 +59,7 @@ class AddSoireeAction extends Action {
             $lieuOb = SelectRepository::getInstance()->getLieu($lieu);
             $thematiqueOb = SelectRepository::getInstance()->getThematique($thematique);
 
-            $soiree = new Soiree(null, $nomSoiree, $tarif, $lieuOb, $thematiqueOb, null, $dateSoiree, false);
+            $soiree = new Soiree(null, $nomSoiree, $tarif, $lieuOb, $thematiqueOb, [], $dateSoiree);
 
             // try {
                 InsertRepository::getInstance()->ajouterSoiree($soiree);

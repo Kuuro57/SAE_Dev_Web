@@ -54,6 +54,11 @@ class Soiree {
         // On initialise l'heure minimale avec une valeur très grande
         $heureMin = new DateTime('23:59:59');
 
+        // Si il n'y a aucun spectacles dans cette soirée
+        if (empty($this->listeSpectacle)) {
+            // On renvoie un message disant qu'il n'y a pas d'heures de début
+            return 'N/A';
+        }
         // Parcours de la liste des spectacles pour trouver l'heure la plus tôt
         foreach ($this->listeSpectacle as $spectacle) {
             $heure = new DateTime($spectacle->getHeureDebut());
@@ -77,6 +82,12 @@ class Soiree {
         // On initialise l'heure maximale avec une valeur très basse
         $heureMax = new DateTime('00:00:00');
         $dureeMax = 0;
+
+        // Si il n'y a aucun spectacles dans cette soirée
+        if (empty($this->listeSpectacle)) {
+            // On renvoie un message disant qu'il n'y a pas d'heures de fin
+            return 'N/A';
+        }
 
         // Parcours de la liste des spectacles pour trouver l'heure la plus tard et sa durée
         foreach ($this->listeSpectacle as $spectacle) {

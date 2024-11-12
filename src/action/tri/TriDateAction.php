@@ -50,9 +50,7 @@ class TriDateAction extends Action
 
             // Récupération des spectacles
             $r = SelectRepository::getInstance();
-            /** @var Spectacle[] $listeSpectacleAvecDate */
             $listeSpectacleAvecDate = $r->getSpectacles("date"); // On récupère les spectacles avec date triés par date
-            /** @var Spectacle[] $listeTousSpectacles */
             $listeTousSpectacles = $r->getSpectacles(null); // On récupère tous les spectacles
             // On crée un tableau de Spectacle qui ne contiendra que les spectacles sans date, ceux qui restent
             $listeSpectaclesRestants = []; // Tableau de Spectacle qui contiendra les spectacles sans dates
