@@ -185,7 +185,7 @@ class InsertRepository extends Repository {
 
     /**
      * Méthode qui ajoute une image à la BDD
-     * @param Image $image Objet image qui contient tout ce dont à besoin la BDD pour ajouter l'image
+     * @param Image $image Objet image qui contient tout ce dont a besoin la BDD pour ajouter l'image
      */
     public function ajouterImage(Image $image) : void {
 
@@ -209,7 +209,7 @@ class InsertRepository extends Repository {
 
     /**
      * Méthode qui ajoute un audio à la BDD
-     * @param Audio $audio Objet audio qui contient tout ce dont à besoin la BDD pour ajouter l'audio
+     * @param Audio $audio Objet audio qui contient tout ce dont a besoin la BDD pour ajouter l'audio
      */
     public function ajouterAudio(Audio $audio) : void {
 
@@ -233,7 +233,7 @@ class InsertRepository extends Repository {
 
     /**
      * Méthode qui ajoute une vidéo à la BDD
-     * @param Video $video Objet video qui contient tout ce dont à besoin la BDD pour ajouter la vidéo
+     * @param Video $video Objet video qui contient tout ce dont a besoin la BDD pour ajouter la vidéo
      */
     public function ajouterVideo(Video $video) : void {
 

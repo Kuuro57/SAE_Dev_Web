@@ -30,11 +30,11 @@ class Video {
 
 
 
-    public function getIdVideo() { return $this->idVideo; }
+    public function getIdVideo(): ?int { return $this->idVideo; }
     public function setIdVideo(?int $idVideo): void { $this->idVideo = $idVideo; }
 
-    public function getIdSpectacle() { return $this->idSpectacle; }
+    public function getIdSpectacle(): int { return $this->idSpectacle; }
 
-    public function getUrl() { return $this->url; }
+    public function getUrl(): string { return $this->url; }
 
 }

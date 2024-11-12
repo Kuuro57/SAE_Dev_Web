@@ -22,7 +22,7 @@ class AddSpectacleAction extends Action {
         // Si la méthode HTTP est de type GET
         if ($this->http_method === 'GET') {
 
-            // Afficher une formulaire d'ajout d'un spectacle
+            // Afficher un formulaire d'ajout d'un spectacle
             return $this->getFormulaire();
 
         }
@@ -61,7 +61,7 @@ class AddSpectacleAction extends Action {
                     // Si le fichier image est bon
                     if ($this->verifFichierImage($nomFichierImage)) {
 
-                        // On créé un objet de type Spectacle (sans la video, l'audio et l'image)
+                        // On crée un objet de type Spectacle (sans la video, l'audio et l'image)
                         $spectacle = new Spectacle(
                             null,
                             $nomSpec,
@@ -100,8 +100,8 @@ class AddSpectacleAction extends Action {
                         );
                         $this->insertRepo->ajouterVideo($video);
 
-                        // On informe que le spectacle à bien été créé
-                        return '<p> Le spectacle à bien été créé et ajouté ! </p>';
+                        // On informe que le spectacle a bien été créé
+                        return '<p> Le spectacle a bien été créé et ajouté ! </p>';
                     }
                     // Sinon
                     else {
@@ -133,10 +133,10 @@ class AddSpectacleAction extends Action {
 
 
     /**
-     * Méthode qui vérifie l'extention d'un fichier vidéo donné par l'utilisateur et qui ajoute ce fichier
-     * à l'arborecense pour pouvoir le stocker
+     * Méthode qui vérifie l'extension d'un fichier vidéo donné par l'utilisateur et qui ajoute ce fichier
+     * à l'arborescence pour pouvoir le stocker
      * @param string $nomFichier Nom du fichier que l'on veut tester
-     * @return bool Vrai si le fichier est bon et stocké dans l'arborecense, faux sinon
+     * @return bool Vrai si le fichier est bon et stocké dans l'arborescence, faux sinon
      */
     private function verifFichierVideo(string $nomFichier) : bool {
         // Si aucun fichier n'a été envoyé
@@ -151,7 +151,7 @@ class AddSpectacleAction extends Action {
                 // On renvoie false
                 return false;
             }
-            // On met comme type au fichier audio audio/mpeg-4
+            // On met comme type au fichier audio 'audio/mpeg-4'
             $_FILES['fichierVideo']['type'] = 'audio/mpeg-4';
             // On met ce fichier dans le répertoire /audio
             $dir = $_SERVER['DOCUMENT_ROOT'] . '/SAE_Dev_Web/video/' . $nomFichier . '.mp4';
@@ -169,10 +169,10 @@ class AddSpectacleAction extends Action {
 
 
     /**
-     * Méthode qui vérifie l'extention d'un fichier audio donné par l'utilisateur et qui ajoute ce fichier
-     * à l'arborecense pour pouvoir le stocker
+     * Méthode qui vérifie l'extension d'un fichier audio donné par l'utilisateur et qui ajoute ce fichier
+     * à l'arborescence pour pouvoir le stocker
      * @param string $nomFichier Nom du fichier que l'on veut tester
-     * @return bool Vrai si le fichier est bon et stocké dans l'arborecense, faux sinon
+     * @return bool Vrai si le fichier est bon et stocké dans l'arborescence, faux sinon
      */
     private function verifFichierAudio(string $nomFichier) : bool {
         // Si aucun fichier n'a été envoyé
@@ -187,7 +187,7 @@ class AddSpectacleAction extends Action {
                 // On renvoie false
                 return false;
             }
-            // On met comme type au fichier audio audio/mpeg
+            // On met comme type au fichier audio 'audio/mpeg'
             $_FILES['fichierAudio']['type'] = 'audio/mpeg';
             // On met ce fichier dans le répertoire /audio
             $dir = $_SERVER['DOCUMENT_ROOT'] . '/SAE_Dev_Web/audio/' . $nomFichier . '.mp3';
@@ -205,10 +205,10 @@ class AddSpectacleAction extends Action {
 
 
     /**
-     * Méthode qui vérifie l'extention d'un fichier image donné par l'utilisateur et qui ajoute ce fichier
-     * à l'arborecense pour pouvoir le stocker
+     * Méthode qui vérifie l'extension d'un fichier image donné par l'utilisateur et qui ajoute ce fichier
+     * à l'arborescence pour pouvoir le stocker
      * @param string $nomFichier Nom du fichier que l'on veut tester
-     * @return bool Vrai si le fichier est bon et stocké dans l'arborecense, faux sinon
+     * @return bool Vrai si le fichier est bon et stocké dans l'arborescence, faux sinon
      */
     private function verifFichierImage(string $nomFichier) : bool {
         // Si aucun fichier n'a été envoyé
@@ -241,7 +241,7 @@ class AddSpectacleAction extends Action {
 
 
     /**
-     * Méthode qui retourne le formulaire complété (avec tous les artistes et style que l'administrateur peut chosir)
+     * Méthode qui retourne le formulaire complété (avec tous les artistes et style que l'administrateur peut choisir)
      * @return string Le formulaire au format HTML
      */
     private function getFormulaire() : string {
@@ -249,13 +249,13 @@ class AddSpectacleAction extends Action {
         $listeArtistes = $this->selectRepo->getArtistes();
         // On récupère la liste de tous les styles dans la BDD
         $listeStyles = $this->selectRepo->getStyles();
-        // On créé la liste déroulante pour les artistes
+        // On crée la liste déroulante pour les artistes
         $listeDeroulanteArtistes = '<select name="artiste"> <option value="0"> -- Choisissez un artiste -- </option>';
         foreach ($listeArtistes as $artiste) {
             $listeDeroulanteArtistes .= "<option value='{$artiste->getId()}'> {$artiste->getNom()} </option>";
         }
         $listeDeroulanteArtistes .= '</select>';
-        // On créé la liste déroulante pour les styles
+        // On crée la liste déroulante pour les styles
         $listeDeroulanteStyle = '<select name="style"> <option value="0"> -- Choisissez un style -- </option>';
         foreach ($listeStyles as $style) {
             $listeDeroulanteStyle .= "<option value='{$style->getId()}'> {$style->getNom()} </option>";

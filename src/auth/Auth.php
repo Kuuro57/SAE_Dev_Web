@@ -7,7 +7,7 @@ use iutnc\sae_dev_web\repository\SelectRepository;
 
 
 /**
- * Classe Auth qui contient les méthode qui permettent l'authentification
+ * Classe Auth qui contient les méthodes qui permettent l'authentification
  */
 class Auth{
 
@@ -29,7 +29,7 @@ class Auth{
             return false;
         }
 
-        // On vérifie que le mot de passe est bon (on lance une exception si non)
+        // On vérifie que le mot de passe est bon (on lance une exception sinon)
         if (!password_verify($p, $res['mdp'])) return false;
 
         // On ajoute l'email et le role dans la session

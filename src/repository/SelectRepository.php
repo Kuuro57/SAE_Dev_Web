@@ -234,7 +234,7 @@ class SelectRepository extends Repository
      */
     private function getSpectaclesFromSoiree(int $idSoiree) : array {
 
-        // Requête SQL qui récupère toutes les donées des spectacles qui sont dans le programme d'une soirée
+        // Requête SQL qui récupère toutes les données des spectacles qui sont dans le programme d'une soirée
         $querySQL = "SELECT Spectacle.idSpectacle, nomSpectacle, idStyle, idArtiste, duree, heureD, descSpectacle 
                      FROM Spectacle 
                      INNER JOIN Programme ON Spectacle.idSpectacle = Programme.idSpectacle
@@ -245,7 +245,7 @@ class SelectRepository extends Repository
         // Execution de la requête
         $statement->execute();
 
-        // On récupère les données sorties par la requête et on créé les spectacles en les ajoutant à une liste
+        // On récupère les données sorties par la requête et on crée les spectacles en les ajoutant à une liste
         $res = [];
         foreach ($statement->fetchAll(PDO::FETCH_ASSOC) as $data) {
 
@@ -264,7 +264,7 @@ class SelectRepository extends Repository
 
         }
 
-        // On retourne le tableu
+        // On retourne le tableau
         return $res;
 
     }
@@ -404,7 +404,7 @@ class SelectRepository extends Repository
 
     /**
      * Méthode qui renvoie la liste de tous les lieux
-     * @return Lieu Liste de lieux
+     * @return array Liste de lieux
      */
     public function getLieux(): array
     {
@@ -553,11 +553,11 @@ class SelectRepository extends Repository
     }
 
     /**
-     * Méthode qui renvoie la liste des toutes les thematiques
-     * @return array Liste de thematique
+     * Méthode qui renvoie la liste des toutes les thématiques
+     * @return array Liste de thématique
      */
     public function getThematiques() : array {
-        // Requête SQL qui récupère les attributs de thematique
+        // Requête SQL qui récupère les attributs de thématique
         $querySQL = "Select idThematique, nomThematique FROM ThematiqueSoiree";
 
         // Préparation de la requête
@@ -580,7 +580,7 @@ class SelectRepository extends Repository
     }
 
     public function getThematique(int $id) : Thematique {
-        // Requête SQL qui récupère les attributs de thematique
+        // Requête SQL qui récupère les attributs de thématique
         $querySQL = "Select idThematique, nomThematique FROM ThematiqueSoiree WHERE idThematique = ?";
 
         // Préparation de la requête

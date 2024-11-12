@@ -5,7 +5,7 @@ namespace iutnc\sae_dev_web\festival;
 
 
 /**
- * Classe qui représente une vidéo
+ * Classe qui représente un audio
  */
 class Audio {
 
@@ -35,6 +35,6 @@ class Audio {
 
     public function getIdSpectacle(): int { return $this->idSpectacle; }
 
-    public function getNomFichierAudio() { return $this->nomFichierAudio; }
+    public function getNomFichierAudio(): string { return $this->nomFichierAudio; }
 
 }

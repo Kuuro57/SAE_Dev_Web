@@ -23,7 +23,8 @@ class SoireeRenderer implements Renderer {
      * Méthode qui permet d'afficher la soirée de manière détaillée
      * Affichage du détail d’une soirée : nom de la soirée, thématique, date et horaire, lieu,
      * tarifs, ainsi que la liste des spectacles : titre, artistes, description, style de musique, vidéo,
-     * @param Soiree $soiree La soiree à afficher
+     * @param int $selector
+     * @return string
      */
 
 

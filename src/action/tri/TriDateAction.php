@@ -54,8 +54,8 @@ class TriDateAction extends Action
             $listeSpectacleAvecDate = $r->getSpectacles("date"); // On récupère les spectacles avec date triés par date
             /** @var Spectacle[] $listeTousSpectacles */
             $listeTousSpectacles = $r->getSpectacles(null); // On récupère tous les spectacles
-            // On crée un tableau de Spectacle qui ne contiendra que les spectacles sans date , ceux qui reste
-            $listeSpectaclesRestants = []; // Tableau de Spectacle qui contiendra les spectacles  sans dates
+            // On crée un tableau de Spectacle qui ne contiendra que les spectacles sans date, ceux qui restent
+            $listeSpectaclesRestants = []; // Tableau de Spectacle qui contiendra les spectacles sans dates
             // pour vérifier si un spectacle est déjà dans le tableau on récupère l'id de chaque spectacle
             // si l'id est dans le tableau avec date on ne l'ajoute pas dans ListeSpectaclesRestants
             foreach ($listeTousSpectacles as $spectacle) {

@@ -94,7 +94,7 @@ class AddUtilisateurAction extends Action {
                 // On réaffiche le formulaire
                 $res = "
                         <h1>Créer un compte</h1>
-                        <h3> Erreur : mot de passe différents ! </h3>
+                        <h3> Erreur : mot de passe différent ! </h3>
                         <br>
                         $this->formulaire
                         ";

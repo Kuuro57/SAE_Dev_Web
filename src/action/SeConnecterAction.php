@@ -51,9 +51,9 @@ class SeConnecterAction extends Action {
             $p = $_POST['mdp'];
             $bool = false;
 
-            // On vérifie que l'utilisateur à bien rempli les champs
+            // On vérifie que l'utilisateur a bien rempli les champs
             $bool = Auth::authenticate($e, $p);
-            // Si l'authentification n'a pas réussie
+            // Si l'authentification n'a pas réussi
             if (!$bool) {
                 // On retourne un message indiquant que la connexion n'a pas réussie
                 $res = "<p>Identifiant ou mot de passe invalide</p>";

@@ -94,20 +94,20 @@ class DispatcherIndex {
 
         // Si l'utilisateur est connecté
         if (isset($_SESSION['user'])) {
-            // On créé son email et son rôle (ADMIN ou STANDARD)
+            // On crée son email et son rôle (ADMIN ou STANDARD)
             $email = 'Connecté au compte : ' . $_SESSION['user']['email'];
             if ((int) $_SESSION['user']['role'] === 1) { $role = 'Vos permissions : STANDARD'; }
             elseif ((int) $_SESSION['user']['role'] === 100) { $role = 'Vos permissions : ADMIN'; }
             else { $role = 'Vos permissions : Undefined'; }
 
-            // On créé le bouton de déconnexion
+            // On crée le bouton de déconnexion
             $btnDeconnexion = '<button name="action" value="se-deconnecter"> Se déconnecter </button>';
         }
         // Sinon
         else {
-            // On créé le bouton de connexion
+            // On crée le bouton de connexion
             $btnConnexion = '<button name="action" value="se-connecter"> Connexion </button>';
-            // On créé le bouton de création d'un compte
+            // On crée le bouton de création d'un compte
             $btnCreationCompte = '<button name="action" value="add-utilisateur"> Créer son compte </button>';
         }
 

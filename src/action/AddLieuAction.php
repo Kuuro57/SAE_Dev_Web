@@ -37,7 +37,7 @@ class AddLieuAction extends Action {
                 $db->ajouterLieu($lieu);
                 $res = '<h1>Lieu ajouté</h1>';
             } catch (PDOException $e) {
-                $res = '<h1>Erreur lors de l ajout du lieu</h1>';
+                $res = '<h1>Erreur lors de l\'ajout du lieu</h1>';
                 echo $e->getMessage();
             }
         }

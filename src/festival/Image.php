@@ -5,7 +5,7 @@ namespace iutnc\sae_dev_web\festival;
 
 
 /**
- * Classe qui représente une vidéo
+ * Classe qui représente une image
  */
 class Image {
 

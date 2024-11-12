@@ -59,7 +59,7 @@ class SpectacleRenderer implements Renderer {
         $dureeInterval = new DateInterval("PT{$heures}H{$minutes}M");
         // Si les minutes = 0
         if ($minutes === 0) {
-            // On affichage pas les minutes
+            // On affiche pas les minutes
             $minutes = '';
         }
         // Ajout de la durée à l'heure de début pour obtenir l'heure de fin
@@ -100,13 +100,14 @@ class SpectacleRenderer implements Renderer {
             </div>
         ";}
     /**
-     * méthode renderLong qui permet d'afficher en format HTML long pour chaque spectacle,
+     * Méthode renderLong qui permet d'afficher en format HTML long pour chaque spectacle,
      *
      * Affichage détaillé d’un spectacle : titre, artistes, description, style, durée, image(s),
      * extrait audio/vidéo,
      * @throws \DateMalformedStringException
      */
-    public function renderLong() {
+    public function renderLong(): string
+    {
         // Récupération de l'heure de début sous forme de DateTime
         $heureD = SelectRepository::getInstance()->getHeureDebutSpectacle($this->spectacle->getId());
         $heureD = new DateTime($heureD);
@@ -119,7 +120,7 @@ class SpectacleRenderer implements Renderer {
 
         // Si les minutes = 0
         if ($minutes === 0) {
-            // On affichage pas les minutes
+            // On affiche pas les minutes
             $minutes = '';
         }
 

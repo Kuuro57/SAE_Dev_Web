@@ -29,7 +29,7 @@ class Spectacle {
      * @param int|null $i Id du spectacle
      * @param string $n Nom du spectacle
      * @param Style $s Style du spectacle
-     * @param Artiste $a Artiste qui se réprésente dans ce spectacle
+     * @param Artiste $a Artiste qui se représente dans ce spectacle
      * @param int $du Durée du spectacle
      * @param string $hD Heure de début du spectacle
      * @param string $de Description du spectacle

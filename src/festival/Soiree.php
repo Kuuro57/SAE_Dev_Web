@@ -4,6 +4,9 @@ namespace iutnc\sae_dev_web\festival;
 
 use DateTime;
 
+/**
+ * Classe qui représente une soiree
+ */
 class Soiree {
 
     // Attributs
@@ -11,8 +14,8 @@ class Soiree {
     private string $nom; // Nom de la soirée
     private float $tarif; // Tarif de la soirée
     private Lieu $lieu; // Lieu où se déroule la soirée
-    private Thematique  $thematique; // Thématique de la soirée
-    private array $listeSpectacle; // Liste qui contient tout les spectacles présents dans la soirée
+    private Thematique $thematique; // Thématique de la soirée
+    private array $listeSpectacle; // Liste qui contient tous les spectacles présents dans la soirée
     private bool $estAnnulee; // Vrai si la soirée est annulée, faux sinon
     private string $date; // Date à laquelle se déroule la soirée
 
@@ -25,7 +28,7 @@ class Soiree {
      * @param float $ta Tarif de la soirée
      * @param Lieu $l Lieu où se déroule la soirée
      * @param Thematique $t Thématique de la soirée
-     * @param Spectacle[] $lS Liste qui contient tout les spectacles présents dans la soirée
+     * @param Spectacle[] $lS Liste qui contient tous les spectacles présents dans la soirée
      * @param string $d Date à laquelle se déroule la soirée
      * @param bool $eA Booléen qui détermine si la soirée est annulée ou non
      */
@@ -43,7 +46,7 @@ class Soiree {
 
     /**
      * Méthode qui calcul l'heure de début de la soirée
-     * @return string|null Heure la plus tôt de tout les specatacles
+     * @return string|null Heure la plus tôt de tous les spectacles
      * @throws \DateMalformedStringException
      */
     public function calculHeureDebut() : ?string {
@@ -66,7 +69,7 @@ class Soiree {
 
     /**
      * Méthode qui calcul l'heure de fin de la soirée en ajoutant la durée du spectacle
-     * @return string Heure la plus tard de tout les specatacles
+     * @return string Heure la plus tard de tous les spectacles
      * @throws \DateMalformedStringException
      */
     public function calculHeureFin() : string {

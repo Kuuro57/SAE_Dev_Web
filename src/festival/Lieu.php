@@ -2,6 +2,9 @@
 
 namespace iutnc\sae_dev_web\festival;
 
+/**
+ * Classe qui représente un lieu
+ */
 class Lieu {
 
     // Attributs
