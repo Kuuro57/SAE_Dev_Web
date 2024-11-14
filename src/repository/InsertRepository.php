@@ -2,6 +2,7 @@
 
 namespace iutnc\sae_dev_web\repository;
 
+use iutnc\sae_dev_web\festival\Artiste;
 use iutnc\sae_dev_web\festival\Audio;
 use iutnc\sae_dev_web\festival\Image;
 use iutnc\sae_dev_web\festival\Lieu;
@@ -277,6 +278,18 @@ class InsertRepository extends Repository {
 
         $stmt->execute();
 
+    }
+
+    public function ajouterArtiste(Artiste $artiste) {
+        $req = 'INSERT INTO Artiste (nomArtiste) VALUES (?)';
+
+        $stmt = $this->pdo->prepare($req);
+
+        $nom = $artiste->getNom();
+
+        $stmt->bindParam(1, $nom);
+
+        $stmt->execute();
     }
 
 }
