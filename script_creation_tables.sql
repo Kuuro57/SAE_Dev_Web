@@ -26,6 +26,7 @@ CREATE TABLE Spectacle (
     duree INT(4),
     heureD TIME NOT NULL,
     descSpectacle VARCHAR(50),
+    estAnnule BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (idArtiste) REFERENCES Artiste(idArtiste),
     FOREIGN KEY (idStyle) REFERENCES Style(idStyle)
 );
