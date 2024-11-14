@@ -86,6 +86,9 @@ class SpectacleRenderer implements Renderer {
         else {
             $images = "<p>Image non disponible</p>";
         }
+
+        $annule = $this->isCancelled();
+        
         return "
             <div id='spectacle'>
                 <p><strong>{$this->spectacle->getNom()}</strong> <br>
@@ -93,10 +96,11 @@ class SpectacleRenderer implements Renderer {
                 <p>
                     <strong>Heure</strong> - {$heureD->format('H:i')} / {$heureF->format('H:i')} <br>
                     <strong>Lieu</strong> - $lieu <br>
-                    // pour chaque image du tab images on affiche l'image
+                    $annule
                   
                 </p>
-                $images;
+                $images
+                
             </div>
         ";}
     /**
@@ -192,6 +196,8 @@ class SpectacleRenderer implements Renderer {
                 Your browser does not support the video tag.
             </video>";
         }
+
+        $annule = $this->isCancelled();
         return "
             <div id='spectacle'>
                 <p><strong>{$this->spectacle->getNom()}</strong> <br>
@@ -205,7 +211,24 @@ class SpectacleRenderer implements Renderer {
                 <strong>Images</strong> - $images <br>
                 <strong>Audio</strong> - $audioListe <br>
                 <strong>Video</strong> - $videoListe <br>
+                $annule
             </div>
         ";
     }
+
+
+    /**
+     * Méthode qui permet de verifier si le spectacle est annulé
+     */
+
+    public function isCancelled() : string {
+        $html = "";
+        $estAnnule =  SelectRepository::getInstance()->getEstAnnuleSpectacle($this->spectacle->getId());
+        if ($estAnnule === 1) {
+            $html = "<p>Le spectacle est annulé</p>";
+        }
+        return $html;
+    }
+
+
 }

@@ -8,7 +8,7 @@ namespace iutnc\sae_dev_web\festival;
 class Artiste {
 
     // Attributs
-    private int $id; // L'id de l'artiste
+    private ?int $id; // L'id de l'artiste
     private string $nom; // Nom de l'artiste
 
 
@@ -18,7 +18,7 @@ class Artiste {
      * @param int $i Id de l'artiste
      * @param string $n Nom de l'artiste
      */
-    public function __construct(int $i, string $n) {
+    public function __construct(?int $i, string $n) {
         $this->id = $i;
         $this->nom = $n;
     }

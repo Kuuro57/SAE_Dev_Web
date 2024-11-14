@@ -5,11 +5,13 @@ namespace iutnc\sae_dev_web\dispatch;
 
 
 use iutnc\sae_dev_web\action\AddUtilisateurAction;
+use iutnc\sae_dev_web\action\FiltreSpectacleAction;
 use iutnc\sae_dev_web\action\SeConnecterAction;
 use iutnc\sae_dev_web\action\SeDeconnecterAction;
 use iutnc\sae_dev_web\action\tri\TriDateAction;
 use iutnc\sae_dev_web\action\tri\TriLieuAction;
 use iutnc\sae_dev_web\action\tri\TriStyleAction;
+use iutnc\sae_dev_web\repository\SelectRepository;
 
 /**
  * Classe qui représente le dispatcher de la page qui affiche les spectacles
@@ -24,6 +26,9 @@ class DispatcherAffichageSpectacles {
         if (!isset($_GET['action'])) {
             $_GET['action'] = '';
         }
+
+        // On initialise la variable de mode de rendu, compact par défaut
+        $renderMode = $_GET['renderMode'] ?? 'compact';
 
         switch ($_GET['action']) {
 
@@ -47,14 +52,18 @@ class DispatcherAffichageSpectacles {
                 $class = new TriStyleAction();
                 break;
 
-            default : // Tri par date
+            case "filtre" :
+                $class = new FiltreSpectacleAction();
+                break;
+
+            default :
                 $class = new TriDateAction();
                 break;
 
         }
 
         // On affiche la page en executant la méthode execute d'une classe Action
-        $this->renderPage($class->execute());
+        $this->renderPage($class->execute(), $renderMode);
 
     }
 
@@ -63,7 +72,7 @@ class DispatcherAffichageSpectacles {
     /**
      * Méthode qui ajoute le morceau de page à la page complète
      */
-    private function renderPage(string $html) : void {
+    private function renderPage(string $html, string $renderMode) : void {
 
         // Initialisation des variables contenants les boutons et données au format HTML
         $btnConnexion = '';
@@ -91,6 +100,12 @@ class DispatcherAffichageSpectacles {
             $btnCreationCompte = '<button name="action" value="add-utilisateur"> Créer son compte </button>';
         }
 
+        // Gestion de l'URL pour changer le mode d'affichage
+        $renderModeChecked = $renderMode === 'long' ? 'checked' : '';
+        $nvRenderMode = $renderMode === 'long' ? 'compact' : 'long';
+
+        $formulaire = $this->getFormulaire();
+
         // On affiche sur la page son contenu
         echo <<<END
     
@@ -117,11 +132,16 @@ class DispatcherAffichageSpectacles {
                     $btnCreationCompte
                 </form>
                 
+                $formulaire
+                
                 <nav>
                         <a href="index.php?action=default">Accueil</a>
-                        <a href="?action=tri-date">Trier par date</a>
-                        <a href="?action=tri-lieu">Trier par lieu</a>
-                        <a href="?action=tri-style">Trier par style</a>
+                        <a href="?action=tri-date&renderMode={$renderMode}">Trier par date</a>
+                        <a href="?action=tri-lieu&renderMode={$renderMode}">Trier par lieu</a>
+                        <a href="?action=tri-style&renderMode={$renderMode}">Trier par style</a>
+                       <label>Detaillé <input type="checkbox" name="checkBoxDetail"
+                        onchange="window.location.href='?action={$_GET['action']}&renderMode={$nvRenderMode}';" 
+                        {$renderModeChecked}></label>
                 </nav>
             
                 <div class="container">
@@ -141,5 +161,68 @@ class DispatcherAffichageSpectacles {
 END;
     }
 
+
+    /**
+     * Méthode qui créé le formulaire de filtrage
+     *
+     * @return string Le formulaire
+     */
+    private function getFormulaire() : string {
+
+        // On récupère une instance du SelectRepository
+        $selectRepo = SelectRepository::getInstance();
+
+        // On récupère la liste des id de tout les spectacles
+        $listeSpectacles = $selectRepo->getSpectacles(null);
+
+        // Liste qui contient toutes les horaires
+        $listeHoraires = [];
+
+        // On créé la liste déroulante des dates de début des spectacles (= soirées)
+        foreach ($listeSpectacles as $spectacles) {
+            $listeDatesSpectacles[] = $selectRepo->getSpectacle($spectacles->getId());
+        }
+        $listeDeroulanteHoraire = '<select name="heuresD"> <option value="0"> -- Choisissez une date -- </option>';
+        foreach ($listeDatesSpectacles as $spectacle) {
+            // Si l'horaire n'est pas déjà présent
+            if (!key_exists($spectacle->getHeureDebut(), $listeHoraires)) {
+                // On ajoute l'horaire à la liste déroulante
+                $listeDeroulanteHoraire .= "<option value='{$spectacle->getHeureDebut()}'> {$spectacle->getHeureDebut()} </option>";
+                // On ajoute l'horaire à la liste des horaires
+                $listeHoraires[$spectacle->getHeureDebut()] = $spectacle->getHeureDebut();
+            }
+        }
+        $listeDeroulanteHoraire .= "</select>";
+
+        // On créé la liste déroulant des style des spectacles
+        $listeStylesSpectacles = $selectRepo->getStyles();
+        $listeDeroulanteStyles = '<select name="styles"> <option value="0"> -- Choisissez un style -- </option>';
+        foreach ($listeStylesSpectacles as $style) {
+            $listeDeroulanteStyles .= "<option value='{$style->getNom()}'> {$style->getNom()} </option>";
+        }
+        $listeDeroulanteStyles .= "</select>";
+
+        // On créé la liste déroulant des lieu des spectacles (= soirées)
+        $listeLieuxSpectacles = $selectRepo->getLieux();
+        $listeDeroulanteLieux = '<select name="lieux"> <option value="0"> -- Choisissez un lieu -- </option>';
+        foreach ($listeLieuxSpectacles as $lieu) {
+            $listeDeroulanteLieux .= "<option value='{$lieu->getNom()}'> {$lieu->getNom()} </option>";
+        }
+        $listeDeroulanteLieux .= "</select>";
+
+        // On renvoie le formulaire complet
+        return <<<END
+            
+            <form method="post" name="" action="?action=filtre">
+                $listeDeroulanteHoraire
+                $listeDeroulanteStyles
+                $listeDeroulanteLieux
+                <button type="submit" name="valider" class="button"> Valider </button>
+            </form>
+            
+        END;
+
+
+    }
 
 }
