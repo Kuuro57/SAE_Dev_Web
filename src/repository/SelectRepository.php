@@ -197,7 +197,7 @@ class SelectRepository extends Repository
      * @param int $idSoiree Id de la soirée
      * @return Soiree Objet de type Soiree
      */
-    private function getSoiree(int $idSoiree) : Soiree {
+    public function getSoiree(int $idSoiree) : Soiree {
 
         // Requête SQL qui récupère les données de la soirée
         $querySQL = "SELECT idSoiree, nomSoiree, tarif, idLieu, idThematique, estAnnule, dateSoiree FROM Soiree
@@ -689,6 +689,24 @@ class SelectRepository extends Repository
         // On retourne la date
         return $data['dateSoiree'];
 
+    }
+
+    public function getEstAnnuleSpectacle(int $idSpectacle) : int {
+        // Requête SQL qui récupère l'état d'annulation du spectacle
+        $querySQL = "SELECT estAnnule FROM Spectacle WHERE idSpectacle = ?";
+
+        // Préparation de la requête
+        $statement = $this->pdo->prepare($querySQL);
+        $statement->bindParam(1, $idSpectacle);
+
+        // Execution de la requête
+        $statement->execute();
+
+        // On récupère les données
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
+
+        // On retourne l'état d'annulation
+        return (int) $data['estAnnule'];
     }
 
 }

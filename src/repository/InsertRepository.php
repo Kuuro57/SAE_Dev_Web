@@ -2,6 +2,7 @@
 
 namespace iutnc\sae_dev_web\repository;
 
+use iutnc\sae_dev_web\festival\Artiste;
 use iutnc\sae_dev_web\festival\Audio;
 use iutnc\sae_dev_web\festival\Image;
 use iutnc\sae_dev_web\festival\Lieu;
@@ -118,14 +119,18 @@ class InsertRepository extends Repository {
 
     /**
      * Méthode qui ajoute un spectacle à une soirée
-     * @param int $idSpectacle L'id du spectacle à ajouter
-     * @param int $idSoiree L'id de la soirée à ajouter
+     * @param Soiree $soiree L'id de la soirée à ajouter
+     * @param Spectacle $spectacle L'id du spectacle à ajouter
+     *
      */
-    public function ajouterSpectacleToSoiree(int $idSpectacle, int $idSoiree): void {
+    public function ajouterSpectacleToSoiree(Soiree $soiree, Spectacle $spectacle): void {
 
-        $req = 'INSERT INTO programme(idSoiree, idSpectacle) VALUES(?, ?)';
+        $req = 'INSERT INTO Programme (idSoiree, idSpectacle) VALUES(?, ?)';
 
         $stmt = $this->pdo->prepare($req);
+
+        $idSoiree = $soiree->getId();
+        $idSpectacle = $spectacle->getId();
 
         $stmt->bindParam(1, $idSoiree);
         $stmt->bindParam(2, $idSpectacle);
@@ -273,6 +278,18 @@ class InsertRepository extends Repository {
 
         $stmt->execute();
 
+    }
+
+    public function ajouterArtiste(Artiste $artiste) {
+        $req = 'INSERT INTO Artiste (nomArtiste) VALUES (?)';
+
+        $stmt = $this->pdo->prepare($req);
+
+        $nom = $artiste->getNom();
+
+        $stmt->bindParam(1, $nom);
+
+        $stmt->execute();
     }
 
 }
