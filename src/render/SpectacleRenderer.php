@@ -218,7 +218,7 @@ class SpectacleRenderer implements Renderer {
 
     public function isCancelled() : string {
         $html = "";
-        $estAnnule = $this->spectacle->getEstAnnuleSpectacle($this->spectacle->getId());
+        $estAnnule =  SelectRepository::getInstance()->getEstAnnuleSpectacle($this->spectacle->getId());
         if ($estAnnule === 1) {
             $html = "<p>Le spectacle est annulé</p>";
 
