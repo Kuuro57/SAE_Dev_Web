@@ -356,7 +356,7 @@ class SelectRepository extends Repository
 
     /**
      * Méthode qui renvoie la liste de tous les styles
-     * @return array Liste de styles
+     * @return Style[] Liste de styles
      */
     public function getStyles(): array
     {

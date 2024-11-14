@@ -18,6 +18,7 @@ class TriDateAction extends Action
      *
      * render chaque spectacle de la liste
      * @return string
+     * @throws \DateMalformedStringException
      */
 
     public function execute(): string
@@ -44,9 +45,13 @@ class TriDateAction extends Action
             }
 
             return $res;
-        } // Sinon si la classe est DispatcherAffichageSpectacles
-        elseif ($nomClasse === "DispatcherAffichageSpectacles") {
 
+        }
+
+
+
+        // Sinon si la classe est DispatcherAffichageSpectacles
+        elseif ($nomClasse === "DispatcherAffichageSpectacles") {
 
             // Récupération des spectacles
             $r = SelectRepository::getInstance();
@@ -71,14 +76,16 @@ class TriDateAction extends Action
             }
             // on crée un tableau qui contiendra les spectacles triés par date plus les spectacles restants
             $listeSpectacle = array_merge($listeSpectacleAvecDate, $listeSpectaclesRestants); // On fusionne les deux tableaux
+
             // On affiche la liste des spectacles
             $res = "";
-            /** @var Spectacle $spectacle */
             foreach ($listeSpectacle as $spectacle) {
                 $renderer = new SpectacleRenderer($spectacle);
                 $res .= $renderer->render(2);
             }
 
-        }return $res;
+        }
+
+        return $res;
     }
 }
