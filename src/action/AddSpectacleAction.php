@@ -274,7 +274,7 @@ class AddSpectacleAction extends Action {
                 Fichier Audio : <input type="file" name="fichierAudio" placeholder="<fichierAudio>">
                 Image : <input type="file" name="fichierImage" placeholder="<fichierImage>">
                 <button type="submit" name="valider" class="button"> Valider </button>
-            </form>';
+            </form>
             END;
     }
 
