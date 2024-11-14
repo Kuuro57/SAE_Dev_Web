@@ -8,6 +8,7 @@ use iutnc\sae_dev_web\action\AddLieuAction;
 use iutnc\sae_dev_web\action\AddSoireeAction;
 use iutnc\sae_dev_web\action\AddSpectacleAction;
 use iutnc\sae_dev_web\action\AddUtilisateurAction;
+use iutnc\sae_dev_web\action\RemplirSoireeAction;
 use iutnc\sae_dev_web\action\DefaultAction;
 use iutnc\sae_dev_web\action\SeConnecterAction;
 use iutnc\sae_dev_web\action\SeDeconnecterAction;
@@ -41,6 +42,10 @@ class DispatcherIndex {
 
             case "add-spectacle" :
                 $class = new AddSpectacleAction();
+                break;
+
+            case "remplir-soiree" :
+                $class = new RemplirSoireeAction();
                 break;
 
             case "add-utilisateur" :
@@ -144,8 +149,10 @@ class DispatcherIndex {
                         <a href="afficherSpectacles.php?action=default"> Nos spectacles </a>
                         <a href="?action=add-soiree">Ajouter une soirée</a>
                         <a href="?action=add-spectacle">Ajouter un spectacle</a>
+                        <a href="?action=remplir-soiree">Programmer une soirée</a>
                         <a href="?action=add-lieu">Ajouter un lieu</a>
                         <a href="?action=add-style">Ajouter un style</a>
+                        
                 </nav>
             
             <div class="container">
