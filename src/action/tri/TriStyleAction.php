@@ -30,7 +30,7 @@ class TriStyleAction extends Action
 
             // Récupération des soirees
             $r = SelectRepository::getInstance();
-            $listeSoirees = $r->getSoirees('action');
+            $listeSoirees = $r->getSoirees('style');
 
 
             // On affiche la liste des soirees

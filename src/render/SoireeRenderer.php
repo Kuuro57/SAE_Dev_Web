@@ -43,12 +43,45 @@ class SoireeRenderer implements Renderer {
 
     /**
      * Méthode renderCompact qui permet d'afficher en format HTML compact
-     * cette méthode n'est pas utilisé
+     *
      * @return string Un texte en format HTML
      */
-    public function renderCompact() : string {
-        return "";
+    public function renderCompact(): string {
+        $nom = $this->soiree->getNom();
+        $theme = $this->soiree->getThematique()->getNom();
+        $date = $this->soiree->getDate();
+        $heureD = $this->soiree->calculHeureDebut();
+        $heureF = $this->soiree->calculHeureFin();
+        $horaire = $heureD . "-" . $heureF;
+        $lieu = $this->soiree->getLieu()->getNom();
+        $tarif = $this->soiree->getTarif();
+        $spectaclesListe = $this->soiree->getListeSpectacle();
+
+        // Création des liens pour chaque spectacle
+        if (count($spectaclesListe) > 0) {
+            $spectacles = "";
+            foreach ($spectaclesListe as $spectacle) {
+                $id = (string)$spectacle->getId();
+                $href = "?action=display-soiree-liste-spectacles&id=$id";  // Lien avec l'action et l'id du spectacle
+                $lien = "<a href='$href'>" . $spectacle->getNom() . "</a>";
+                $spectacles .= $lien . "<br>";
+            }
+        } else {
+            $spectacles = "<p>Aucun spectacle pour cette soirée</p>";
+        }
+
+        // Retourne la soirée avec les spectacles sous forme de liens
+        return "<div id='soiree'>
+                <p><strong>$nom</strong> <br>
+                <strong>Thématique</strong> - $theme <br>
+                <strong>Date</strong> - $date <br>
+                <strong>Horaire</strong> - $horaire <br>
+                <strong>Lieu</strong> - $lieu <br>
+                <strong>Tarif</strong> - $tarif <br>
+                <strong>Spectacles</strong> - $spectacles <br>
+            </div>";
     }
+
 
     /**
      * Méthode renderLong qui permet d'afficher en format HTML long
