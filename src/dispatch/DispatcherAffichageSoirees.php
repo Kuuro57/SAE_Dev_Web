@@ -5,6 +5,7 @@ namespace iutnc\sae_dev_web\dispatch;
 
 
 use iutnc\sae_dev_web\action\AddUtilisateurAction;
+use iutnc\sae_dev_web\action\DisplaySoireeListeSpectacle;
 use iutnc\sae_dev_web\action\SeConnecterAction;
 use iutnc\sae_dev_web\action\SeDeconnecterAction;
 use iutnc\sae_dev_web\action\tri\TriDateAction;
@@ -45,6 +46,9 @@ class DispatcherAffichageSoirees {
 
             case "tri-style" :
                 $class = new TriStyleAction();
+                break;
+            case "display-soiree-liste-spectacles" :
+                $class = new DisplaySoireeListeSpectacle();
                 break;
 
             default : // Tri par date
@@ -119,9 +123,11 @@ class DispatcherAffichageSoirees {
                 
                 <nav>
                         <a href="index.php?action=default">Accueil</a>
+                        <a href="?action=display-soiree-liste-spectacles">Soirées</a>
                         <a href="?action=tri-date">Trier par date</a>
                         <a href="?action=tri-lieu">Trier par lieu</a>
                         <a href="?action=tri-style">Trier par thematique </a>
+                        
                 </nav>
             
                 <div class="container">
