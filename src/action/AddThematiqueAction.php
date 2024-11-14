@@ -31,8 +31,7 @@ class AddThematiqueAction extends Action {
                 $db->ajouterThematique($theme);
                 $res = '<h1>Thématique ajoutée</h1>';
             } catch (\PDOException $e) {
-                $res = '<h1>Erreur lors de lajout de la thématique</h1>';
-                $res = $e->getMessage();
+                $res = '<h1>Erreur lors de lajout de la thématique</h1>' . $e->getMessage();
             }
         }
         return $res;
