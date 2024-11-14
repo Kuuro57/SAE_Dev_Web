@@ -86,6 +86,9 @@ class SpectacleRenderer implements Renderer {
         else {
             $images = "<p>Image non disponible</p>";
         }
+
+        $annule = $this->isCancelled();
+        
         return "
             <div id='spectacle'>
                 <p><strong>{$this->spectacle->getNom()}</strong> <br>
@@ -93,7 +96,7 @@ class SpectacleRenderer implements Renderer {
                 <p>
                     <strong>Heure</strong> - {$heureD->format('H:i')} / {$heureF->format('H:i')} <br>
                     <strong>Lieu</strong> - $lieu <br>
-                    isCancelled();
+                    $annule
                   
                 </p>
                 $images
@@ -193,6 +196,8 @@ class SpectacleRenderer implements Renderer {
                 Your browser does not support the video tag.
             </video>";
         }
+
+        $annule = $this->isCancelled();
         return "
             <div id='spectacle'>
                 <p><strong>{$this->spectacle->getNom()}</strong> <br>
@@ -206,7 +211,7 @@ class SpectacleRenderer implements Renderer {
                 <strong>Images</strong> - $images <br>
                 <strong>Audio</strong> - $audioListe <br>
                 <strong>Video</strong> - $videoListe <br>
-                isCancelled();
+                $annule
             </div>
         ";
     }
@@ -221,7 +226,6 @@ class SpectacleRenderer implements Renderer {
         $estAnnule =  SelectRepository::getInstance()->getEstAnnuleSpectacle($this->spectacle->getId());
         if ($estAnnule === 1) {
             $html = "<p>Le spectacle est annulé</p>";
-
         }
         return $html;
     }
