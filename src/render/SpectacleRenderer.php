@@ -93,9 +93,11 @@ class SpectacleRenderer implements Renderer {
                 <p>
                     <strong>Heure</strong> - {$heureD->format('H:i')} / {$heureF->format('H:i')} <br>
                     <strong>Lieu</strong> - $lieu <br>
+                    isCancelled();
                   
                 </p>
                 $images
+                
             </div>
         ";}
     /**
@@ -204,7 +206,25 @@ class SpectacleRenderer implements Renderer {
                 <strong>Images</strong> - $images <br>
                 <strong>Audio</strong> - $audioListe <br>
                 <strong>Video</strong> - $videoListe <br>
+                isCancelled();
             </div>
         ";
     }
+
+
+    /**
+     * Méthode qui permet de verifier si le spectacle est annulé
+     */
+
+    public function isCancelled() : string {
+        $html = "";
+        $estAnnule = $this->spectacle->getEstAnnuleSpectacle($this->spectacle->getId());
+        if ($estAnnule === 1) {
+            $html = "<p>Le spectacle est annulé</p>";
+
+        }
+        return $html;
+    }
+
+
 }
