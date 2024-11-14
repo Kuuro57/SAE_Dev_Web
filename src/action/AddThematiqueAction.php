@@ -27,7 +27,7 @@ class AddThematiqueAction extends Action {
             $db = InsertRepository::getInstance();
             try {
                 $db->ajouterThematique($theme);
-                $res = '<h1>Thèmatique ajoutée</h1>';
+                $res = '<h1>Thématique ajoutée</h1>';
             } catch (PDOException $e) {
                 $res = '<h1>Erreur lors de lajout de la thématique</h1>';
             }
