@@ -10,6 +10,7 @@ use iutnc\sae_dev_web\action\SeDeconnecterAction;
 use iutnc\sae_dev_web\action\tri\TriDateAction;
 use iutnc\sae_dev_web\action\tri\TriLieuAction;
 use iutnc\sae_dev_web\action\tri\TriStyleAction;
+use Super\SaeDevWeb\action\AddFavoriAction;
 
 /**
  * Classe qui représente le dispatcher de la page qui affiche les spectacles
@@ -41,6 +42,10 @@ class DispatcherAffichageSpectacles {
 
             case "tri-lieu" :
                 $class = new TriLieuAction();
+                break;
+
+            case "add-favs" :
+                $class = new AddFavoriAction();
                 break;
 
             case "tri-style" :
