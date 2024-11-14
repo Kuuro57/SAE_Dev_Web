@@ -118,14 +118,18 @@ class InsertRepository extends Repository {
 
     /**
      * Méthode qui ajoute un spectacle à une soirée
-     * @param int $idSpectacle L'id du spectacle à ajouter
-     * @param int $idSoiree L'id de la soirée à ajouter
+     * @param Soiree $soiree L'id de la soirée à ajouter
+     * @param Spectacle $spectacle L'id du spectacle à ajouter
+     *
      */
-    public function ajouterSpectacleToSoiree(int $idSpectacle, int $idSoiree): void {
+    public function ajouterSpectacleToSoiree(Soiree $soiree, Spectacle $spectacle): void {
 
-        $req = 'INSERT INTO programme(idSoiree, idSpectacle) VALUES(?, ?)';
+        $req = 'INSERT INTO Programme (idSoiree, idSpectacle) VALUES(?, ?)';
 
         $stmt = $this->pdo->prepare($req);
+
+        $idSoiree = $soiree->getId();
+        $idSpectacle = $spectacle->getId();
 
         $stmt->bindParam(1, $idSoiree);
         $stmt->bindParam(2, $idSpectacle);
