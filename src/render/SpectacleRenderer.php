@@ -104,7 +104,7 @@ class SpectacleRenderer implements Renderer {
                   
                 </p>
                 $images;<br>
-                <a href='?action=add-favs'><button>Ajouter dans mes favoris</button></a>
+                <button>Ajouter dans mes favoris</button>
             </div>
         ";}
     /**
