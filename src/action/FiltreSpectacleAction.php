@@ -21,9 +21,16 @@ class FiltreSpectacleAction extends Action
     public function execute(): string {
 
         // On récupère les variables du formulaire
-        $heureD = filter_var($_POST["heuresD"], FILTER_SANITIZE_SPECIAL_CHARS);
-        $style = filter_var($_POST["styles"], FILTER_SANITIZE_SPECIAL_CHARS);
-        $lieu = filter_var($_POST["lieux"], FILTER_SANITIZE_SPECIAL_CHARS);
+        if (isset($_POST["heuresD"]) && isset($_POST["styles"]) && isset($_POST["lieux"])) {
+            $heureD = filter_var($_POST["heuresD"], FILTER_SANITIZE_SPECIAL_CHARS);
+            $style = filter_var($_POST["styles"], FILTER_SANITIZE_SPECIAL_CHARS);
+            $lieu = filter_var($_POST["lieux"], FILTER_SANITIZE_SPECIAL_CHARS);
+        }
+        else {
+            $heureD = null;
+            $style = null;
+            $lieu = null;
+        }
 
         if ($heureD === "0") {
             $heureD = null;

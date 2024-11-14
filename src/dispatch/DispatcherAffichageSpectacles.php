@@ -5,11 +5,13 @@ namespace iutnc\sae_dev_web\dispatch;
 
 
 use iutnc\sae_dev_web\action\AddUtilisateurAction;
+use iutnc\sae_dev_web\action\FiltreSpectacleAction;
 use iutnc\sae_dev_web\action\SeConnecterAction;
 use iutnc\sae_dev_web\action\SeDeconnecterAction;
 use iutnc\sae_dev_web\action\tri\TriDateAction;
 use iutnc\sae_dev_web\action\tri\TriLieuAction;
 use iutnc\sae_dev_web\action\tri\TriStyleAction;
+use iutnc\sae_dev_web\repository\SelectRepository;
 
 /**
  * Classe qui représente le dispatcher de la page qui affiche les spectacles
