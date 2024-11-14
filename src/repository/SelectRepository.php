@@ -691,6 +691,24 @@ class SelectRepository extends Repository
 
     }
 
+    public function getEstAnnuleSpectacle(int $idSpectacle) : int {
+        // Requête SQL qui récupère l'état d'annulation du spectacle
+        $querySQL = "SELECT estAnnule FROM Spectacle WHERE idSpectacle = ?";
+
+        // Préparation de la requête
+        $statement = $this->pdo->prepare($querySQL);
+        $statement->bindParam(1, $idSpectacle);
+
+        // Execution de la requête
+        $statement->execute();
+
+        // On récupère les données
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
+
+        // On retourne l'état d'annulation
+        return (int) $data['estAnnule'];
+    }
+
 }
 
 
