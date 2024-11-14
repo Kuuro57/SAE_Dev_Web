@@ -7,6 +7,7 @@ namespace iutnc\sae_dev_web\dispatch;
 use iutnc\sae_dev_web\action\AddLieuAction;
 use iutnc\sae_dev_web\action\AddSoireeAction;
 use iutnc\sae_dev_web\action\AddSpectacleAction;
+use iutnc\sae_dev_web\action\AddThematiqueAction;
 use iutnc\sae_dev_web\action\AddUtilisateurAction;
 use iutnc\sae_dev_web\action\DefaultAction;
 use iutnc\sae_dev_web\action\SeConnecterAction;
@@ -45,6 +46,10 @@ class DispatcherIndex {
 
             case "add-utilisateur" :
                 $class = new AddUtilisateurAction();
+                break;
+
+            case "add-theme" :
+                $class = new AddThematiqueAction();
                 break;
 
             case "se-connecter" :
@@ -146,6 +151,7 @@ class DispatcherIndex {
                         <a href="?action=add-spectacle">Ajouter un spectacle</a>
                         <a href="?action=add-lieu">Ajouter un lieu</a>
                         <a href="?action=add-style">Ajouter un style</a>
+                        <a href="?action=add-theme">Ajouter une thématique</a>
                 </nav>
             
             <div class="container">
