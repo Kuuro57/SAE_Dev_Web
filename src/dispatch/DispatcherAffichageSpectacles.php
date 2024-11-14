@@ -104,6 +104,24 @@ class DispatcherAffichageSpectacles {
         $renderModeChecked = $renderMode === 'long' ? 'checked' : '';
         $nvRenderMode = $renderMode === 'long' ? 'compact' : 'long';
 
+        
+        // Si le mode d'affichage utilise le filtre
+        if ($_GET['action'] === 'filtre') {
+            // On affiche pas le bouton détaille
+            $btnDetaille = '';
+        }
+        // Sinon
+        else {
+            // On l'affiche
+            $btnDetaille = <<<END
+            <label>Detaillé <input type="checkbox" name="checkBoxDetail"
+            onchange="window.location.href='?action={$_GET['action']}&renderMode={$nvRenderMode}';" 
+            {$renderModeChecked}></label>
+        END;
+
+        }
+
+
         $formulaire = $this->getFormulaire();
 
         // On affiche sur la page son contenu
@@ -139,9 +157,7 @@ class DispatcherAffichageSpectacles {
                         <a href="?action=tri-date&renderMode={$renderMode}">Trier par date</a>
                         <a href="?action=tri-lieu&renderMode={$renderMode}">Trier par lieu</a>
                         <a href="?action=tri-style&renderMode={$renderMode}">Trier par style</a>
-                       <label>Detaillé <input type="checkbox" name="checkBoxDetail"
-                        onchange="window.location.href='?action={$_GET['action']}&renderMode={$nvRenderMode}';" 
-                        {$renderModeChecked}></label>
+                        $btnDetaille
                 </nav>
             
                 <div class="container">
@@ -178,12 +194,14 @@ END;
         // Liste qui contient toutes les horaires
         $listeHoraires = [];
 
-        // On créé la liste déroulante des dates de début des spectacles (= soirées)
+
+
+        // On créé la liste déroulante des heures de début des spectacles (= soirées)
         foreach ($listeSpectacles as $spectacles) {
-            $listeDatesSpectacles[] = $selectRepo->getSpectacle($spectacles->getId());
+            $listeHeureSpectacles[] = $selectRepo->getSpectacle($spectacles->getId());
         }
-        $listeDeroulanteHoraire = '<select name="heuresD"> <option value="0"> -- Choisissez une date -- </option>';
-        foreach ($listeDatesSpectacles as $spectacle) {
+        $listeDeroulanteHoraire = '<select name="heuresD"> <option value="0"> -- Choisissez un horaire -- </option>';
+        foreach ($listeHeureSpectacles as $spectacle) {
             // Si l'horaire n'est pas déjà présent
             if (!key_exists($spectacle->getHeureDebut(), $listeHoraires)) {
                 // On ajoute l'horaire à la liste déroulante
@@ -194,6 +212,27 @@ END;
         }
         $listeDeroulanteHoraire .= "</select>";
 
+
+
+        // On créé la liste déroulante des dates des soirées
+        $listeDates = [];
+        foreach ($listeSpectacles as $spectacle) {
+            $listeDatesSpectacles[] = $selectRepo->getDateSpectacle($spectacle->getId());
+        }
+        $listeDeroulanteDate = '<select name="dates"> <option value="0"> -- Choisissez une date -- </option>';
+        foreach ($listeDatesSpectacles as $date) {
+            // Si la date n'est pas déjà présent
+            if (!key_exists($date, $listeDates)) {
+                // On ajoute la date à la liste déroulante
+                $listeDeroulanteDate .= "<option value='{$date}'> {$date} </option>";
+                // On ajoute la date à la liste des horaires
+                $listeHoraires[$date] = $date;
+            }
+        }
+        $listeDeroulanteDate .= "</select>";
+
+
+
         // On créé la liste déroulant des style des spectacles
         $listeStylesSpectacles = $selectRepo->getStyles();
         $listeDeroulanteStyles = '<select name="styles"> <option value="0"> -- Choisissez un style -- </option>';
@@ -201,6 +240,8 @@ END;
             $listeDeroulanteStyles .= "<option value='{$style->getNom()}'> {$style->getNom()} </option>";
         }
         $listeDeroulanteStyles .= "</select>";
+
+
 
         // On créé la liste déroulant des lieu des spectacles (= soirées)
         $listeLieuxSpectacles = $selectRepo->getLieux();
@@ -210,11 +251,14 @@ END;
         }
         $listeDeroulanteLieux .= "</select>";
 
+
+
         // On renvoie le formulaire complet
         return <<<END
             
             <form method="post" name="" action="?action=filtre">
                 $listeDeroulanteHoraire
+                $listeDeroulanteDate
                 $listeDeroulanteStyles
                 $listeDeroulanteLieux
                 <button type="submit" name="valider" class="button"> Valider </button>

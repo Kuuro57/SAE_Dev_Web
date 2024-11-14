@@ -80,7 +80,7 @@ class SpectacleRenderer implements Renderer {
         if (count($imagestab) > 0) {
             // pour chaque image du tab images on affiche l'image balise img avec la src de l'image
             foreach ($imagestab as $image) {
-                $images .= "<img src='{image/{$image->getNomFichierImage()}' alt='Image du spectacle'>";
+                $images.="<img src='image/{$image->getNomFichierImage()}' alt='Image du spectacle'>";
             }
         }
         else {

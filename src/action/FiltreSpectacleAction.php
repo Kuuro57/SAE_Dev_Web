@@ -3,6 +3,7 @@
 namespace iutnc\sae_dev_web\action;
 
 use iutnc\sae_dev_web\festival\Spectacle;
+use iutnc\sae_dev_web\render\Renderer;
 use iutnc\sae_dev_web\render\SpectacleRenderer;
 
 
@@ -21,16 +22,19 @@ class FiltreSpectacleAction extends Action
     public function execute(): string {
 
         // On récupère les variables du formulaire
-        if (isset($_POST["heuresD"]) && isset($_POST["styles"]) && isset($_POST["lieux"])) {
+        if (isset($_POST["heuresD"]) && isset($_POST["styles"]) && isset($_POST["lieux"]) && isset($_POST['dates'])) {
             $heureD = filter_var($_POST["heuresD"], FILTER_SANITIZE_SPECIAL_CHARS);
             $style = filter_var($_POST["styles"], FILTER_SANITIZE_SPECIAL_CHARS);
             $lieu = filter_var($_POST["lieux"], FILTER_SANITIZE_SPECIAL_CHARS);
+            $date = filter_var($_POST["dates"], FILTER_SANITIZE_SPECIAL_CHARS);
         }
         else {
             $heureD = null;
             $style = null;
             $lieu = null;
+            $date = null;
         }
+
 
         if ($heureD === "0") {
             $heureD = null;
@@ -44,8 +48,19 @@ class FiltreSpectacleAction extends Action
             $lieu = null;
         }
 
+        if ($date === "0") {
+            $date = null;
+        }
+
         // On appel la méthode qui récupère les spectacles filtrées
-        $listeSpectacle = $this->getSpectaclesFiltre($heureD, $style, $lieu);
+        $listeSpectacle = $this->getSpectaclesFiltre($heureD, $date, $style, $lieu);
+
+        // On récupère le mode d'affichage
+        if (isset($_GET['renderMode']) && $_GET['renderMode'] === 'court') {
+            $renderMode = Renderer::COMPACT;
+        } else {
+            $renderMode = Renderer::LONG;
+        }
 
         // On affiche la liste des spectacles
         $res = "";
@@ -53,7 +68,7 @@ class FiltreSpectacleAction extends Action
             // Si le spectacle n'est pas null
             if (!is_null($spectacle)) {
                 $renderer = new SpectacleRenderer($spectacle);
-                $res .= $renderer->render(2);
+                $res .= $renderer->render($renderMode);
             }
 
         }
@@ -64,16 +79,16 @@ class FiltreSpectacleAction extends Action
     }
 
 
-
     /**
      * Méthode qui retourne une liste des spectacles filtré
      *
      * @param string|null $heureD
+     * @param string|null $date
      * @param string|null $style
      * @param string|null $lieu
      * @return Spectacle[]
      */
-    public function getSpectaclesFiltre(?string $heureD, ?string $style, ?string $lieu) : array {
+    public function getSpectaclesFiltre(?string $heureD, ?string $date, ?string $style, ?string $lieu) : array {
 
         // On récupère tous les spectacles
         $listeSpectacles = $this->selectRepo->getSpectacles(null);
@@ -88,6 +103,22 @@ class FiltreSpectacleAction extends Action
 
                 if (!($spectacle->getHeureDebut() === $heureD)) {
                     $listeSpectacles[$i] = null;
+                }
+                $i++;
+            }
+        }
+
+        // Si l'utilisateur veut filtrer sur la date
+        if (!is_null($date)) {
+
+            // On prend dans la liste des spectacles seulement les spectacles qui ont la même date
+            $i = 0;
+            foreach ($listeSpectacles as $spectacle) {
+
+                if (!is_null($spectacle)) {
+                    if (!($this->selectRepo->getDateSpectacle($spectacle->getId()) === $date)) {
+                        $listeSpectacles[$i] = null;
+                    }
                 }
                 $i++;
             }
