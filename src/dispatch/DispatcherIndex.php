@@ -4,6 +4,7 @@ namespace iutnc\sae_dev_web\dispatch;
 
 
 
+use iutnc\sae_dev_web\action\AddArtisteAction;
 use iutnc\sae_dev_web\action\AddLieuAction;
 use iutnc\sae_dev_web\action\AddSoireeAction;
 use iutnc\sae_dev_web\action\AddSpectacleAction;
@@ -42,6 +43,10 @@ class DispatcherIndex {
 
             case "add-spectacle" :
                 $class = new AddSpectacleAction();
+                break;
+
+            case "add-artiste" :
+                $class = new AddArtisteAction();
                 break;
 
             case "remplir-soiree" :
@@ -150,6 +155,7 @@ class DispatcherIndex {
                         <a href="?action=add-soiree">Ajouter une soirée</a>
                         <a href="?action=add-spectacle">Ajouter un spectacle</a>
                         <a href="?action=remplir-soiree">Programmer une soirée</a>
+                        <a href="?action=add-artiste">Ajouter un artiste</a>
                         <a href="?action=add-lieu">Ajouter un lieu</a>
                         <a href="?action=add-style">Ajouter un style</a>
                         
