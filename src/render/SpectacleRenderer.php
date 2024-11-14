@@ -110,7 +110,8 @@ class SpectacleRenderer implements Renderer {
                     $annule
                   
                 </p>
-                $images;
+                $images;<br>
+                <a href='?action=add-favs'><button>Ajouter dans mes favoris</button></a>
             </div>
         ";}
     /**
