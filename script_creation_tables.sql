@@ -55,7 +55,7 @@ CREATE TABLE VideoSpectacle (
 );
 
 CREATE TABLE ThematiqueSoiree (
-    idThematique INT(4),
+    idThematique INT(4) AUTO_INCREMENT,
     nomThematique VARCHAR(50) NOT NULL,
     PRIMARY KEY (idThematique)
 );
