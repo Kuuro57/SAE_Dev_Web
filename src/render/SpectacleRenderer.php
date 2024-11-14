@@ -93,10 +93,9 @@ class SpectacleRenderer implements Renderer {
                 <p>
                     <strong>Heure</strong> - {$heureD->format('H:i')} / {$heureF->format('H:i')} <br>
                     <strong>Lieu</strong> - $lieu <br>
-                    // pour chaque image du tab images on affiche l'image
                   
                 </p>
-                $images;
+                $images
             </div>
         ";}
     /**
