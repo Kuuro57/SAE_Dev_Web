@@ -19,6 +19,24 @@ class AddStyleAction extends Action
                         </form>';
 
     public function execute(): string {
+
+        // Si l'utilisateur n'est pas connecté
+        if (!isset($_SESSION['user'])) {
+            // On renvoie un message comme quoi il n'a pas les permissions
+            return '<p> Vous n\'avez pas les permissions requises ! Connectez-vous à un compte STAFF ou ADMIN </p>';
+
+        }
+        // Sinon
+        else {
+            // Si le compte à les permissions STANDARD
+            if ((int)$_SESSION['user']['role'] === 1) {
+                // On renvoie un message comme quoi il n'a pas les permissions
+                return '<p> Vous n\'avez pas les permissions requises ! Connectez-vous à un compte STAFF ou ADMIN </p>';
+            }
+        }
+
+
+
         if ($this->http_method == "GET") {
             $res = '<h1>Ajouter un style</h1>' . $this->formulaire;
         } else {

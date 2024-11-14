@@ -8,6 +8,7 @@ use iutnc\sae_dev_web\action\AddArtisteAction;
 use iutnc\sae_dev_web\action\AddLieuAction;
 use iutnc\sae_dev_web\action\AddSoireeAction;
 use iutnc\sae_dev_web\action\AddSpectacleAction;
+use iutnc\sae_dev_web\action\AddStaffAction;
 use iutnc\sae_dev_web\action\AddThematiqueAction;
 use iutnc\sae_dev_web\action\AddUtilisateurAction;
 use iutnc\sae_dev_web\action\RemplirSoireeAction;
@@ -58,6 +59,10 @@ class DispatcherIndex {
                 $class = new AddUtilisateurAction();
                 break;
 
+            case "add-staff" :
+                $class = new AddStaffAction();
+                break;
+
             case "add-theme" :
                 $class = new AddThematiqueAction();
                 break;
@@ -104,29 +109,73 @@ class DispatcherIndex {
         $btnConnexion = '';
         $btnDeconnexion = '';
         $btnCreationCompte = '';
+        $btnCreationCompteStaff = '';
+        $liensAjout = '';
         $email = '';
         $role = '';
 
         // Si l'utilisateur est connecté
         if (isset($_SESSION['user'])) {
-            // On crée son email et son rôle (ADMIN ou STANDARD)
-            $email = 'Connecté au compte : ' . $_SESSION['user']['email'];
-            if ((int) $_SESSION['user']['role'] === 1) { $role = 'Vos permissions : STANDARD'; }
-            elseif ((int) $_SESSION['user']['role'] === 100) { $role = 'Vos permissions : ADMIN'; }
-            else { $role = 'Vos permissions : Undefined'; }
 
             // On crée le bouton de déconnexion
             $btnDeconnexion = '<button name="action" value="se-deconnecter"> Se déconnecter </button>';
+
+            // Si l'utilisateur est connecté en tant que STANDARD
+            if ((int) $_SESSION['user']['role'] === 1) {
+                // On affiche son email et son rôle
+                $email = 'Connecté au compte : ' . $_SESSION['user']['email'];
+                $role = 'Vos permissions : STANDARD';
+            }
+
+            // Sinon si l'utilisateur est connecté en tant que STAFF
+            else if ((int) $_SESSION['user']['role'] === 90) {
+                // On affiche son email et son rôle
+                $email = 'Connecté au compte : ' . $_SESSION['user']['email'];
+                $role = 'Vos permissions : STAFF';
+                // On affiche les lien cliquable pour ajouter
+                $liensAjout = <<<END
+                    <a href="?action=add-soiree">Ajouter une soirée</a>
+                    <a href="?action=add-spectacle">Ajouter un spectacle</a>
+                    <a href="?action=remplir-soiree">Programmer une soirée</a>
+                    <a href="?action=add-artiste">Ajouter un artiste</a>
+                    <a href="?action=add-lieu">Ajouter un lieu</a>
+                    <a href="?action=add-style">Ajouter un style</a>
+                    <a href="?action=add-theme">Ajouter une thématique</a>
+                END;
+            }
+
+            // Sinon si l'utilisateur est connecté en tant que ADMIN
+            else if ((int) $_SESSION['user']['role'] === 100) {
+                // On affiche son email et son rôle
+                $email = 'Connecté au compte : ' . $_SESSION['user']['email'];
+                $role = 'Vos permissions : ADMIN';
+                // On affiche les lien cliquable pour ajouter
+                $liensAjout = <<<END
+                    <a href="?action=add-soiree">Ajouter une soirée</a>
+                    <a href="?action=add-spectacle">Ajouter un spectacle</a>
+                    <a href="?action=remplir-soiree">Programmer une soirée</a>
+                    <a href="?action=add-artiste">Ajouter un artiste</a>
+                    <a href="?action=add-lieu">Ajouter un lieu</a>
+                    <a href="?action=add-style">Ajouter un style</a>
+                    <a href="?action=add-theme">Ajouter une thématique</a>
+                END;
+                // On affiche le bouton pour créer un compte STAFF
+                $btnCreationCompteStaff = '<button name="action" value="add-staff"> Créer compte STAFF </button>';
+            }
+
         }
         // Sinon
         else {
             // On crée le bouton de connexion
             $btnConnexion = '<button name="action" value="se-connecter"> Connexion </button>';
             // On crée le bouton de création d'un compte
-            $btnCreationCompte = '<button name="action" value="add-utilisateur"> Créer son compte </button>';
+            $btnCreationCompte = '<button name="action" value="add-utilisateur"> Inscription </button>';
         }
 
-        
+
+
+
+
         
         // On affiche sur la page son contenu
         echo <<<END
@@ -152,18 +201,13 @@ class DispatcherIndex {
                     $btnConnexion
                     $btnDeconnexion
                     $btnCreationCompte
+                    $btnCreationCompteStaff
                 </form>
                 
                 <nav>
                         <a href="afficherSoirees.php?action=default">Notre programme</a>
                         <a href="afficherSpectacles.php?action=default"> Nos spectacles </a>
-                        <a href="?action=add-soiree">Ajouter une soirée</a>
-                        <a href="?action=add-spectacle">Ajouter un spectacle</a>
-                        <a href="?action=remplir-soiree">Programmer une soirée</a>
-                        <a href="?action=add-artiste">Ajouter un artiste</a>
-                        <a href="?action=add-lieu">Ajouter un lieu</a>
-                        <a href="?action=add-style">Ajouter un style</a>
-                        <a href="?action=add-theme">Ajouter une thématique</a>
+                        $liensAjout
                 </nav>
             
             <div class="container">
