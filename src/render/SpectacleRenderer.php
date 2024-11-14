@@ -16,7 +16,7 @@ class SpectacleRenderer implements Renderer {
     // Attribut
     private Spectacle $spectacle;
 
-
+    private array $listeFavs;
 
     /**
      * Constructeur de la classe
@@ -24,6 +24,13 @@ class SpectacleRenderer implements Renderer {
     public function __construct(Spectacle $spectacle) {
 
         $this->spectacle = $spectacle;
+    }
+
+    public function ajouterFav(Spectacle $spec): void {
+
+        $id = $spec->getId();
+        array_push($this->listeFavs, $id);
+
     }
 
 
@@ -84,7 +91,7 @@ class SpectacleRenderer implements Renderer {
         if (count($imagestab) > 0) {
             // pour chaque image du tab images on affiche l'image balise img avec la src de l'image
             foreach ($imagestab as $image) {
-                $images.="<img src='image/{$image->getNomFichierImage()}' alt='Image du spectacle'>";
+                $images .= "<img src='{image/{$image->getNomFichierImage()}' alt='Image du spectacle'>";
             }
         }
         else {
@@ -103,8 +110,7 @@ class SpectacleRenderer implements Renderer {
                     $annule
                   
                 </p>
-                $images
-                
+                $images;
             </div>
         ";}
     /**

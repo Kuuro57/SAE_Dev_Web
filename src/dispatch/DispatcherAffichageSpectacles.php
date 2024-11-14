@@ -48,6 +48,10 @@ class DispatcherAffichageSpectacles {
                 $class = new TriLieuAction();
                 break;
 
+            case "add-favs" :
+                $class = new AddFavoriAction();
+                break;
+
             case "tri-style" :
                 $class = new TriStyleAction();
                 break;
