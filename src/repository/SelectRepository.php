@@ -197,7 +197,7 @@ class SelectRepository extends Repository
      * @param int $idSoiree Id de la soirée
      * @return Soiree Objet de type Soiree
      */
-    private function getSoiree(int $idSoiree) : Soiree {
+    public function getSoiree(int $idSoiree) : Soiree {
 
         // Requête SQL qui récupère les données de la soirée
         $querySQL = "SELECT idSoiree, nomSoiree, tarif, idLieu, idThematique, estAnnule, dateSoiree FROM Soiree
