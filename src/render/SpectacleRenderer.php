@@ -12,27 +12,12 @@ class SpectacleRenderer implements Renderer {
     // Attribut
     private Spectacle $spectacle;
 
-    private array $listeFavs;
-    private bool $hide1;
-    private bool $hide2;
-
     /**
      * Constructeur de la classe
      */
     public function __construct(Spectacle $spectacle) {
 
         $this->spectacle = $spectacle;
-    }
-
-    public function ajouterFav(Spectacle $spec): void {
-
-        $id = $spec->getId();
-        array_push($this->listeFavs, $id);
-
-        $val = serialize($this->listeFavs);
-        $exp = time() + 30 * 24 * 60 * 60;
-        setcookie("Favoris", $val, $exp);
-
     }
 
 
@@ -99,6 +84,7 @@ class SpectacleRenderer implements Renderer {
         else {
             $images = "<p>Image non disponible</p>";
         }
+        $idSp = $this->spectacle->getId();
         return "
             <div id='spectacle'>
                 <p><strong>{$this->spectacle->getNom()}</strong> <br>
@@ -110,6 +96,9 @@ class SpectacleRenderer implements Renderer {
                   
                 </p>
                 $images;<br>
+                
+                <a href='?action=toggle-fav&idSp=$idSp'><button>Ajouter aux favoris</button></a>
+                <a href='?action=toggle-fav&idSp=$idSp'><button>Supprimer des favoris</button></a>
             </div>
         ";}
     /**
@@ -205,6 +194,8 @@ class SpectacleRenderer implements Renderer {
                 Your browser does not support the video tag.
             </video>";
         }
+
+        $idSp = $this->spectacle->getId();
         return "
             <div id='spectacle'>
                 <p><strong>{$this->spectacle->getNom()}</strong> <br>
@@ -218,8 +209,8 @@ class SpectacleRenderer implements Renderer {
                 <strong>Images</strong> - $images <br>
                 <strong>Audio</strong> - $audioListe <br>
                 <strong>Video</strong> - $videoListe <br>
-                <a href='?action=toggle-fav' hidden='$hide1'><button hidden='$hide1'>Ajouter aux favoris</button></a>
-                <a href='?action=toggle-fav' hidden='$hide2'><button hidden='$hide2'>Supprimer des favoris</button></a>
+                <a href='?action=toggle-fav&idSp=$idSp'><button>Ajouter aux favoris</button></a>
+                <a href='?action=toggle-fav&idSp=$idSp'><button>Supprimer des favoris</button></a>
             </div>
         ";
     }
