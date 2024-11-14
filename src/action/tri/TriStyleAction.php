@@ -4,6 +4,7 @@ namespace iutnc\sae_dev_web\action\tri;
 
 use iutnc\sae_dev_web\action\Action;
 use iutnc\sae_dev_web\festival\Spectacle;
+use iutnc\sae_dev_web\render\Renderer;
 use iutnc\sae_dev_web\render\SoireeRenderer;
 use iutnc\sae_dev_web\render\SpectacleRenderer;
 use iutnc\sae_dev_web\repository\SelectRepository;
@@ -19,6 +20,14 @@ class TriStyleAction extends Action
      */
     public function execute(): string
     {
+
+        // Récupère le mode de rendu depuis l'URL (compact par défaut)
+
+        if (isset($_GET['renderMode']) && $_GET['renderMode'] === 'long') {
+            $renderMode = Renderer::LONG;
+        } else {
+            $renderMode = Renderer::COMPACT;
+        }
 
         // On récupère le nom de la classe qui appel cette méthode
         $nomClasseAppelee = debug_backtrace()[1]['class'];
@@ -37,13 +46,12 @@ class TriStyleAction extends Action
             $res = "";
             foreach ($listeSoirees as $soiree) {
                 $renderer = new SoireeRenderer($soiree);
-                $res .= $renderer->render(2);
+                $res .= $renderer->render($renderMode);
             }
 
             return $res;
         } // Sinon si la classe est DispatcherAffichageSpectacles
         elseif ($nomClasse === "DispatcherAffichageSpectacles") {
-
 
         // Récupération des spectacles
         $r = SelectRepository::getInstance();
@@ -75,7 +83,7 @@ class TriStyleAction extends Action
         /** @var Spectacle $spectacle */
         foreach ($listeSpectacle as $spectacle) {
             $renderer = new SpectacleRenderer($spectacle);
-            $res .= $renderer->render(2);
+            $res .= $renderer->render($renderMode);
         }
 
     } return $res;

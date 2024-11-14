@@ -25,6 +25,9 @@ class DispatcherAffichageSpectacles {
             $_GET['action'] = '';
         }
 
+        // On initialise la variable de mode de rendu, compact par défaut
+        $renderMode = $_GET['renderMode'] ?? 'compact';
+
         switch ($_GET['action']) {
 
             case "se-connecter" :
@@ -54,7 +57,7 @@ class DispatcherAffichageSpectacles {
         }
 
         // On affiche la page en executant la méthode execute d'une classe Action
-        $this->renderPage($class->execute());
+        $this->renderPage($class->execute(), $renderMode);
 
     }
 
@@ -63,7 +66,7 @@ class DispatcherAffichageSpectacles {
     /**
      * Méthode qui ajoute le morceau de page à la page complète
      */
-    private function renderPage(string $html) : void {
+    private function renderPage(string $html, string $renderMode) : void {
 
         // Initialisation des variables contenants les boutons et données au format HTML
         $btnConnexion = '';
@@ -90,6 +93,10 @@ class DispatcherAffichageSpectacles {
             // On crée le bouton de création d'un compte
             $btnCreationCompte = '<button name="action" value="add-utilisateur"> Créer son compte </button>';
         }
+
+        // Gestion de l'URL pour changer le mode d'affichage
+        $renderModeChecked = $renderMode === 'long' ? 'checked' : '';
+        $nvRenderMode = $renderMode === 'long' ? 'compact' : 'long';
 
         // On affiche sur la page son contenu
         echo <<<END
@@ -119,9 +126,12 @@ class DispatcherAffichageSpectacles {
                 
                 <nav>
                         <a href="index.php?action=default">Accueil</a>
-                        <a href="?action=tri-date">Trier par date</a>
-                        <a href="?action=tri-lieu">Trier par lieu</a>
-                        <a href="?action=tri-style">Trier par style</a>
+                        <a href="?action=tri-date&renderMode={$renderMode}">Trier par date</a>
+                        <a href="?action=tri-lieu&renderMode={$renderMode}">Trier par lieu</a>
+                        <a href="?action=tri-style&renderMode={$renderMode}">Trier par style</a>
+                       <label>Detaillé <input type="checkbox" name="checkBoxDetail"
+                        onchange="window.location.href='?action={$_GET['action']}&renderMode={$nvRenderMode}';" 
+                        {$renderModeChecked}></label>
                 </nav>
             
                 <div class="container">
