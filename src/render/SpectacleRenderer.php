@@ -13,6 +13,8 @@ class SpectacleRenderer implements Renderer {
     private Spectacle $spectacle;
 
     private array $listeFavs;
+    private bool $hide1;
+    private bool $hide2;
 
     /**
      * Constructeur de la classe
@@ -26,6 +28,10 @@ class SpectacleRenderer implements Renderer {
 
         $id = $spec->getId();
         array_push($this->listeFavs, $id);
+
+        $val = serialize($this->listeFavs);
+        $exp = time() + 30 * 24 * 60 * 60;
+        setcookie("Favoris", $val, $exp);
 
     }
 
@@ -104,7 +110,6 @@ class SpectacleRenderer implements Renderer {
                   
                 </p>
                 $images;<br>
-                <button>Ajouter dans mes favoris</button>
             </div>
         ";}
     /**
@@ -213,6 +218,8 @@ class SpectacleRenderer implements Renderer {
                 <strong>Images</strong> - $images <br>
                 <strong>Audio</strong> - $audioListe <br>
                 <strong>Video</strong> - $videoListe <br>
+                <a href='?action=toggle-fav' hidden='$hide1'><button hidden='$hide1'>Ajouter aux favoris</button></a>
+                <a href='?action=toggle-fav' hidden='$hide2'><button hidden='$hide2'>Supprimer des favoris</button></a>
             </div>
         ";
     }

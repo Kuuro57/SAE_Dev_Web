@@ -11,6 +11,7 @@ use iutnc\sae_dev_web\action\tri\TriDateAction;
 use iutnc\sae_dev_web\action\tri\TriLieuAction;
 use iutnc\sae_dev_web\action\tri\TriStyleAction;
 use Super\SaeDevWeb\action\AddFavoriAction;
+use Super\SaeDevWeb\action\ToggleFavori;
 
 /**
  * Classe qui représente le dispatcher de la page qui affiche les spectacles
@@ -46,6 +47,10 @@ class DispatcherAffichageSpectacles {
 
             case "tri-style" :
                 $class = new TriStyleAction();
+                break;
+
+            case "toggle-fav" :
+                $class = new ToggleFavori();
                 break;
 
             default : // Tri par date
