@@ -3,6 +3,7 @@
 namespace iutnc\sae_dev_web\action;
 
 use iutnc\sae_dev_web\festival\Thematique;
+use iutnc\sae_dev_web\repository\InsertRepository;
 
 class AddThematiqueAction extends Action {
 
@@ -28,7 +29,7 @@ class AddThematiqueAction extends Action {
             try {
                 $db->ajouterThematique($theme);
                 $res = '<h1>Thématique ajoutée</h1>';
-            } catch (PDOException $e) {
+            } catch (\PDOException $e) {
                 $res = '<h1>Erreur lors de lajout de la thématique</h1>';
             }
         }
