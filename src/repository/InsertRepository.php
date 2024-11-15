@@ -346,4 +346,17 @@ class InsertRepository extends Repository {
         $stmt->execute();
     }
 
+    public function ajouterPref($idUser, $idSpec) : void {
+
+        $req = 'INSERT INTO Listepreference(idUtilisateur, idSpectacle) VALUES(?, ?)';
+
+        $stmt = $this->pdo->prepare($req);
+
+        $stmt->bindParam(1, $idUser);
+        $stmt->bindParam(2, $idSpec);
+
+        $stmt->execute();
+
+    }
+
 }
