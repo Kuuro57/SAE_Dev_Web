@@ -8,12 +8,12 @@ use iutnc\sae_dev_web\repository\SelectRepository;
 
 class PreferencesAction extends Action {
 
-    private array $spec;
+
     public function execute(): string {
 
         $res = "";
 
-        if($_SESSION['user']['email'] == null){
+        if(!isset($_SESSION['user']['email'])){
 
             if (isset($_COOKIE["Favoris"])) {
 

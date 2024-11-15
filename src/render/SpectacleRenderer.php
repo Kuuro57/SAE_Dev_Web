@@ -4,6 +4,7 @@ namespace iutnc\sae_dev_web\render;
 
 use DateInterval;
 use DateTime;
+use iutnc\sae_dev_web\action\ToggleFavori;
 use iutnc\sae_dev_web\festival\Spectacle;
 use iutnc\sae_dev_web\repository\SelectRepository;
 
@@ -97,6 +98,45 @@ class SpectacleRenderer implements Renderer {
         $urlAjouterFavoris = "?action=toggle-fav&state=add&idSp=$idSp";
         $urlSupprimerFavoris = "?action=toggle-fav&state=sup&idSp=$idSp";
 
+
+        $repo = SelectRepository::getInstance();
+        $btnAdd_Fav = "";
+        $btnRemove_Fav = "";
+
+        // Si l'utilisateur n'est pas connecté et que le cookie contant les favoris n'est pas set
+        if (!isset($_SESSION['user']) && !isset($_COOKIE['Favoris'])) {
+            // La liste des id est vide
+            $listeIdSpectaclesFav = [];
+        }
+
+        // Sinon il l'utilisateur n'est pas connecté et que le cookie est créé
+        else if (!isset($_SESSION['user']) && isset($_COOKIE['Favoris'])) {
+            // On récupère la liste des spectacles favoris de l'utilisateur depuis le cookie
+            $listeIdSpectaclesFav = ToggleFavori::toArray($_COOKIE['Favoris']);
+        }
+
+        // Sinon (si il est connecté)
+        else {
+            // On récupère la liste des spectacles favoris de l'utilisateur depuis la BDD
+            $listeIdSpectaclesFav = $repo->getPrefs($repo->getIdFromEmail($_SESSION['user']['email']));
+        }
+
+
+        // Si l'id du spectacle est dans la liste des spectacles favoris
+        if (key_exists($idSp, $listeIdSpectaclesFav)) {
+            // On affiche le bouton pour supprimer le pectacle des favoris
+            $btnRemove_Fav = "<a href='?action=toggle-fav&state=sup&idSp=$idSp'><button>Supprimer des favoris</button></a>";
+        }
+        // Sinon
+        else {
+            // On affiche le bouton pour ajouter le spectacle dans les favoris
+            $btnAdd_Fav = "<a href='?action=toggle-fav&state=add&idSp=$idSp'><button>Ajouter aux favoris</button></a>";
+        }
+
+
+
+
+
         return "
             <div id='spectacle'>
                 <p>
@@ -106,8 +146,8 @@ class SpectacleRenderer implements Renderer {
                 <p>
                     <strong>Heure</strong> - {$heureD->format('H:i')} / {$heureF->format('H:i')} <br>
                     <strong>Lieu</strong> - $lieu <br>
-                    <a href='$urlAjouterFavoris'><button>Ajouter aux favoris</button></a>
-                    <a href='$urlSupprimerFavoris'><button>Supprimer des favoris</button></a>
+                    $btnAdd_Fav
+                    $btnRemove_Fav
                     $annule
                 </p>
 
@@ -209,12 +249,52 @@ class SpectacleRenderer implements Renderer {
             </video>";
         }
 
+
         $idSp = $this->spectacle->getId();
 
-        $urlAjouterFavoris = "?action=toggle-fav&state=add&idSp=$idSp";
-        $urlSupprimerFavoris = "?action=toggle-fav&state=sup&idSp=$idSp";
+
+        $repo = SelectRepository::getInstance();
+        $btnAdd_Fav = "";
+        $btnRemove_Fav = "";
+
+        // Si l'utilisateur n'est pas connecté et que le cookie contant les favoris n'est pas set
+        if (!isset($_SESSION['user']) && !isset($_COOKIE['Favoris'])) {
+            // La liste des id est vide
+            $listeIdSpectaclesFav = [];
+        }
+
+        // Sinon il l'utilisateur n'est pas connecté et que le cookie est créé
+        else if (!isset($_SESSION['user']) && isset($_COOKIE['Favoris'])) {
+            // On récupère la liste des spectacles favoris de l'utilisateur depuis le cookie
+            $listeIdSpectaclesFav = ToggleFavori::toArray($_COOKIE['Favoris']);
+        }
+
+        // Sinon (si il est connecté)
+        else {
+            // On récupère la liste des spectacles favoris de l'utilisateur depuis la BDD
+            $listeIdSpectaclesFav = $repo->getPrefs($repo->getIdFromEmail($_SESSION['user']['email']));
+        }
+
+
+        // Si l'id du spectacle est dans la liste des spectacles favoris
+        if (key_exists($idSp, $listeIdSpectaclesFav)) {
+            // On affiche le bouton pour supprimer le pectacle des favoris
+            $btnRemove_Fav = "<a href='?action=toggle-fav&state=sup&idSp=$idSp'><button>Supprimer des favoris</button></a>";
+        }
+        // Sinon
+        else {
+            // On affiche le bouton pour ajouter le spectacle dans les favoris
+            $btnAdd_Fav = "<a href='?action=toggle-fav&state=add&idSp=$idSp'><button>Ajouter aux favoris</button></a>";
+        }
+
+
 
         $annule = $this->isCancelled();
+
+
+
+
+
         return "
             <div id='spectacle'>
                 <p><strong>{$this->spectacle->getNom()}</strong> <br>
@@ -228,8 +308,8 @@ class SpectacleRenderer implements Renderer {
                 <strong>Images</strong> - $images <br>
                 <strong>Audio</strong> - $audioListe <br>
                 <strong>Video</strong> - $videoListe <br>
-                <a href='$urlAjouterFavoris'><button>Ajouter aux favoris</button></a>
-                <a href='$urlSupprimerFavoris'><button>Supprimer des favoris</button></a>
+                $btnAdd_Fav
+                $btnRemove_Fav
                 $annule
             </div>
         ";

@@ -114,7 +114,7 @@ class ToggleFavori extends Action {
     public static function toArray(string $s): array {
         $res = [];
         for($i = 0; $i < strlen($s); $i++) {
-            array_push($res, $s[$i]);
+            $res[$s[$i]] = $s[$i];
         }
 
         return $res;

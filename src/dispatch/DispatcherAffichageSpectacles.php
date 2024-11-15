@@ -90,6 +90,7 @@ class DispatcherAffichageSpectacles {
         $btnCreationCompte = '';
         $email = '';
         $role = '';
+        $formulaire = '';
 
         // Si l'utilisateur est connecté
         if (isset($_SESSION['user'])) {
@@ -153,7 +154,12 @@ class DispatcherAffichageSpectacles {
 
         }
 
-        $formulaire = $this->getFormulaire();
+        // Si on affiche autre chose que les préférences
+        if (!($_GET['action'] === 'preferences')) {
+            // On affiche le formulaire de filtrage
+            $formulaire = $this->getFormulaire();
+        }
+
 
 
 
@@ -190,6 +196,7 @@ class DispatcherAffichageSpectacles {
                 
                 <nav>
                         <a href="index.php?action=default">Accueil</a>
+                        <a href="?action=preferences">Vos préférences</a>
                         <a href="?action=tri-date&renderMode={$renderMode}">Trier par date</a>
                         <a href="?action=tri-lieu&renderMode={$renderMode}">Trier par lieu</a>
                         <a href="?action=tri-style&renderMode={$renderMode}">Trier par style</a>
@@ -204,9 +211,6 @@ class DispatcherAffichageSpectacles {
                     $html
                 </div>
                 <br>
-                <nav>
-                    <a href="?action=preferences">Vos préférences</a>
-                </nav>
                 
             <footer>
                 <p>@ALLART Noah, ARMBRUSTER Loup, DE WASCH Clement, DENIS Oscar, MANGIN Adrien</p>

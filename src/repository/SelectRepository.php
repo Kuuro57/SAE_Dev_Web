@@ -808,7 +808,7 @@ class SelectRepository extends Repository
 
         foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $donnee) {
             $spectacle = $this->getSpectacle((int) $donnee['idSpectacle']);
-            $data[] = $spectacle;
+            $data[(int) $donnee['idSpectacle']] = $spectacle;
         }
 
         return $data;
