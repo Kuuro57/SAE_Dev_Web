@@ -6,6 +6,7 @@ namespace iutnc\sae_dev_web\dispatch;
 
 use iutnc\sae_dev_web\action\AddUtilisateurAction;
 use iutnc\sae_dev_web\action\FiltreSpectacleAction;
+use iutnc\sae_dev_web\action\PreferencesAction;
 use iutnc\sae_dev_web\action\SeConnecterAction;
 use iutnc\sae_dev_web\action\SeDeconnecterAction;
 use iutnc\sae_dev_web\action\ToggleFavori;
@@ -59,6 +60,10 @@ class DispatcherAffichageSpectacles {
 
             case "filtre" :
                 $class = new FiltreSpectacleAction();
+                break;
+
+            case "preferences" :
+                $class = new PreferencesAction();
                 break;
 
             default :

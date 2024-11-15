@@ -65,6 +65,11 @@ class ToggleFavori extends Action {
 
         } else {
 
+            if(isset($_COOKIE["Favoris"])) {
+                setcookie("Favoris", "", time());
+                echo $_COOKIE["Favoris"];
+            }
+
             $repo = SelectRepository::getInstance();
             $insert = InsertRepository::getInstance();
             $delete = DeleteRepository::getInstance();
@@ -72,7 +77,7 @@ class ToggleFavori extends Action {
 
             if ($_GET["state"] == "add") {
 
-                $exist = $repo->existPref($idUser, $_GET["idSp"]);
+                $exist = $repo->existPref($idUser, (int)$_GET["idSp"]);
 
                 if(!$exist) {
                     $insert->ajouterPref($idUser, $_GET["idSp"]);

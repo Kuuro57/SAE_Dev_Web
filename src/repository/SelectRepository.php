@@ -739,7 +739,7 @@ class SelectRepository extends Repository
 
     }
 
-    public function existPref($idUser, $idSpec) {
+    public function existPref($idUser, $idSpec) : bool{
 
         $req = 'SELECT * from Listepreference WHERE idUtilisateur = ? AND idSpectacle = ?';
 
@@ -750,7 +750,7 @@ class SelectRepository extends Repository
 
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if(is_null($data)){
+        if ($data == null){
             return false;
         } else {
             return true;
