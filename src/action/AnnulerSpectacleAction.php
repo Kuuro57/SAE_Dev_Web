@@ -55,7 +55,7 @@ class AnnulerSpectacleAction extends Action {
         return <<<END
             <form method="post" name="" action="?action=annuler-spectacle" enctype="multipart/form-data">
                 $listeDeroulanteSpectacles <br>
-                <button type="submit" name="valider" class="button"> Valider </button>
+                <button type="submit" name="valider" id="btn_connexion"> Valider </button>
             </form>
             END;
 

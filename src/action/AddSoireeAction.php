@@ -49,10 +49,9 @@ class AddSoireeAction extends Action {
                 $listeDeroulanteThematiques<br>
                 <input type="number" name="tarif" placeholder="Tarif" required> <br>
                 <input type ="date" name="dateSoiree" placeholder="Date de la soirée" required> <br>
-                <button type="submit" name="valider" class="button"> Valider </button>
+                <button type="submit" name="valider" id="btn_connexion"> Valider </button>
             </form>
             END;
-        // TODO : Checkbox pour l'ajouter directement annulée ?
     }
 
 

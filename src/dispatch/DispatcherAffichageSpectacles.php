@@ -85,26 +85,26 @@ class DispatcherAffichageSpectacles {
         if (isset($_SESSION['user'])) {
 
             // On crée le bouton de déconnexion
-            $btnDeconnexion = '<button name="action" value="se-deconnecter"> Se déconnecter </button>';
+            $btnDeconnexion = '<button name="action" value="se-deconnecter" id="btn_connexion"> Se déconnecter </button>';
 
             // Si l'utilisateur est connecté en tant que STANDARD
             if ((int) $_SESSION['user']['role'] === 1) {
                 // On affiche son email et son rôle
-                $email = 'Connecté au compte : ' . $_SESSION['user']['email'];
+                $email = 'Connecté au compte : ' . $_SESSION['user']['email'] . "<br>";
                 $role = 'Vos permissions : STANDARD';
             }
 
             // Sinon si l'utilisateur est connecté en tant que STAFF
             else if ((int) $_SESSION['user']['role'] === 90) {
                 // On affiche son email et son rôle
-                $email = 'Connecté au compte : ' . $_SESSION['user']['email'];
+                $email = 'Connecté au compte : ' . $_SESSION['user']['email'] . "<br>";
                 $role = 'Vos permissions : STAFF';
             }
 
             // Sinon si l'utilisateur est connecté en tant que ADMIN
             else if ((int) $_SESSION['user']['role'] === 100) {
                 // On affiche son email et son rôle
-                $email = 'Connecté au compte : ' . $_SESSION['user']['email'];
+                $email = 'Connecté au compte : ' . $_SESSION['user']['email'] . "<br>";
                 $role = 'Vos permissions : ADMIN';
             }
 
@@ -112,9 +112,9 @@ class DispatcherAffichageSpectacles {
         // Sinon
         else {
             // On crée le bouton de connexion
-            $btnConnexion = '<button name="action" value="se-connecter"> Connexion </button>';
+            $btnConnexion = '<button name="action" value="se-connecter" id="btn_connexion"> Connexion </button>';
             // On crée le bouton de création d'un compte
-            $btnCreationCompte = '<button name="action" value="add-utilisateur"> Inscription </button>';
+            $btnCreationCompte = '<button name="action" value="add-utilisateur" id="btn_connexion"> Inscription </button>';
         }
 
 
@@ -148,28 +148,33 @@ class DispatcherAffichageSpectacles {
         // On affiche sur la page son contenu
         echo <<<END
     
-        <!DOCTYPE html >
-        <html lang="fr">
-        
-        <head>
-            <meta charset="utf-8">
-            <title> NRV Festival - Spectacles </title>
-            <link href="./css/style.css" rel="stylesheet">
-        </head>
-        
-        <body>
+        <!DOCTYPE html>
+            <html lang="fr">
             
-                <h1 id="mainTitle">NRV - Nancy Rock Vibration</h1>
-                <h2 id="secondTitle"> Nos Spectacles </h2>
-                
+            <head>
+                <meta charset="utf-8">
+                <title> NRV Festival - Accueil </title>
+                <link href="./css/style_spectacles.css" rel="stylesheet">
+            </head>
+            
+            <body>
+            
+                <h1 id="mainTitle"> NRV - Nancy Rock Vibration </h1>
+                <h2 id="secondTitle"> Accueil </h2>
+            
                 <form method="get">
-                    $email
-                    $role
-                
-                    $btnConnexion
-                    $btnDeconnexion
-                    $btnCreationCompte
+                    <div class="user-info">
+                        $email <br>
+                        $role
+                    </div>
+                    <div class="btn_connexion_container">
+                        $btnConnexion
+                        $btnDeconnexion
+                        $btnCreationCompte         
+                    </div>
                 </form>
+                
+                <br>
                 
                 $formulaire
                 

@@ -281,7 +281,7 @@ class AddSpectacleAction extends Action {
         $listeDeroulanteStyle .= '</select>';
         // On ajoute les deux listes au formulaire et on le renvoie
          return <<<END
-            <form method="post" name="" action="?action=add-spectacle" enctype="multipart/form-data">
+            <form method="post" name="" action="?action=add-spectacle" enctype="multipart/form-data" class="form-container">
                 <input type="text" name="nomSpec" placeholder="Nom du spectacle" required> 
                 $listeDeroulanteArtistes 
                 $listeDeroulanteStyle
