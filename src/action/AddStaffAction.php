@@ -58,15 +58,15 @@ class AddStaffAction extends Action {
         // Si l'utilisateur n'est pas connecté
         if (!isset($_SESSION['user'])) {
             // On renvoie un message comme quoi il n'a pas les permissions
-            return '<p> Vous n\'avez pas les permissions requises ! Connectez-vous à un compte STAFF ou ADMIN </p>';
+            return '<p> Vous n\'avez pas les permissions requises ! Connectez-vous à un compte ADMIN </p>';
 
         }
         // Sinon
         else {
-            // Si le compte à les permissions STANDARD
-            if ((int)$_SESSION['user']['role'] === 1) {
+            // Si le compte à les permissions STANDARD ou STAFF
+            if ((int)$_SESSION['user']['role'] === 1 || (int)$_SESSION['user']['role'] === 90) {
                 // On renvoie un message comme quoi il n'a pas les permissions
-                return '<p> Vous n\'avez pas les permissions requises ! Connectez-vous à un compte STAFF ou ADMIN </p>';
+                return '<p> Vous n\'avez pas les permissions requises ! Connectez-vous à un compte ADMIN </p>';
             }
         }
 
