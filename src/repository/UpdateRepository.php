@@ -46,8 +46,9 @@ class UpdateRepository extends Repository {
         $stmt = $this->pdo->prepare($req);
 
         // Execution de la requête
-        $stmt->execute([$spectacle->getNom(), $spectacle->getStyle()->getNom(), $spectacle->getArtiste()->getNom(), $spectacle->getHeureDebut(), $spectacle->getDuree(), $spectacle->getDescription(), $spectacle->getId()]);
-        return $spectacle;
+        $stmt->execute([$spectacle->getNom(), $spectacle->getStyle()->getId(), $spectacle->getArtiste()->getId(), $spectacle->getHeureDebut(), $spectacle->getDuree(), $spectacle->getDescription(), $spectacle->getId()]);
+        $spectacleRecup = SelectRepository::getInstance()->getSpectacle($spectacle->getId());
+        return $spectacleRecup;
     }
 
     /**

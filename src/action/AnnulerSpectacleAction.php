@@ -38,7 +38,7 @@ class AnnulerSpectacleAction extends Action {
         $listeSpectacle = SelectRepository::getInstance()->getSpectacles(null);
 
         // comboBox (liste déroulante) des Spectacles
-        $listeDeroulanteSpectacles = '<select name="listeSpectacles"> <option value=""> -- Choisissez un spectacle -- </option>';
+        $listeDeroulanteSpectacles = '<select name="listeSpectacles" class="input-field"> <option value=""> -- Choisissez un spectacle -- </option>';
         // pour chaque spectacle dans l'array des specs en BD, on ajoute une option à la liste déroulante
         // les noms sont associés à des ID, mais seul le nom est affiché, et sa valeur est l'ID
         foreach ($listeSpectacle as $spectacle) {
@@ -55,7 +55,7 @@ class AnnulerSpectacleAction extends Action {
         return <<<END
             <form method="post" name="" action="?action=annuler-spectacle" enctype="multipart/form-data">
                 $listeDeroulanteSpectacles <br>
-                <button type="submit" name="valider" class="button"> Valider </button>
+                <button type="submit" name="valider" id="btn_connexion"> Valider </button>
             </form>
             END;
 

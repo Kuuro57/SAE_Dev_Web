@@ -10,15 +10,17 @@ use iutnc\sae_dev_web\festival\Spectacle;
 use iutnc\sae_dev_web\festival\Video;
 use iutnc\sae_dev_web\repository\InsertRepository;
 use iutnc\sae_dev_web\repository\SelectRepository;
+use iutnc\sae_dev_web\repository\UpdateRepository;
 
 /**
  * Classe qui représente l'action d'ajouter un spectacle
  */
-class AddSpectacleAction extends Action {
+class ModifierSpectacleAction extends Action {
 
 
 
     public function execute(): string {
+        $updateRepo =UpdateRepository::getInstance();
 
         // Si l'utilisateur n'est pas connecté
         if (!isset($_SESSION['user'])) {
@@ -47,106 +49,68 @@ class AddSpectacleAction extends Action {
         // Sinon si la méthode HTTP est de type POST
         else if ($this->http_method === 'POST') {
 
-            // On récupère et filtre les données du formulaire
-            $nomSpec = filter_var($_POST['nomSpec'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $style = filter_var($_POST['style'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $artiste = filter_var($_POST['artiste'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $duree = filter_var($_POST['duree'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $heureD = filter_var($_POST['heureD'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $description = filter_var($_POST['descSpec'], FILTER_SANITIZE_SPECIAL_CHARS);
-            $nomFichierVideo = uniqid();
-            $nomFichierAudio = uniqid();
-            $nomFichierImage = uniqid();
+            $id = filter_var($_POST['listeSpectacles'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-            // Si la valeur du style est égale à 0
-            if ((int) $style === 0) {
-                // On retourne le formulaire + un message disant que le style n'a pas été renseignée
-                return "<h3><strong> Veuillez renseigner le style </strong></h3><br>" . $this->getFormulaire();
-            }
-            // Sinon si la valeur de l'artiste est égale à 0
-            elseif ((int) $artiste === 0) {
-                // On retourne le formulaire + un message disant que l'artiste n'a pas été renseignée
-                return "<h3><strong> Veuillez renseigner l'artiste </strong></h3><br>" . $this->getFormulaire();
+            // Charger le spectacle existant pour obtenir ses valeurs actuelles
+            $spectacleExistant = SelectRepository::getInstance()->getSpectacle((int) $id);
+
+            if (!$spectacleExistant) {
+                return "<p>Erreur : Spectacle introuvable</p>";
             }
 
+            // Récupérer les champs du formulaire, ou conserver les valeurs existantes
+            $nomSpec = empty($_POST['nomSpec']) ? $spectacleExistant->getNom() : filter_var($_POST['nomSpec'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $style = empty($_POST['style']) ? $spectacleExistant->getStyle()->getId() : filter_var($_POST['style'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $artiste = empty($_POST['artiste']) ? $spectacleExistant->getArtiste()->getId() : filter_var($_POST['artiste'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $duree = empty($_POST['duree']) ? $spectacleExistant->getDuree() : filter_var($_POST['duree'], FILTER_SANITIZE_NUMBER_INT);
+            $heureD = empty($_POST['heureD']) ? $spectacleExistant->getHeureDebut() : filter_var($_POST['heureD'], FILTER_SANITIZE_SPECIAL_CHARS);
+            $description = empty($_POST['descSpec']) ? $spectacleExistant->getDescription() : filter_var($_POST['descSpec'], FILTER_SANITIZE_SPECIAL_CHARS);
 
-            // Si le fichier video est bon
-            if ($this->verifFichierVideo($nomFichierVideo)) {
+            // Vérifier les fichiers (si non envoyés, conserver les anciens noms de fichiers)
+            $nomFichierVideo = isset($_FILES['fichierVideo']['tmp_name']) && is_uploaded_file($_FILES['fichierVideo']['tmp_name'])
+                ? uniqid()
+                : $spectacleExistant->getListeVideos()[0] ?? null;
 
-                // Si le fichier audio est bon
-                if ($this->verifFichierAudio($nomFichierAudio)) {
+            $nomFichierAudio = isset($_FILES['fichierAudio']['tmp_name']) && is_uploaded_file($_FILES['fichierAudio']['tmp_name'])
+                ? uniqid()
+                : $spectacleExistant->getListeAudios()[0] ?? null;
 
-                    // Si le fichier image est bon
-                    if ($this->verifFichierImage($nomFichierImage)) {
+            $nomFichierImage = isset($_FILES['fichierImage']['tmp_name']) && is_uploaded_file($_FILES['fichierImage']['tmp_name'])
+                ? uniqid()
+                : $spectacleExistant->getListeImages()[0] ?? null;
 
-                        // On crée un objet de type Spectacle (sans la video, l'audio et l'image)
-                        $spectacle = new Spectacle(
-                            null,
-                            $nomSpec,
-                            $this->selectRepo->getStyle((int) $style),
-                            $this->selectRepo->getArtiste((int) $artiste),
-                            (int) $duree,
-                            $heureD,
-                            $description,
-                            [],
-                            [],
-                            []);
-                        // On ajoute le spectacle à la BDD (en récupérant le nouvel objet spectacle avec son id)
-                        $spectacle = $this->insertRepo->ajouterSpectacle($spectacle);
-
-                        // On ajoute l'image à la BDD (en construisant un objet Image)
-                        $image = new Image(
-                            null,
-                            $spectacle->getId(),
-                            $nomFichierImage
-                        );
-                        $this->insertRepo->ajouterImage($image);
-
-                        // On ajoute l'audio à la BDD (en construisant un objet Audio)
-                        $audio = new Audio(
-                            null,
-                            $spectacle->getId(),
-                            $nomFichierAudio
-                        );
-                        $this->insertRepo->ajouterAudio($audio);
-
-                        // On ajoute la vidéo à la BDD (en construisant un objet Video)
-                        $video = new Video(
-                            null,
-                            $spectacle->getId(),
-                            $nomFichierVideo
-                        );
-                        $this->insertRepo->ajouterVideo($video);
-
-                        // On informe que le spectacle a bien été créé
-                        return '<p> Le spectacle a bien été créé et ajouté ! </p>';
-                    }
-                    // Sinon
-                    else {
-                        // On informe à l'utilisateur que le fichier image n'est pas bon
-                        return '<p> Le fichier image n\'est pas accepté ! </p>';
-                    }
-                }
-                // Sinon
-                else {
-                    // On informe à l'utilisateur que le fichier audio n'est pas bon
-                    return '<p> Le fichier audio n\'est pas accepté ! </p>';
-
-                }
-            }
-            // Sinon
-            else {
-                // On informe à l'utilisateur que le fichier vidéo n'est pas bon
+            // Vérifier et déplacer les fichiers uniquement si de nouveaux fichiers ont été envoyés
+            if ($nomFichierVideo && !$this->verifFichierVideo($nomFichierVideo)) {
                 return '<p> Le fichier vidéo n\'est pas accepté ! </p>';
-
             }
-        }
-        // Sinon
-        else {
-            // On informe d'une erreur
-            return "Erreur : Méthode HTTP inconnue : {$this->http_method}";
-        }
-    }
+            if ($nomFichierAudio && !$this->verifFichierAudio($nomFichierAudio)) {
+                return '<p> Le fichier audio n\'est pas accepté ! </p>';
+            }
+            if ($nomFichierImage && !$this->verifFichierImage($nomFichierImage)) {
+                return '<p> Le fichier image n\'est pas accepté ! </p>';
+            }
+
+            // Construire l'objet Spectacle mis à jour
+            $spectacle = new Spectacle(
+                (int)$id,
+                $nomSpec,
+                SelectRepository::getInstance()->getStyle((int) $style),
+                SelectRepository::getInstance()->getArtiste((int) $artiste),
+                (int) $duree,
+                $heureD,
+                $description,
+                $nomFichierImage ? [$nomFichierImage] : $spectacleExistant->getListeImages(),
+                $nomFichierAudio ? [$nomFichierAudio] : $spectacleExistant->getListeAudios(),
+                $nomFichierVideo ? [$nomFichierVideo] : $spectacleExistant->getListeVideos()
+            );
+
+            // Mettre à jour les données du spectacle
+            UpdateRepository::getInstance()->updateSpectacle($spectacle);
+
+
+
+
+    }return '<p> Le spectacle a bien été modifié ! </p>';}
 
 
 
@@ -263,31 +227,47 @@ class AddSpectacleAction extends Action {
      * @return string Le formulaire au format HTML
      */
     private function getFormulaire() : string {
+
+        $listeSpectacle = SelectRepository::getInstance()->getSpectacles(null);
+
+        // comboBox (liste déroulante) des Spectacles
+        $listeDeroulanteSpectacles = '<select name="listeSpectacles" class="input-field"> <option value=""> -- Choisissez un spectacle -- </option>';
+        // pour chaque spectacle dans l'array des specs en BD, on ajoute une option à la liste déroulante
+        // les noms sont associés à des ID, mais seul le nom est affiché, et sa valeur est l'ID
+        foreach ($listeSpectacle as $spectacle) {
+            $listeDeroulanteSpectacles .= '<option value="' . $spectacle->getId() . '">' . $spectacle->getNom() . ' ' . $spectacle->getId() . '</option>';
+        }
+        $listeDeroulanteSpectacles .= '</select>';
+
+
+
+
         // On récupère la liste de tous les artistes dans la BDD
         $listeArtistes = $this->selectRepo->getArtistes();
         // On récupère la liste de tous les styles dans la BDD
         $listeStyles = $this->selectRepo->getStyles();
         // On crée la liste déroulante pour les artistes
-        $listeDeroulanteArtistes = '<select name="artiste"> <option value="0"> -- Choisissez un artiste -- </option>';
+        $listeDeroulanteArtistes = '<select name="artiste" class="input-field"> <option value="0"> -- Choisissez un artiste -- </option>';
         foreach ($listeArtistes as $artiste) {
             $listeDeroulanteArtistes .= "<option value='{$artiste->getId()}'> {$artiste->getNom()} </option>";
         }
         $listeDeroulanteArtistes .= '</select>';
         // On crée la liste déroulante pour les styles
-        $listeDeroulanteStyle = '<select name="style"> <option value="0"> -- Choisissez un style -- </option>';
+        $listeDeroulanteStyle = '<select name="style" class="input-field"> <option value="0"> -- Choisissez un style -- </option>';
         foreach ($listeStyles as $style) {
             $listeDeroulanteStyle .= "<option value='{$style->getId()}'> {$style->getNom()} </option>";
         }
         $listeDeroulanteStyle .= '</select>';
         // On ajoute les deux listes au formulaire et on le renvoie
          return <<<END
-            <form method="post" name="" action="?action=add-spectacle" enctype="multipart/form-data">
-                <input type="text" name="nomSpec" placeholder="Nom du spectacle" class="input-field" required> 
+            <form method="post" name="" action="?action=modifier-spectacle" enctype="multipart/form-data">
+                <input type="text" name="nomSpec" placeholder="Nom du spectacle" class="input-field"> 
+                $listeDeroulanteSpectacles
                 $listeDeroulanteArtistes 
                 $listeDeroulanteStyle
-                <input type="time" name ="heureD" class="input-field" required>
-                <input type="number" name="duree" min="0" placeholder="<Duree en minutes>" class="input-field" required>
-                <input type="text" name="descSpec" placeholder="Description" class="input-field" required>
+                <input type="time" name ="heureD" class="input-field">
+                <input type="number" name="duree" min="0" placeholder="<Duree en minutes>" class="input-field">
+                <input type="text" name="descSpec" placeholder="Description" class="input-field">
                 Fichier Video : <input type="file" name="fichierVideo" placeholder="<fichierVideo>" class="input-field">
                 Fichier Audio : <input type="file" name="fichierAudio" placeholder="<fichierAudio>" class="input-field">
                 Image : <input type="file" name="fichierImage" placeholder="<fichierImage>" class="input-field">
