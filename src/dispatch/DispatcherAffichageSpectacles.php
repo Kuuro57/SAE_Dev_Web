@@ -85,26 +85,26 @@ class DispatcherAffichageSpectacles {
         if (isset($_SESSION['user'])) {
 
             // On crée le bouton de déconnexion
-            $btnDeconnexion = '<button name="action" value="se-deconnecter"> Se déconnecter </button>';
+            $btnDeconnexion = '<button name="action" value="se-deconnecter" id="btn_connexion"> Se déconnecter </button>';
 
             // Si l'utilisateur est connecté en tant que STANDARD
             if ((int) $_SESSION['user']['role'] === 1) {
                 // On affiche son email et son rôle
-                $email = 'Connecté au compte : ' . $_SESSION['user']['email'];
+                $email = 'Connecté au compte : ' . $_SESSION['user']['email'] . "<br>";
                 $role = 'Vos permissions : STANDARD';
             }
 
             // Sinon si l'utilisateur est connecté en tant que STAFF
             else if ((int) $_SESSION['user']['role'] === 90) {
                 // On affiche son email et son rôle
-                $email = 'Connecté au compte : ' . $_SESSION['user']['email'];
+                $email = 'Connecté au compte : ' . $_SESSION['user']['email'] . "<br>";
                 $role = 'Vos permissions : STAFF';
             }
 
             // Sinon si l'utilisateur est connecté en tant que ADMIN
             else if ((int) $_SESSION['user']['role'] === 100) {
                 // On affiche son email et son rôle
-                $email = 'Connecté au compte : ' . $_SESSION['user']['email'];
+                $email = 'Connecté au compte : ' . $_SESSION['user']['email'] . "<br>";
                 $role = 'Vos permissions : ADMIN';
             }
 
@@ -112,9 +112,9 @@ class DispatcherAffichageSpectacles {
         // Sinon
         else {
             // On crée le bouton de connexion
-            $btnConnexion = '<button name="action" value="se-connecter"> Connexion </button>';
+            $btnConnexion = '<button name="action" value="se-connecter" id="btn_connexion"> Connexion </button>';
             // On crée le bouton de création d'un compte
-            $btnCreationCompte = '<button name="action" value="add-utilisateur"> Inscription </button>';
+            $btnCreationCompte = '<button name="action" value="add-utilisateur" id="btn_connexion"> Inscription </button>';
         }
 
 
@@ -148,30 +148,33 @@ class DispatcherAffichageSpectacles {
         // On affiche sur la page son contenu
         echo <<<END
     
-        <!DOCTYPE html >
-        <html lang="fr">
-        
-        <head>
-            <meta charset="utf-8">
-            <title> NRV Festival - Spectacles </title>
-            <link href="./css/style.css" rel="stylesheet">
-        </head>
-        
-        <body>
+        <!DOCTYPE html>
+            <html lang="fr">
             
-                <h1 id="mainTitle">NRV - Nancy Rock Vibration</h1>
-                <h2 id="secondTitle"> Nos Spectacles </h2>
-                
+            <head>
+                <meta charset="utf-8">
+                <title> NRV Festival - Spectacles </title>
+                <link href="./css/style_spectacles.css" rel="stylesheet">
+            </head>
+            
+            <body>
+            
+                <h1 id="mainTitle"> NRV - Nancy Rock Vibration </h1>
+                <h2 id="secondTitle"> Spectacles </h2>
+            
                 <form method="get">
-                    $email
-                    $role
-                
-                    $btnConnexion
-                    $btnDeconnexion
-                    $btnCreationCompte
+                    <div class="user-info">
+                        $email <br>
+                        $role
+                    </div>
+                    <div class="btn_connexion_container">
+                        $btnConnexion
+                        $btnDeconnexion
+                        $btnCreationCompte         
+                    </div>
                 </form>
                 
-                $formulaire
+                <br>
                 
                 <nav>
                         <a href="index.php?action=default">Accueil</a>
@@ -180,6 +183,10 @@ class DispatcherAffichageSpectacles {
                         <a href="?action=tri-style&renderMode={$renderMode}">Trier par style</a>
                         $btnDetaille
                 </nav>
+                
+                 $formulaire
+                
+                 <br>
             
                 <div class="container">
                     $html
@@ -221,7 +228,7 @@ END;
         foreach ($listeSpectacles as $spectacles) {
             $listeHeureSpectacles[] = $selectRepo->getSpectacle($spectacles->getId());
         }
-        $listeDeroulanteHoraire = '<select name="heuresD"> <option value="0"> -- Choisissez un horaire -- </option>';
+        $listeDeroulanteHoraire = '<select name="heuresD" class="input-field"> <option value="0"> -- Choisissez un horaire -- </option>';
         foreach ($listeHeureSpectacles as $spectacle) {
             // Si l'horaire n'est pas déjà présent
             if (!key_exists($spectacle->getHeureDebut(), $listeHoraires)) {
@@ -240,7 +247,7 @@ END;
         foreach ($listeSpectacles as $spectacle) {
             $listeDatesSpectacles[] = $selectRepo->getDateSpectacle($spectacle->getId());
         }
-        $listeDeroulanteDate = '<select name="dates"> <option value="0"> -- Choisissez une date -- </option>';
+        $listeDeroulanteDate = '<select name="dates" class="input-field"> <option value="0"> -- Choisissez une date -- </option>';
         foreach ($listeDatesSpectacles as $date) {
             // Si la date n'est pas déjà présent
             if (!key_exists($date, $listeDates)) {
@@ -256,7 +263,7 @@ END;
 
         // On créé la liste déroulant des style des spectacles
         $listeStylesSpectacles = $selectRepo->getStyles();
-        $listeDeroulanteStyles = '<select name="styles"> <option value="0"> -- Choisissez un style -- </option>';
+        $listeDeroulanteStyles = '<select name="styles" class="input-field"> <option value="0"> -- Choisissez un style -- </option>';
         foreach ($listeStylesSpectacles as $style) {
             $listeDeroulanteStyles .= "<option value='{$style->getNom()}'> {$style->getNom()} </option>";
         }
@@ -266,7 +273,7 @@ END;
 
         // On créé la liste déroulant des lieu des spectacles (= soirées)
         $listeLieuxSpectacles = $selectRepo->getLieux();
-        $listeDeroulanteLieux = '<select name="lieux"> <option value="0"> -- Choisissez un lieu -- </option>';
+        $listeDeroulanteLieux = '<select name="lieux" class="input-field"> <option value="0"> -- Choisissez un lieu -- </option>';
         foreach ($listeLieuxSpectacles as $lieu) {
             $listeDeroulanteLieux .= "<option value='{$lieu->getNom()}'> {$lieu->getNom()} </option>";
         }
@@ -282,7 +289,7 @@ END;
                 $listeDeroulanteDate
                 $listeDeroulanteStyles
                 $listeDeroulanteLieux
-                <button type="submit" name="valider" class="button"> Valider </button>
+                <button type="submit" name="valider" id="btn_connexion"> Valider </button>
             </form>
             
         END;

@@ -12,12 +12,11 @@ class SeConnecterAction extends Action {
 
     // Attributs
     private string $formulaire = '
-                <h1> Connexion </h1>
-                <form method="post" action="?action=se-connecter">
-                <input type="email" name="email" placeholder="email" class="input-field" autofocus>
-                <input type="password" name="mdp" placeholder="mot de passe" class="input-field">
-                <input type="submit" name="connex" value="Connexion" class="button">
-                </form>';
+                    <form method="post" action="?action=se-connecter">
+                        <input type="email" name="email" placeholder="Email" class="input-field" required autofocus>
+                        <input type="password" name="mdp" placeholder="Mot de passe" class="input-field" required>
+                        <input type="submit" name="connex" value="Connexion" id="btn_connexion">
+                    </form>';
 
 
 
@@ -41,7 +40,7 @@ class SeConnecterAction extends Action {
         if ($this->http_method == "GET") {
 
             // On affiche le formulaire
-            return $this->formulaire;
+            return '<h1>Connexion</h1>' . $this->formulaire;
 
         }
         // Sinon

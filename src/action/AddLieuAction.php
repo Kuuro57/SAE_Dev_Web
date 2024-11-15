@@ -20,7 +20,7 @@ class AddLieuAction extends Action {
                         <input type="text" name="Fadresse" placeholder="Adresse" class="input-field" required>
                         <input type="number" name="FplacesAssises" placeholder="Capacité Assise" class="input-field" required>
                         <input type="number" name="FplacesDebout" placeholder="Capacité Debout" class="input-field" required>
-                        <input type="submit" name="connex" value="Ajouter" class="button">
+                        <input type="submit" name="connex" value="Ajouter" id="btn_connexion">
                     </form>';
 
     public function execute(): string {

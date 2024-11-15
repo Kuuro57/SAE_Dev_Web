@@ -16,7 +16,7 @@ class AddStaffAction extends Action {
                                         <input type="email" name="email" placeholder="Email" class="input-field" required autofocus>
                                         <input type="password" name="passwd1" placeholder="Mot de passe" class="input-field" required>
                                         <input type="password" name="passwd2" placeholder="Confirmez le mot de passe" class="input-field" required>
-                                        <input type="submit" name="connex" value="Connexion" class="button">
+                                        <input type="submit" name="connex" value="Connexion" id="btn_connexion">
                                   </form>';
 
 

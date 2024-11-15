@@ -15,7 +15,7 @@ class AddStyleAction extends Action
     // Attribut
     private string $formulaire = '<form method="post" action="?action=add-style">
                         <input type="text" name="FnomStyle" placeholder="Nom du style" class="input-field" required autofocus>
-                        <input type="submit" name="connex" value="Ajouter" class="button">
+                        <input type="submit" name="connex" value="Ajouter" id="btn_connexion">
                         </form>';
 
     public function execute(): string {

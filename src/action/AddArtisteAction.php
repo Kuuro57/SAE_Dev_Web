@@ -13,7 +13,7 @@ class AddArtisteAction extends Action {
     // tout les champs en required : impossible de submit sans tout avoir rempli
     private string $formulaire = '<form method="post" action="?action=add-artiste">
                         <input type="text" name="FnomArtiste" placeholder="Nom" class="input-field" required autofocus>
-                        <input type="submit" name="connex" value="Ajouter" class="button">
+                        <input type="submit" name="connex" value="Ajouter" id="btn_connexion">
                     </form>';
 
 

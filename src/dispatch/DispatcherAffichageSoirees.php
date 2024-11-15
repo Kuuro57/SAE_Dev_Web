@@ -80,7 +80,7 @@ class DispatcherAffichageSoirees {
         if (isset($_SESSION['user'])) {
 
             // On crée le bouton de déconnexion
-            $btnDeconnexion = '<button name="action" value="se-deconnecter"> Se déconnecter </button>';
+            $btnDeconnexion = '<button name="action" value="se-deconnecter" id="btn_connexion"> Se déconnecter </button>';
 
             // Si l'utilisateur est connecté en tant que STANDARD
             if ((int) $_SESSION['user']['role'] === 1) {
@@ -107,35 +107,38 @@ class DispatcherAffichageSoirees {
         // Sinon
         else {
             // On crée le bouton de connexion
-            $btnConnexion = '<button name="action" value="se-connecter"> Connexion </button>';
+            $btnConnexion = '<button name="action" value="se-connecter" id="btn_connexion"> Connexion </button>';
             // On crée le bouton de création d'un compte
-            $btnCreationCompte = '<button name="action" value="add-utilisateur"> Inscription </button>';
+            $btnCreationCompte = '<button name="action" value="add-utilisateur" id="btn_connexion"> Inscription </button>';
         }
 
         // On affiche sur la page son contenu
         echo <<<END
     
-        <!DOCTYPE html >
-        <html lang="fr">
-        
-        <head>
-            <meta charset="utf-8">
-            <title> NRV Festival - Programme </title>
-            <link href="./css/style.css" rel="stylesheet">
-        </head>
-        
-        <body>
+        <!DOCTYPE html>
+            <html lang="fr">
             
-                <h1 id="mainTitle">NRV - Nancy Rock Vibration</h1>
-                <h2 id="secondTitle"> Notre Programme / Soirees </h2>
-                
+            <head>
+                <meta charset="utf-8">
+                <title> NRV Festival - Soirees </title>
+                <link href="./css/style_soirees.css" rel="stylesheet">
+            </head>
+            
+            <body>
+            
+                <h1 id="mainTitle"> NRV - Nancy Rock Vibration </h1>
+                <h2 id="secondTitle"> Soiress </h2>
+            
                 <form method="get">
-                    $email
-                    $role
-                
-                    $btnConnexion
-                    $btnDeconnexion
-                    $btnCreationCompte
+                    <div class="user-info">
+                        <span> $email </span><br>
+                        <span> $role </span>
+                    </div>
+                    <div class="btn_connexion_container">
+                        $btnConnexion
+                        $btnDeconnexion
+                        $btnCreationCompte         
+                    </div>
                 </form>
                 
                 <nav>

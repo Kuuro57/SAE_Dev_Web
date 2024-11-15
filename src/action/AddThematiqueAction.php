@@ -12,7 +12,7 @@ class AddThematiqueAction extends Action {
      */
     private string $formulaire = '<form method="post" action="?action=add-theme">
                         <input type="text" name="nomT" placeholder="Nom de la thématique" class="input-field" required autofocus>
-                        <input type="submit" name="connex" value="Ajouter" class="button">
+                        <input type="submit" name="connex" value="Ajouter" id="btn_connexion">
                     </form>';
 
     public function execute(): string {
