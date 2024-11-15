@@ -5,6 +5,9 @@ namespace iutnc\sae_dev_web\render;
 use iutnc\sae_dev_web\festival\Soiree;
 use iutnc\sae_dev_web\festival\Spectacle;
 
+/**
+ * Classe qui permet de rendre une soirée
+ */
 class SoireeRenderer implements Renderer {
 
     // Attribut

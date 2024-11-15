@@ -7,6 +7,10 @@ use DateTime;
 use iutnc\sae_dev_web\festival\Spectacle;
 use iutnc\sae_dev_web\repository\SelectRepository;
 
+
+/**
+ * Classe qui permet de rendre un spectacle
+ */
 class SpectacleRenderer implements Renderer {
 
     // Attribut
@@ -80,7 +84,7 @@ class SpectacleRenderer implements Renderer {
         if (count($imagestab) > 0) {
             // pour chaque image du tab images on affiche l'image balise img avec la src de l'image
             foreach ($imagestab as $image) {
-                $images .= "<img src='{image/{$image->getNomFichierImage()}' alt='Image du spectacle'>";
+                $images.="<img src='image/{$image->getNomFichierImage()}' alt='Image du spectacle'>";
             }
         }
         else {
@@ -88,7 +92,7 @@ class SpectacleRenderer implements Renderer {
         }
 
         $annule = $this->isCancelled();
-        
+
         return "
             <div id='spectacle'>
                 <p><strong>{$this->spectacle->getNom()}</strong> <br>
@@ -220,7 +224,6 @@ class SpectacleRenderer implements Renderer {
     /**
      * Méthode qui permet de verifier si le spectacle est annulé
      */
-
     public function isCancelled() : string {
         $html = "";
         $estAnnule =  SelectRepository::getInstance()->getEstAnnuleSpectacle($this->spectacle->getId());
