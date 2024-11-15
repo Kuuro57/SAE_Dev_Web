@@ -17,9 +17,9 @@ body {
 
 /* Titre principal */
 #mainTitle {
+    padding-top: 1.1em;
     font-size: 3em;
     color: #ff0000;
-    margin: 20px 0;
 }
 
 /* Titre secondaire */
@@ -123,13 +123,16 @@ body {
 
 
 
-                                /* Barre de navigation */
+/* Barre de navigation */
 nav {
+    position: fixed;
+    z-index: max(1);
+    background-color: #333333;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
-    margin-bottom: 30px;
+    padding: 10px;
     width: 90%;
 }
 

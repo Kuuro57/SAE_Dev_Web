@@ -50,42 +50,71 @@ class TriStyleAction extends Action
             }
 
             return $res;
-        } // Sinon si la classe est DispatcherAffichageSpectacles
+        }
+
+        // Sinon si la classe est DispatcherAffichageSpectacles
         elseif ($nomClasse === "DispatcherAffichageSpectacles") {
 
-        // Récupération des spectacles
-        $r = SelectRepository::getInstance();
-        /** @var Spectacle[] $listeSpectacleAvecStyle */
-        $listeSpectacleAvecStyle = $r->getSpectacles("style"); // On récupère les spectacles avec date triés par date
-        /** @var Spectacle[] $listeTousSpectacles */
-        $listeTousSpectacles = $r->getSpectacles(null); // On récupère tous les spectacles
-        // On crée un tableau de Spectacle qui ne contiendra que les spectacles sans date, ceux qui restent
-        $listeSpectaclesRestants = []; // Tableau de Spectacle qui contiendra les spectacles sans dates
-        // pour vérifier si un spectacle est déjà dans le tableau on récupère l'id de chaque spectacle
-        // si l'id est dans le tableau avec date on ne l'ajoute pas dans ListeSpectaclesRestants
-        foreach ($listeTousSpectacles as $spectacle) {
-            $id = $spectacle->getId();
-            $trouve = false;
-            foreach ($listeSpectacleAvecStyle as $spectacleAvecStyle) {
-                if ($id == $spectacleAvecStyle->getId()) { // Si le spectacle est déjà dans le tableau avec date
-                    $trouve = true; // On le signale
-                    break; // On sort de la boucle
+            // Récupération des spectacles
+            $r = SelectRepository::getInstance();
+            $listeSpectacle = $r->getSpectacles(null);
+
+            $taille = count($listeSpectacle);
+
+            // Tri par insertion
+            for ($i = 1; $i < $taille; $i++) {
+                $spectacleCourant = $listeSpectacle[$i];
+                $styleCourant = $listeSpectacle[$i]->getStyle()->getNom();
+
+                $j = $i - 1;
+
+                // On compare et déplace les éléments plus grands vers la droite
+                while ($j >= 0 && $this->comparerStyles($listeSpectacle[$j]->getStyle()->getNom(), $styleCourant) > 0) {
+                    $listeSpectacle[$j + 1] = $listeSpectacle[$j];
+                    $j--;
                 }
+
+                $listeSpectacle[$j + 1] = $spectacleCourant;
             }
-            if (!$trouve) { // Si le spectacle n'est pas dans le tableau avec date
-                $listeSpectaclesRestants[] = $spectacle; // On ajoute le spectacle dans le tableau
+
+
+            // On affiche la liste des spectacles
+            $res = "";
+            foreach ($listeSpectacle as $spectacle) {
+                $renderer = new SpectacleRenderer($spectacle);
+                $res .= $renderer->render($renderMode);
             }
-        }
-        // on crée un tableau qui contiendra les spectacles triés par date plus les spectacles restants
-        $listeSpectacle = array_merge($listeSpectacleAvecStyle, $listeSpectaclesRestants); // On fusionne les deux tableaux
-        // On affiche la liste des spectacles
-        $res = "";
-        /** @var Spectacle $spectacle */
-        foreach ($listeSpectacle as $spectacle) {
-            $renderer = new SpectacleRenderer($spectacle);
-            $res .= $renderer->render($renderMode);
+
+
         }
 
-    } return $res;
+        return $res;
+    }
+
+
+
+    /**
+     * Compare deux styles sous forme de chaînes
+     *
+     * @param string|null $style1 Le premier style.
+     * @param string|null $style2 Le deuxième style.
+     * @return int Retourne -1 si $style1 < $styl2, 0 si elles sont égales, 1 si $styl1 > $style2.
+     */
+    function comparerStyles(?string $style1, ?string $style2): int {
+
+        // Si le style1 ou style2 est null
+        if (is_null($style1) || is_null($style2)) {
+            return -1;
+        }
+
+        // Comparaison lexicographique
+        if ($style1 < $style2) {
+            return -1;
+        } elseif ($style1 > $style2) {
+            return 1;
+        } else {
+            return 0;
+        }
+
     }
 }

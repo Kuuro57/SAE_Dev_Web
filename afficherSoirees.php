@@ -35,8 +35,8 @@ session_start();
 
 
 try {
-    SelectRepository::setConfig('db.conf.ini');
-    InsertRepository::setConfig('db.conf.ini');
+    SelectRepository::setConfig();
+    InsertRepository::setConfig();
 // Erreur lors de la lecture du fichier de configuration
 } catch (Exception $e) {
     echo $e->getMessage();

@@ -15,6 +15,7 @@ abstract class Repository {
     // Attributs
     protected PDO $pdo; // Objet permettant d'accéder à la BDD et d'executer les requêtes SQL
     protected static ?array $config = []; // Liste qui contient les configurations pour accéder à la BDD
+    private static string $cheminFichierConfig = './db.conf.ini'; // Rép
 
 
 
@@ -40,9 +41,9 @@ abstract class Repository {
      * @param string $file Nom de fichier
      * @throws Exception Erreur lors de la lecture du fichier de configuration
      */
-    public static function setConfig(string $file) : void {
+    public static function setConfig() : void {
 
-        $conf = parse_ini_file($file);
+        $conf = parse_ini_file(self::$cheminFichierConfig);
 
         if ($conf === false) {
             throw new Exception("Error reading configuration file");

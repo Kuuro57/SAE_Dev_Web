@@ -53,8 +53,6 @@ class TriDateAction extends Action
                 $res .= $renderer->render(2);
             }
 
-            return $res;
-
         }
 
 
@@ -64,27 +62,26 @@ class TriDateAction extends Action
 
             // Récupération des spectacles
             $r = SelectRepository::getInstance();
-            $listeSpectacleAvecDate = $r->getSpectacles("date"); // On récupère les spectacles avec date triés par date
-            $listeTousSpectacles = $r->getSpectacles(null); // On récupère tous les spectacles
-            // On crée un tableau de Spectacle qui ne contiendra que les spectacles sans date, ceux qui restent
-            $listeSpectaclesRestants = []; // Tableau de Spectacle qui contiendra les spectacles sans dates
-            // pour vérifier si un spectacle est déjà dans le tableau on récupère l'id de chaque spectacle
-            // si l'id est dans le tableau avec date on ne l'ajoute pas dans ListeSpectaclesRestants
-            foreach ($listeTousSpectacles as $spectacle) {
-                $id = $spectacle->getId();
-                $trouve = false;
-                foreach ($listeSpectacleAvecDate as $spectacleAvecDate) {
-                    if ($id == $spectacleAvecDate->getId()) { // Si le spectacle est déjà dans le tableau avec date
-                        $trouve = true; // On le signale
-                        break; // On sort de la boucle
-                    }
+            $listeSpectacle = $r->getSpectacles(null);
+
+            $taille = count($listeSpectacle);
+
+            // Tri par insertion
+            for ($i = 1; $i < $taille; $i++) {
+                $spectacleCourant = $listeSpectacle[$i];
+                $dateCourante = $r->getDateSpectacle($spectacleCourant->getId());
+
+                $j = $i - 1;
+
+                // On Compare et déplace les éléments plus grands vers la droite
+                while ($j >= 0 && $this->comparerDates($r->getDateSpectacle($listeSpectacle[$j]->getId()), $dateCourante) > 0) {
+                    $listeSpectacle[$j + 1] = $listeSpectacle[$j];
+                    $j--;
                 }
-                if (!$trouve) { // Si le spectacle n'est pas dans le tableau avec date
-                    $listeSpectaclesRestants[] = $spectacle; // On ajoute le spectacle dans le tableau
-                }
+
+                $listeSpectacle[$j + 1] = $spectacleCourant;
             }
-            // on crée un tableau qui contiendra les spectacles triés par date plus les spectacles restants
-            $listeSpectacle = array_merge($listeSpectacleAvecDate, $listeSpectaclesRestants); // On fusionne les deux tableaux
+
 
             // On affiche la liste des spectacles
             $res = "";
@@ -93,8 +90,37 @@ class TriDateAction extends Action
                 $res .= $renderer->render($renderMode);
             }
 
+
         }
 
         return $res;
     }
+
+
+
+    /**
+     * Compare deux dates sous forme de chaînes (format YYYY-MM-DD HH:MM:SS).
+     *
+     * @param string|null $date1 La première date.
+     * @param string|null $date2 La deuxième date.
+     * @return int Retourne -1 si $date1 < $date2, 0 si elles sont égales, 1 si $date1 > $date2.
+     */
+    function comparerDates(?string $date1, ?string $date2): int {
+
+        // Si la date1 ou date2 est null
+        if (is_null($date1) || is_null($date2)) {
+            return -1;
+        }
+
+        // Comparaison lexicographique fonctionne pour le format YYYY-MM-DD HH:MM:SS
+        if ($date1 < $date2) {
+            return -1;
+        } elseif ($date1 > $date2) {
+            return 1;
+        } else {
+            return 0;
+        }
+
+    }
+
 }

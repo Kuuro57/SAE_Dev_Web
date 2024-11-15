@@ -50,48 +50,78 @@ class TriLieuAction extends Action
             foreach ($listeSoirees as $soiree) {
                 $renderer = new SoireeRenderer($soiree);
                 $res .= $renderer->render(2);
-            }
+            };
+        }
 
-            return $res;
-        } // Sinon si la classe est DispatcherAffichageSpectacles
+        // Sinon si la classe est DispatcherAffichageSpectacles
         elseif ($nomClasse === "DispatcherAffichageSpectacles") {
 
+            // Récupération des spectacles
+            $r = SelectRepository::getInstance();
+            $listeSpectacle = $r->getSpectacles(null);
 
+            $taille = count($listeSpectacle);
 
+            // Tri par insertion
+            for ($i = 1; $i < $taille; $i++) {
+                $spectacleCourant = $listeSpectacle[$i];
+                $lieuCourant = $r->getLieu($spectacleCourant->getId());
 
-        // Récupération des spectacles
-        $r = SelectRepository::getInstance();
-        /** @var Spectacle[] $listeSpectacleAvecLieu */
-        $listeSpectacleAvecLieu = $r->getSpectacles("lieu"); // On récupère les spectacles avec date triés par lieu
-        /** @var Spectacle[] $listeTousSpectacles */
-        $listeTousSpectacles = $r->getSpectacles(null); // On récupère tous les spectacles
-        // On crée un tableau de Spectacle qui ne contiendra que les spectacles sans date, ceux qui restent
-        $listeSpectaclesRestants = []; // Tableau de Spectacle qui contiendra les spectacles sans dates
-        // pour vérifier si un spectacle est déjà dans le tableau on récupère l'id de chaque spectacle
-        // si l'id est dans le tableau avec date on ne l'ajoute pas dans ListeSpectaclesRestants
-        foreach ($listeTousSpectacles as $spectacle) {
-            $id = $spectacle->getId();
-            $trouve = false;
-            foreach ($listeSpectacleAvecLieu as $spectacleAvecLieu) {
-                if ($id == $spectacleAvecLieu->getId()) { // Si le spectacle est déjà dans le tableau avec date
-                    $trouve = true; // On le signale
-                    break; // On sort de la boucle
+                $j = $i - 1;
+
+                // On compare et déplace les éléments plus grands vers la droite en vérifiant que le lieu n'est
+                // pas null
+                while ( $j >= 0 && ( $lieuPrecedent = $r->getLieu($listeSpectacle[$j]->getId())) !== null
+                        && $this->comparerLieux($lieuPrecedent->getNom(), $lieuCourant->getNom()) > 0) {
+                    $listeSpectacle[$j + 1] = $listeSpectacle[$j];
+                    $j--;
                 }
+
+                // On ajoute le spectacle au bon endroit
+                $listeSpectacle[$j + 1] = $spectacleCourant;
+
             }
-            if (!$trouve) { // Si le spectacle n'est pas dans le tableau avec date
-                $listeSpectaclesRestants[] = $spectacle; // On ajoute le spectacle dans le tableau
+
+
+            // On affiche la liste des spectacles
+            $res = "";
+            foreach ($listeSpectacle as $spectacle) {
+                $renderer = new SpectacleRenderer($spectacle);
+                $res .= $renderer->render($renderMode);
             }
-        }
-        // on crée un tableau qui contiendra les spectacles triés par date plus les spectacles restants
-        $listeSpectacle = array_merge($listeSpectacleAvecLieu, $listeSpectaclesRestants); // On fusionne les deux tableaux
-        // On affiche la liste des spectacles
-        $res = "";
-        /** @var Spectacle $spectacle */
-        foreach ($listeSpectacle as $spectacle) {
-            $renderer = new SpectacleRenderer($spectacle);
-            $res .= $renderer->render($renderMode);
+
+
         }
 
-    } return $res;
+        return $res;
+
     }
+
+
+
+    /**
+     * Compare deux lieux sous forme de chaînes
+     *
+     * @param string|null $lieu1 Le premier lieu.
+     * @param string|null $lieu2 Le deuxieme lieu.
+     * @return int Retourne -1 si $lieu1 < $lieu2, 0 si elles sont égales, 1 si $lieu1 > $lieu2.
+     */
+    function comparerLieux(?string $lieu1, ?string $lieu2): int {
+
+        // Si la date1 ou date2 est null
+        if (is_null($lieu1) || is_null($lieu2)) {
+            return -1;
+        }
+
+        // Comparaison lexicographique
+        if ($lieu1 < $lieu2) {
+            return -1;
+        } elseif ($lieu1 > $lieu2) {
+            return 1;
+        } else {
+            return 0;
+        }
+
+    }
+
 }

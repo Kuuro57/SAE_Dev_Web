@@ -433,7 +433,7 @@ class SelectRepository extends Repository
         return $res;
     }
 
-    public function getLieu(int $id): Lieu
+    public function getLieu(int $id): Lieu|null
     {
         // Requête SQL qui récupère les attributs d'artistes
         $querySQL = "Select idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout FROM Lieu WHERE idLieu = ?";
@@ -445,6 +445,10 @@ class SelectRepository extends Repository
         $statement->execute();
 
         $data = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if (empty($data)) {
+            return null;
+        }
 
         return new Lieu(
             (int)$data['idLieu'],
