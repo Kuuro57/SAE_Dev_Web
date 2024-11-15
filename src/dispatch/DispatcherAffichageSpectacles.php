@@ -153,14 +153,14 @@ class DispatcherAffichageSpectacles {
             
             <head>
                 <meta charset="utf-8">
-                <title> NRV Festival - Accueil </title>
+                <title> NRV Festival - Spectacles </title>
                 <link href="./css/style_spectacles.css" rel="stylesheet">
             </head>
             
             <body>
             
                 <h1 id="mainTitle"> NRV - Nancy Rock Vibration </h1>
-                <h2 id="secondTitle"> Accueil </h2>
+                <h2 id="secondTitle"> Spectacles </h2>
             
                 <form method="get">
                     <div class="user-info">
@@ -176,8 +176,6 @@ class DispatcherAffichageSpectacles {
                 
                 <br>
                 
-                $formulaire
-                
                 <nav>
                         <a href="index.php?action=default">Accueil</a>
                         <a href="?action=tri-date&renderMode={$renderMode}">Trier par date</a>
@@ -185,6 +183,10 @@ class DispatcherAffichageSpectacles {
                         <a href="?action=tri-style&renderMode={$renderMode}">Trier par style</a>
                         $btnDetaille
                 </nav>
+                
+                 $formulaire
+                
+                 <br>
             
                 <div class="container">
                     $html
@@ -226,7 +228,7 @@ END;
         foreach ($listeSpectacles as $spectacles) {
             $listeHeureSpectacles[] = $selectRepo->getSpectacle($spectacles->getId());
         }
-        $listeDeroulanteHoraire = '<select name="heuresD"> <option value="0"> -- Choisissez un horaire -- </option>';
+        $listeDeroulanteHoraire = '<select name="heuresD" class="input-field"> <option value="0"> -- Choisissez un horaire -- </option>';
         foreach ($listeHeureSpectacles as $spectacle) {
             // Si l'horaire n'est pas déjà présent
             if (!key_exists($spectacle->getHeureDebut(), $listeHoraires)) {
@@ -245,7 +247,7 @@ END;
         foreach ($listeSpectacles as $spectacle) {
             $listeDatesSpectacles[] = $selectRepo->getDateSpectacle($spectacle->getId());
         }
-        $listeDeroulanteDate = '<select name="dates"> <option value="0"> -- Choisissez une date -- </option>';
+        $listeDeroulanteDate = '<select name="dates" class="input-field"> <option value="0"> -- Choisissez une date -- </option>';
         foreach ($listeDatesSpectacles as $date) {
             // Si la date n'est pas déjà présent
             if (!key_exists($date, $listeDates)) {
@@ -261,7 +263,7 @@ END;
 
         // On créé la liste déroulant des style des spectacles
         $listeStylesSpectacles = $selectRepo->getStyles();
-        $listeDeroulanteStyles = '<select name="styles"> <option value="0"> -- Choisissez un style -- </option>';
+        $listeDeroulanteStyles = '<select name="styles" class="input-field"> <option value="0"> -- Choisissez un style -- </option>';
         foreach ($listeStylesSpectacles as $style) {
             $listeDeroulanteStyles .= "<option value='{$style->getNom()}'> {$style->getNom()} </option>";
         }
@@ -271,7 +273,7 @@ END;
 
         // On créé la liste déroulant des lieu des spectacles (= soirées)
         $listeLieuxSpectacles = $selectRepo->getLieux();
-        $listeDeroulanteLieux = '<select name="lieux"> <option value="0"> -- Choisissez un lieu -- </option>';
+        $listeDeroulanteLieux = '<select name="lieux" class="input-field"> <option value="0"> -- Choisissez un lieu -- </option>';
         foreach ($listeLieuxSpectacles as $lieu) {
             $listeDeroulanteLieux .= "<option value='{$lieu->getNom()}'> {$lieu->getNom()} </option>";
         }
@@ -287,7 +289,7 @@ END;
                 $listeDeroulanteDate
                 $listeDeroulanteStyles
                 $listeDeroulanteLieux
-                <button type="submit" name="valider" class="button"> Valider </button>
+                <button type="submit" name="valider" id="btn_connexion"> Valider </button>
             </form>
             
         END;

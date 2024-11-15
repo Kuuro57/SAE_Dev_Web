@@ -281,17 +281,17 @@ class AddSpectacleAction extends Action {
         $listeDeroulanteStyle .= '</select>';
         // On ajoute les deux listes au formulaire et on le renvoie
          return <<<END
-            <form method="post" name="" action="?action=add-spectacle" enctype="multipart/form-data" class="form-container">
-                <input type="text" name="nomSpec" placeholder="Nom du spectacle" required> 
+            <form method="post" name="" action="?action=add-spectacle" enctype="multipart/form-data">
+                <input type="text" name="nomSpec" placeholder="Nom du spectacle" class="input-field" required> 
                 $listeDeroulanteArtistes 
                 $listeDeroulanteStyle
-                <input type="time" name ="heureD" required>
-                <input type="number" name="duree" min="0" placeholder="<Duree en minutes>" required>
-                <input type="text" name="descSpec" placeholder="Description" required>
-                Fichier Video : <input type="file" name="fichierVideo" placeholder="<fichierVideo>">
-                Fichier Audio : <input type="file" name="fichierAudio" placeholder="<fichierAudio>">
-                Image : <input type="file" name="fichierImage" placeholder="<fichierImage>">
-                <button type="submit" name="valider" class="button"> Valider </button>
+                <input type="time" name ="heureD" class="input-field" required>
+                <input type="number" name="duree" min="0" placeholder="<Duree en minutes>" class="input-field" required>
+                <input type="text" name="descSpec" placeholder="Description" class="input-field" required>
+                Fichier Video : <input type="file" name="fichierVideo" placeholder="<fichierVideo>" class="input-field">
+                Fichier Audio : <input type="file" name="fichierAudio" placeholder="<fichierAudio>" class="input-field">
+                Image : <input type="file" name="fichierImage" placeholder="<fichierImage>" class="input-field">
+                <button type="submit" name="valider" id="btn_connexion"> Valider </button>
             </form>
             END;
     }

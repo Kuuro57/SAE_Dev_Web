@@ -30,27 +30,6 @@ body {
 }
 
                                     /* Boutons de connexion et formulaire */
-/* Titre du formulaire */
-.form-title {
-    font-size: 2em;
-    color: #ff0000;
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-/* Conteneur du formulaire */
-.form-container {
-    display: flex;
-    gap: 10px;
-    justify-content: space-between;
-    background-color: #1a1a1a;
-    border: 1px solid #333333;
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 400px;
-    margin: 0 auto;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
 
 /* Champs */
 .input-field {

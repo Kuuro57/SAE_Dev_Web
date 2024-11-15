@@ -223,6 +223,8 @@ class DispatcherIndex {
                         $btnCreationCompteStaff
                     </div>
                 </form>
+                
+                <br>
             
                 <nav>
                     <a href="afficherSoirees.php?action=default">Notre programme</a>

@@ -22,7 +22,7 @@ class AddSoireeAction extends Action {
         $listeThematique = SelectRepository::getInstance()->getThematiques(); // array des thematiques en BD
 
         // comboBox (liste déroulante) des lieux
-        $listeDeroulanteLieux = '<select name="listeLieux"> <option value=""> -- Choisissez un lieu -- </option>';
+        $listeDeroulanteLieux = '<select name="listeLieux" class="input-field"> <option value=""> -- Choisissez un lieu -- </option>';
         // pour chaque lieu dans l'array des lieux en BD, on ajoute une option à la liste déroulante
         // Les noms sont associés à des ID, mais seul le nom est affiché, et sa valeur est l'ID
         foreach ($listeLieu as $lieu) {
@@ -31,7 +31,7 @@ class AddSoireeAction extends Action {
         $listeDeroulanteLieux .= '</select>';
 
         // comboBox (liste déroulante) des thematiques
-        $listeDeroulanteThematiques = '<select name="listeThematiques"> <option value=""> -- Choisissez une thématique -- </option>';
+        $listeDeroulanteThematiques = '<select name="listeThematiques" class="input-field"> <option value=""> -- Choisissez une thématique -- </option>';
         // pour chaque thematique dans l'array des thematiques en BD, on ajoute une option à la liste déroulante
         // Les noms sont associés à des ID, mais seul le nom est affiché, et sa valeur est l'ID
         foreach ($listeThematique as $thematique) {
@@ -44,11 +44,11 @@ class AddSoireeAction extends Action {
         // tout les champs en required : impossible de submit sans tout avoir rempli
         return <<<END
             <form method="post" name="" action="?action=add-soiree" enctype="multipart/form-data">
-                <input type="text" name="nomSoiree" placeholder="Nom de la soirée" required> <br>
+                <input type="text" name="nomSoiree" placeholder="Nom de la soirée" class="input-field" required> <br>
                 $listeDeroulanteLieux <br>
                 $listeDeroulanteThematiques<br>
-                <input type="number" name="tarif" placeholder="Tarif" required> <br>
-                <input type ="date" name="dateSoiree" placeholder="Date de la soirée" required> <br>
+                <input type="number" name="tarif" placeholder="Tarif" class="input-field" required> <br>
+                <input type ="date" name="dateSoiree" placeholder="Date de la soirée" class="input-field" required> <br>
                 <button type="submit" name="valider" id="btn_connexion"> Valider </button>
             </form>
             END;

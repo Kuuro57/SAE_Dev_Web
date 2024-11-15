@@ -120,14 +120,14 @@ class DispatcherAffichageSoirees {
             
             <head>
                 <meta charset="utf-8">
-                <title> NRV Festival - Accueil </title>
+                <title> NRV Festival - Soirees </title>
                 <link href="./css/style_soirees.css" rel="stylesheet">
             </head>
             
             <body>
             
                 <h1 id="mainTitle"> NRV - Nancy Rock Vibration </h1>
-                <h2 id="secondTitle"> Accueil </h2>
+                <h2 id="secondTitle"> Soiress </h2>
             
                 <form method="get">
                     <div class="user-info">

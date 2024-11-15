@@ -37,7 +37,7 @@ class RemplirSoireeAction extends Action {
         $listeSoiree = SelectRepository::getInstance()->getSoirees(null);
 
         // comboBox (liste déroulante) des Spectacles
-        $listeDeroulanteSpectacles = '<select name="listeSpectacles"> <option value=""> -- Choisissez un spectacle -- </option>';
+        $listeDeroulanteSpectacles = '<select name="listeSpectacles" class="input-field"> <option value=""> -- Choisissez un spectacle -- </option>';
         // pour chaque spectacle dans l'array des specs en BD, on ajoute une option à la liste déroulante
         // les noms sont associés à des ID, mais seul le nom est affiché, et sa valeur est l'ID
         foreach ($listeSpectacle as $spectacle) {
@@ -47,7 +47,7 @@ class RemplirSoireeAction extends Action {
 
 
         // comboBox (liste déroulante) des Spectacles
-        $listeDeroulanteSoirees = '<select name="listeSoirees"> <option value=""> -- Choisissez une soiree -- </option>';
+        $listeDeroulanteSoirees = '<select name="listeSoirees" class="input-field"> <option value=""> -- Choisissez une soiree -- </option>';
         // pour chaque soiree dans l'array des soirees en BD, on ajoute une option à la liste déroulante
         // les noms sont associés à des ID, mais seul le nom est affiché, et sa valeur est l'ID
         foreach ($listeSoiree as $soiree) {
@@ -62,7 +62,7 @@ class RemplirSoireeAction extends Action {
             <form method="post" name="" action="?action=remplir-soiree" enctype="multipart/form-data">
                 $listeDeroulanteSpectacles <br>
                 $listeDeroulanteSoirees<br>
-                <button type="submit" name="valider" class="button"> Valider </button>
+                <button type="submit" name="valider" id="btn_connexion"> Valider </button>
             </form>
             END;
 

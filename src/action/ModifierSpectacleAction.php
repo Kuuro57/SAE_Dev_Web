@@ -231,7 +231,7 @@ class ModifierSpectacleAction extends Action {
         $listeSpectacle = SelectRepository::getInstance()->getSpectacles(null);
 
         // comboBox (liste déroulante) des Spectacles
-        $listeDeroulanteSpectacles = '<select name="listeSpectacles"> <option value=""> -- Choisissez un spectacle -- </option>';
+        $listeDeroulanteSpectacles = '<select name="listeSpectacles" class="input-field"> <option value=""> -- Choisissez un spectacle -- </option>';
         // pour chaque spectacle dans l'array des specs en BD, on ajoute une option à la liste déroulante
         // les noms sont associés à des ID, mais seul le nom est affiché, et sa valeur est l'ID
         foreach ($listeSpectacle as $spectacle) {
@@ -247,46 +247,31 @@ class ModifierSpectacleAction extends Action {
         // On récupère la liste de tous les styles dans la BDD
         $listeStyles = $this->selectRepo->getStyles();
         // On crée la liste déroulante pour les artistes
-        $listeDeroulanteArtistes = '<select name="artiste"> <option value="0"> -- Choisissez un artiste -- </option>';
+        $listeDeroulanteArtistes = '<select name="artiste" class="input-field"> <option value="0"> -- Choisissez un artiste -- </option>';
         foreach ($listeArtistes as $artiste) {
             $listeDeroulanteArtistes .= "<option value='{$artiste->getId()}'> {$artiste->getNom()} </option>";
         }
         $listeDeroulanteArtistes .= '</select>';
         // On crée la liste déroulante pour les styles
-        $listeDeroulanteStyle = '<select name="style"> <option value="0"> -- Choisissez un style -- </option>';
+        $listeDeroulanteStyle = '<select name="style" class="input-field"> <option value="0"> -- Choisissez un style -- </option>';
         foreach ($listeStyles as $style) {
             $listeDeroulanteStyle .= "<option value='{$style->getId()}'> {$style->getNom()} </option>";
         }
         $listeDeroulanteStyle .= '</select>';
         // On ajoute les deux listes au formulaire et on le renvoie
          return <<<END
-            <style>
-             form {
-                max-width: 100%; /* Le formulaire ne dépassera pas la largeur de l'écran */
-             margin: 0 auto; /* Centre le formulaire horizontalement */
-             padding: 20px; /* Ajoute de l'espace à l'intérieur du formulaire */
-            }
-
-             input, select, button {
-              width: 100%; /* Les champs prennent toute la largeur disponible */
-              margin-bottom: 10px; /* Ajoute un espace entre les éléments */
-              padding: 10px;
-              box-sizing: border-box; /* Garde une bonne gestion des marges et paddings */
-             }
-            </style>
-
             <form method="post" name="" action="?action=modifier-spectacle" enctype="multipart/form-data">
-                <input type="text" name="nomSpec" placeholder="Nom du spectacle" > 
+                <input type="text" name="nomSpec" placeholder="Nom du spectacle" class="input-field"> 
                 $listeDeroulanteSpectacles
                 $listeDeroulanteArtistes 
                 $listeDeroulanteStyle
-                <input type="time" name ="heureD">
-                <input type="number" name="duree" min="0" placeholder="<Duree en minutes>">
-                <input type="text" name="descSpec" placeholder="Description">
-                Fichier Video : <input type="file" name="fichierVideo" placeholder="<fichierVideo>">
-                Fichier Audio : <input type="file" name="fichierAudio" placeholder="<fichierAudio>">
-                Image : <input type="file" name="fichierImage" placeholder="<fichierImage>">
-                <button type="submit" name="valider" class="button"> Valider </button>
+                <input type="time" name ="heureD" class="input-field">
+                <input type="number" name="duree" min="0" placeholder="<Duree en minutes>" class="input-field">
+                <input type="text" name="descSpec" placeholder="Description" class="input-field">
+                Fichier Video : <input type="file" name="fichierVideo" placeholder="<fichierVideo>" class="input-field">
+                Fichier Audio : <input type="file" name="fichierAudio" placeholder="<fichierAudio>" class="input-field">
+                Image : <input type="file" name="fichierImage" placeholder="<fichierImage>" class="input-field">
+                <button type="submit" name="valider" id="btn_connexion"> Valider </button>
             </form>
             END;
     }
