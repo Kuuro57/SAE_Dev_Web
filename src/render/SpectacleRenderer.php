@@ -92,6 +92,8 @@ class SpectacleRenderer implements Renderer {
         $annule = $this->isCancelled();
 
         $idSp = $this->spectacle->getId();
+        $urlAjouterFavoris = "?action=toggle-fav&state=add&idSp=$idSp";
+        $urlSupprimerFavoris = "?action=toggle-fav&state=sup&idSp=$idSp";
         return "
             <div id='spectacle'>
                 <p><strong>{$this->spectacle->getNom()}</strong> <br>
@@ -99,6 +101,8 @@ class SpectacleRenderer implements Renderer {
                 <p>
                     <strong>Heure</strong> - {$heureD->format('H:i')} / {$heureF->format('H:i')} <br>
                     <strong>Lieu</strong> - $lieu <br>
+                    <a href='$urlAjouterFavoris'><button>Ajouter aux favoris</button></a>
+                    <a href='$urlSupprimerFavoris'><button>Supprimer des favoris</button></a>
                     $annule
                   
                 </p>

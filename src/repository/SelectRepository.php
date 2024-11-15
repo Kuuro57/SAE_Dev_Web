@@ -758,6 +758,45 @@ class SelectRepository extends Repository
 
     }
 
+    public function hasPrefs($idUser) : bool{
+
+        $req = 'SELECT idSpectacle from Listepreference WHERE idUtilisateur = ?';
+
+        $stmt = $this->pdo->prepare($req);
+        $stmt->bindParam(1, $idUser);
+        $stmt->execute();
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if($data == null){
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    public function getPrefs($idUser) : array {
+
+        $req = 'SELECT idSpectacle from Listepreference WHERE idUtilisateur = ?';
+
+        $stmt = $this->pdo->prepare($req);
+
+        $stmt->bindParam(1, $idUser);
+
+        $stmt->execute();
+
+        $data = [];
+
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $donnee) {
+            $spectacle = $this->getSpectacle((int) $donnee['idSpectacle']);
+            $data[] = $spectacle;
+        }
+
+        return $data;
+
+    }
+
 }
 
 
