@@ -101,4 +101,22 @@ class Auth{
 
     }
 
+
+    /**
+     * Méthode qui teste la difficultée d'un mot de passe
+     * @param string $pass le mote de passe à tester
+     * @param int $minimumLength la taille minimum que le mot de passe doit avoir
+     * @return bool Vrai si le mot de passe est bon, faux sinon
+     */
+    public static function checkPasswordStrength(string $pass, int $minimumLength): bool {
+        $length = (strlen($pass) >= $minimumLength);        // Taille minimum
+        $digit = preg_match("#[\d]#", $pass);        // Au moins un chiffre
+        $special = preg_match("#[\W]#", $pass);      // Au moins un caractère spécial
+        $lower = preg_match("#[a-z]#", $pass);       // Au moins une lettre minuscule
+        $upper = preg_match("#[A-Z]#", $pass);       // Au moins une lettre majuscule
+
+        // Retourne vrai si toutes les conditions sont réunies
+        return $length && $digit && $special && $lower && $upper;
+    }
+
 }

@@ -31,25 +31,6 @@ class AddUtilisateurAction extends Action {
 
 
     /**
-     * Méthode qui teste la difficultée d'un mot de passe
-     * @param string $pass le mote de passe à tester
-     * @param int $minimumLength la taille minimum que le mot de passe doit avoir
-     * @return bool Vrai si le mot de passe est bon, faux sinon
-     */
-    public function checkPasswordStrength(string $pass, int $minimumLength): bool {
-        $length = (strlen($pass) >= $minimumLength);        // Taille minimum
-        $digit = preg_match("#[\d]#", $pass);        // Au moins un chiffre
-        $special = preg_match("#[\W]#", $pass);      // Au moins un caractère spécial
-        $lower = preg_match("#[a-z]#", $pass);       // Au moins une lettre minuscule
-        $upper = preg_match("#[A-Z]#", $pass);       // Au moins une lettre majuscule
-
-        // Retourne vrai si toutes les conditions sont réunies
-        return $length && $digit && $special && $lower && $upper;
-    }
-
-
-
-    /**
      * Méthode qui execute l'action
      * @return string
      */
@@ -76,7 +57,7 @@ class AddUtilisateurAction extends Action {
             // Si les deux mots de passe sont identiques
             if ($p1 === $p2) {
                 // Si le mot de passe est trop faible
-                if(!$this->checkPasswordStrength($p1, 8)){
+                if(!Auth::checkPasswordStrength($p1, 8)){
                     return $res = "
                         <h1>Créer un compte</h1>
                         <h3> Erreur : mot de passe trop faible ! </h3>
