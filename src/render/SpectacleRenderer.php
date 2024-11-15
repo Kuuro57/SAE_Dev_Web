@@ -16,21 +16,12 @@ class SpectacleRenderer implements Renderer {
     // Attribut
     private Spectacle $spectacle;
 
-    private array $listeFavs;
-
     /**
      * Constructeur de la classe
      */
     public function __construct(Spectacle $spectacle) {
 
         $this->spectacle = $spectacle;
-    }
-
-    public function ajouterFav(Spectacle $spec): void {
-
-        $id = $spec->getId();
-        array_push($this->listeFavs, $id);
-
     }
 
 
@@ -100,6 +91,7 @@ class SpectacleRenderer implements Renderer {
 
         $annule = $this->isCancelled();
 
+        $idSp = $this->spectacle->getId();
         return "
             <div id='spectacle'>
                 <p><strong>{$this->spectacle->getNom()}</strong> <br>
@@ -108,10 +100,13 @@ class SpectacleRenderer implements Renderer {
                     <strong>Heure</strong> - {$heureD->format('H:i')} / {$heureF->format('H:i')} <br>
                     <strong>Lieu</strong> - $lieu <br>
                     $annule
+                    // pour chaque image du tab images on affiche l'image
                   
                 </p>
                 $images;<br>
-                <a href='?action=add-favs'><button>Ajouter dans mes favoris</button></a>
+                
+                <a href='?action=toggle-fav&idSp=$idSp'><button>Ajouter aux favoris</button></a>
+                <a href='?action=toggle-fav&idSp=$idSp'><button>Supprimer des favoris</button></a>
             </div>
         ";}
     /**
@@ -208,6 +203,8 @@ class SpectacleRenderer implements Renderer {
             </video>";
         }
 
+        $idSp = $this->spectacle->getId();
+
         $annule = $this->isCancelled();
         return "
             <div id='spectacle'>
@@ -222,6 +219,8 @@ class SpectacleRenderer implements Renderer {
                 <strong>Images</strong> - $images <br>
                 <strong>Audio</strong> - $audioListe <br>
                 <strong>Video</strong> - $videoListe <br>
+                <a href='?action=toggle-fav&idSp=$idSp'><button>Ajouter aux favoris</button></a>
+                <a href='?action=toggle-fav&idSp=$idSp'><button>Supprimer des favoris</button></a>
                 $annule
             </div>
         ";

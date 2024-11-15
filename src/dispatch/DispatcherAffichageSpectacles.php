@@ -52,6 +52,10 @@ class DispatcherAffichageSpectacles {
                 $class = new TriStyleAction();
                 break;
 
+            case "toggle-fav" :
+                $class = new ToggleFavori();
+                break;
+
             case "filtre" :
                 $class = new FiltreSpectacleAction();
                 break;
