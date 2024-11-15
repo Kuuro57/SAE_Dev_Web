@@ -30,7 +30,14 @@ class DeleteRepository extends Repository {
 
     }
 
-    public function supPref($idUser, $idSpec){
+
+
+    /**
+     * Méthode qui supprimer un spectacle de la liste des préférences d'un utilisateur
+     * @param int $idUser Id de l'utilisateur
+     * @param int $idSpec Id du spectacle à supprimer
+     */
+    public function supPref(int $idUser, int $idSpec){
 
         $req = 'DELETE FROM Listepreference WHERE idUtilisateur = ? AND idSpectacle = ?;';
 

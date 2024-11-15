@@ -304,6 +304,8 @@ class InsertRepository extends Repository {
 
     }
 
+
+
     /**
      * Ajout d'une thématique à la BDD
      * @param Thematique $theme Objet Thematique créé avec le nom de la thématique
@@ -326,11 +328,13 @@ class InsertRepository extends Repository {
 
     }
 
+
+
     /**
-     * @param Artiste $artiste
-     * @return void
+     * Méthode qui ajoute un artiste dans la BDD
+     * @param Artiste $artiste Objet de type Artiste
      */
-    public function ajouterArtiste(Artiste $artiste) : void{
+    public function ajouterArtiste(Artiste $artiste) : void {
 
         // Requête SQL qui ajoute un artiste donné à la BDD
         $req = 'INSERT INTO Artiste (nomArtiste) VALUES (?)';
@@ -346,7 +350,14 @@ class InsertRepository extends Repository {
         $stmt->execute();
     }
 
-    public function ajouterPref($idUser, $idSpec) : void {
+
+
+    /**
+     * Méthode qui ajoute un spectacle à la liste des préférences de l'utilisateur
+     * @param int $idUser Id de l'utilisateur
+     * @param int $idSpec Id du spectacle
+     */
+    public function ajouterPref(int $idUser, int $idSpec) : void {
 
         $req = 'INSERT INTO Listepreference(idUtilisateur, idSpectacle) VALUES(?, ?)';
 
