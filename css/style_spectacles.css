@@ -126,6 +126,13 @@ nav a:hover {
     color: #ffffff;
 }
 
+/* Taille de l'image */
+img {
+
+    max-width: 50em;
+    max-height: 15em;
+
+}
 
 
 

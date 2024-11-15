@@ -13,7 +13,7 @@ use iutnc\sae_dev_web\action\AddStyleAction;
 use iutnc\sae_dev_web\action\AddThematiqueAction;
 use iutnc\sae_dev_web\action\AddUtilisateurAction;
 use iutnc\sae_dev_web\action\AnnulerSpectacleAction;
-use iutnc\sae_dev_web\action\ModifierSpectacleAction;
+use iutnc\sae_dev_web\action\ModifierInfoSpectacleAction;
 use iutnc\sae_dev_web\action\RemplirSoireeAction;
 use iutnc\sae_dev_web\action\DefaultAction;
 use iutnc\sae_dev_web\action\SeConnecterAction;
@@ -97,7 +97,7 @@ class DispatcherIndex {
                 $class = new AnnulerSpectacleAction();
                 break;
             case "modifier-spectacle" :
-                $class = new ModifierSpectacleAction();
+                $class = new ModifierInfoSpectacleAction();
                 break;
 
             default :
@@ -183,6 +183,8 @@ class DispatcherIndex {
         }
         // Sinon
         else {
+            // On met dans la zone de l'email que l'utilisateur n'est pas connecté
+            $email = 'Vous n\'êtes pas connecté !';
             // On crée le bouton de connexion
             $btnConnexion = '<button name="action" value="se-connecter" id="btn_connexion"> Connexion </button>';
             // On crée le bouton de création d'un compte

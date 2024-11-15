@@ -98,7 +98,7 @@ class ModifierInfoSpectacleAction extends Action {
 
     private function getFormulaire(): string {
         $listeSpectacle = SelectRepository::getInstance()->getSpectacles(null);
-        $listeDeroulanteSpectacles = '<select name="listeSpectacles"> <option value="">-- Choisissez un spectacle --</option>';
+        $listeDeroulanteSpectacles = '<select name="listeSpectacles" class="input-field"> <option value="">-- Choisissez un spectacle --</option>';
         foreach ($listeSpectacle as $spectacle) {
             $listeDeroulanteSpectacles .= '<option value="' . $spectacle->getId() . '">' . $spectacle->getNom() . '</option>';
         }
@@ -106,12 +106,12 @@ class ModifierInfoSpectacleAction extends Action {
 
         $listeArtistes = SelectRepository::getInstance()->getArtistes();
         $listeStyles = SelectRepository::getInstance()->getStyles();
-        $listeDeroulanteArtistes = '<select name="artiste"><option value="0">-- Choisissez un artiste --</option>';
+        $listeDeroulanteArtistes = '<select name="artiste" class="input-field"><option value="0">-- Choisissez un artiste --</option>';
         foreach ($listeArtistes as $artiste) {
             $listeDeroulanteArtistes .= "<option value='{$artiste->getId()}'>{$artiste->getNom()}</option>";
         }
         $listeDeroulanteArtistes .= '</select>';
-        $listeDeroulanteStyle = '<select name="style"><option value="0">-- Choisissez un style --</option>';
+        $listeDeroulanteStyle = '<select name="style" class="input-field"><option value="0">-- Choisissez un style --</option>';
         foreach ($listeStyles as $style) {
             $listeDeroulanteStyle .= "<option value='{$style->getId()}'>{$style->getNom()}</option>";
         }
@@ -119,14 +119,14 @@ class ModifierInfoSpectacleAction extends Action {
 
         return <<<END
             <form method="post" action="?action=modifier-info-spectacle" enctype="multipart/form-data">
-                <input type="text" name="nomSpec" placeholder="Nom du spectacle">
+                <input type="text" name="nomSpec" placeholder="Nom du spectacle" class="input-field">
                 $listeDeroulanteSpectacles
                 $listeDeroulanteArtistes
                 $listeDeroulanteStyle
-                <input type="time" name="heureD">
-                <input type="number" name="duree" min="0" placeholder="Durée en minutes">
-                <input type="text" name="descSpec" placeholder="Description">
-                <button type="submit">Valider</button>
+                <input type="time" name="heureD" class="input-field">
+                <input type="number" name="duree" min="0" placeholder="Durée en minutes" class="input-field">
+                <input type="text" name="descSpec" placeholder="Description" class="input-field">
+                <button type="submit" id="btn_connexion">Valider</button>
             </form>
         END;
     }

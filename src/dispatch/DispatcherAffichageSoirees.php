@@ -106,6 +106,8 @@ class DispatcherAffichageSoirees {
         }
         // Sinon
         else {
+            // On met dans la zone de l'email que l'utilisateur n'est pas connecté
+            $email = 'Vous n\'êtes pas connecté !';
             // On crée le bouton de connexion
             $btnConnexion = '<button name="action" value="se-connecter" id="btn_connexion"> Connexion </button>';
             // On crée le bouton de création d'un compte
