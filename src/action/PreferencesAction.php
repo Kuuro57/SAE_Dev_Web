@@ -13,6 +13,7 @@ class PreferencesAction extends Action {
 
         $res = "";
 
+        // On vérifie si un utilisateur est connecté
         if(!isset($_SESSION['user']['email'])){
 
             if (isset($_COOKIE["Favoris"])) {
@@ -22,12 +23,14 @@ class PreferencesAction extends Action {
 
                 $select = SelectRepository::getInstance();
 
+                //on récupère tout les spectacles dans une liste sous la forme de leur objet
                 foreach ($ids as $id) {
 
                     $spec[] = $select->getSpectacle($id);
 
                 }
 
+                //on affiche tout les spectacles de la liste de préferences en cookie sur la page
                 foreach ($spec as $spectacle) {
 
                     $renderer = new SpectacleRenderer($spectacle);
@@ -44,8 +47,10 @@ class PreferencesAction extends Action {
 
             $select = SelectRepository::getInstance();
 
+            //on récupère l'id user avec le mail
             $idUser = $select->getIdFromEmail($_SESSION['user']['email']);
 
+            //on vérifie si l'utilisateur a des préférences
             $hasFavs = $select->hasPrefs($idUser);
 
             $data = [];
@@ -54,6 +59,8 @@ class PreferencesAction extends Action {
 
                 $data = $select->getPrefs($idUser);
 
+
+                //on affiche tout les spectacles de la liste de préferences en BDD sur la page
                 foreach ($data as $spectacle) {
 
                     $renderer = new SpectacleRenderer($spectacle);
