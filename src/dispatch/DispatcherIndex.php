@@ -12,6 +12,7 @@ use iutnc\sae_dev_web\action\AddStaffAction;
 use iutnc\sae_dev_web\action\AddThematiqueAction;
 use iutnc\sae_dev_web\action\AddUtilisateurAction;
 use iutnc\sae_dev_web\action\AnnulerSpectacleAction;
+use iutnc\sae_dev_web\action\ModifierSpectacleAction;
 use iutnc\sae_dev_web\action\RemplirSoireeAction;
 use iutnc\sae_dev_web\action\DefaultAction;
 use iutnc\sae_dev_web\action\SeConnecterAction;
@@ -90,6 +91,9 @@ class DispatcherIndex {
             case "annuler-spectacle" :
                 $class = new AnnulerSpectacleAction();
                 break;
+            case "modifier-spectacle" :
+                $class = new ModifierSpectacleAction();
+                break;
 
             default :
                 $class = new DefaultAction();
@@ -146,6 +150,7 @@ class DispatcherIndex {
                     <a href="?action=add-style">Ajouter un style</a>
                     <a href="?action=add-theme">Ajouter une thématique</a>
                     <a href="?action=annuler-spectacle">Annuler un spectacle</a>
+                    <a href="?action=modifier-spectacle">Modifier un spectacle</a>
                 END;
             }
 
@@ -164,6 +169,7 @@ class DispatcherIndex {
                     <a href="?action=add-style">Ajouter un style</a>
                     <a href="?action=add-theme">Ajouter une thématique</a>
                     <a href="?action=annuler-spectacle">Annuler un spectacle</a>
+                    <a href="?action=modifier-spectacle">Modifier un spectacle</a>
                 END;
                 // On affiche le bouton pour créer un compte STAFF
                 $btnCreationCompteStaff = '<button name="action" value="add-staff"> Créer compte STAFF </button>';
