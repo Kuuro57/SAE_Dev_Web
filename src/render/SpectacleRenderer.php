@@ -84,7 +84,7 @@ class SpectacleRenderer implements Renderer {
         if (count($imagestab) > 0) {
             // pour chaque image du tab images on affiche l'image balise img avec la src de l'image
             foreach ($imagestab as $image) {
-                $images.="<img src='image/{$image->getNomFichierImage()}' alt='Image du spectacle'>";
+                $images .= "<img src='image/{$image->getNomFichierImage()}' alt='Image du spectacle'>";
             }
         }
         else {
@@ -92,6 +92,10 @@ class SpectacleRenderer implements Renderer {
         }
 
         $annule = $this->isCancelled();
+
+        $idSp = $this->spectacle->getId();
+        $urlAjouterFavoris = "?action=toggle-fav&state=add&idSp=$idSp";
+        $urlSupprimerFavoris = "?action=toggle-fav&state=sup&idSp=$idSp";
 
         return "
             <div id='spectacle'>
@@ -102,15 +106,15 @@ class SpectacleRenderer implements Renderer {
                 <p>
                     <strong>Heure</strong> - {$heureD->format('H:i')} / {$heureF->format('H:i')} <br>
                     <strong>Lieu</strong> - $lieu <br>
+                    <a href='$urlAjouterFavoris'><button>Ajouter aux favoris</button></a>
+                    <a href='$urlSupprimerFavoris'><button>Supprimer des favoris</button></a>
                     $annule
                 </p>
-                
+
                 $images
-            </div>";
-    }
-
-
-
+                
+            </div>
+        ";}
     /**
      * Méthode renderLong qui permet d'afficher en format HTML long pour chaque spectacle,
      *
@@ -205,6 +209,11 @@ class SpectacleRenderer implements Renderer {
             </video>";
         }
 
+        $idSp = $this->spectacle->getId();
+
+        $urlAjouterFavoris = "?action=toggle-fav&state=add&idSp=$idSp";
+        $urlSupprimerFavoris = "?action=toggle-fav&state=sup&idSp=$idSp";
+
         $annule = $this->isCancelled();
         return "
             <div id='spectacle'>
@@ -219,6 +228,8 @@ class SpectacleRenderer implements Renderer {
                 <strong>Images</strong> - $images <br>
                 <strong>Audio</strong> - $audioListe <br>
                 <strong>Video</strong> - $videoListe <br>
+                <a href='$urlAjouterFavoris'><button>Ajouter aux favoris</button></a>
+                <a href='$urlSupprimerFavoris'><button>Supprimer des favoris</button></a>
                 $annule
             </div>
         ";

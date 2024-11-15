@@ -6,8 +6,10 @@ namespace iutnc\sae_dev_web\dispatch;
 
 use iutnc\sae_dev_web\action\AddUtilisateurAction;
 use iutnc\sae_dev_web\action\FiltreSpectacleAction;
+use iutnc\sae_dev_web\action\PreferencesAction;
 use iutnc\sae_dev_web\action\SeConnecterAction;
 use iutnc\sae_dev_web\action\SeDeconnecterAction;
+use iutnc\sae_dev_web\action\ToggleFavori;
 use iutnc\sae_dev_web\action\tri\TriDateAction;
 use iutnc\sae_dev_web\action\tri\TriLieuAction;
 use iutnc\sae_dev_web\action\tri\TriStyleAction;
@@ -52,8 +54,16 @@ class DispatcherAffichageSpectacles {
                 $class = new TriStyleAction();
                 break;
 
+            case "toggle-fav" :
+                $class = new ToggleFavori();
+                break;
+
             case "filtre" :
                 $class = new FiltreSpectacleAction();
+                break;
+
+            case "preferences" :
+                $class = new PreferencesAction();
                 break;
 
             default :
@@ -189,11 +199,14 @@ class DispatcherAffichageSpectacles {
                  $formulaire
                 
                  <br>
-            
+
                 <div class="container">
                     $html
                 </div>
                 <br>
+                <nav>
+                    <a href="?action=preferences">Vos préférences</a>
+                </nav>
                 
             <footer>
                 <p>@ALLART Noah, ARMBRUSTER Loup, DE WASCH Clement, DENIS Oscar, MANGIN Adrien</p>

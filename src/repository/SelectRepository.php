@@ -741,6 +741,80 @@ class SelectRepository extends Repository
         return (int) $data['estAnnule'];
     }
 
+    public function getIdFromEmail(string $email) : int {
+
+        $req = 'SELECT idUtilisateur from Utilisateur WHERE email = ?';
+
+        $stmt = $this->pdo->prepare($req);
+
+        $stmt->bindParam(1, $email);
+
+        $stmt->execute();
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return (int) $data['idUtilisateur'];
+
+    }
+
+    public function existPref($idUser, $idSpec) : bool{
+
+        $req = 'SELECT * from Listepreference WHERE idUtilisateur = ? AND idSpectacle = ?';
+
+        $stmt = $this->pdo->prepare($req);
+        $stmt->bindParam(1, $idUser);
+        $stmt->bindParam(2, $idSpec);
+        $stmt->execute();
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($data == null){
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    public function hasPrefs($idUser) : bool{
+
+        $req = 'SELECT idSpectacle from Listepreference WHERE idUtilisateur = ?';
+
+        $stmt = $this->pdo->prepare($req);
+        $stmt->bindParam(1, $idUser);
+        $stmt->execute();
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if($data == null){
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    public function getPrefs($idUser) : array {
+
+        $req = 'SELECT idSpectacle from Listepreference WHERE idUtilisateur = ?';
+
+        $stmt = $this->pdo->prepare($req);
+
+        $stmt->bindParam(1, $idUser);
+
+        $stmt->execute();
+
+        $data = [];
+
+        foreach ($stmt->fetchAll(PDO::FETCH_ASSOC) as $donnee) {
+            $spectacle = $this->getSpectacle((int) $donnee['idSpectacle']);
+            $data[] = $spectacle;
+        }
+
+        return $data;
+
+    }
+
 }
 
 
