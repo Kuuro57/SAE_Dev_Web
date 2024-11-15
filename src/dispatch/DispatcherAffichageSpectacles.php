@@ -247,12 +247,12 @@ END;
         // On créé la liste déroulante des dates des soirées
         $listeDates = [];
         foreach ($listeSpectacles as $spectacle) {
-            $listeDatesSpectacles[] = $selectRepo->getDateSpectacle($spectacle->getId());
+            $listeDatesSpectacles[$selectRepo->getDateSpectacle($spectacle->getId())] = $selectRepo->getDateSpectacle($spectacle->getId());
         }
         $listeDeroulanteDate = '<select name="dates" class="input-field"> <option value="0"> -- Choisissez une date -- </option>';
         foreach ($listeDatesSpectacles as $date) {
-            // Si la date n'est pas déjà présent
-            if (!key_exists($date, $listeDates)) {
+            // Si la date n'est pas déjà présent et qu'elle n'est pas nulle
+            if (!key_exists($date, $listeDates) && !is_null($date)) {
                 // On ajoute la date à la liste déroulante
                 $listeDeroulanteDate .= "<option value='{$date}'> {$date} </option>";
                 // On ajoute la date à la liste des horaires

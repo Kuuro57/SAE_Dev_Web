@@ -30,7 +30,7 @@ class ModifierInfoSpectacleAction extends Action {
 
         // Afficher le formulaire si la méthode est GET
         if ($this->http_method === 'GET') {
-            return $this->getFormulaire();
+            return '<h1> Modifier un spectacle </h1>' . $this->getFormulaire();
         }
         // Traiter les données si la méthode est POST
         else if ($this->http_method === 'POST') {

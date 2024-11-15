@@ -41,7 +41,7 @@ class AddSpectacleAction extends Action {
         if ($this->http_method === 'GET') {
 
             // Afficher un formulaire d'ajout d'un spectacle
-            return $this->getFormulaire();
+            return '<h1> Ajouter un spectacle </h1>' . $this->getFormulaire();
 
         }
         // Sinon si la méthode HTTP est de type POST
