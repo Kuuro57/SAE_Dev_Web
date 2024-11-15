@@ -11,7 +11,6 @@ use iutnc\sae_dev_web\festival\Spectacle;
 use iutnc\sae_dev_web\festival\Style;
 use iutnc\sae_dev_web\festival\Thematique;
 use iutnc\sae_dev_web\festival\Video;
-use iutnc\sae_dev_web\render\SpectacleRenderer;
 
 
 /**
@@ -20,6 +19,9 @@ use iutnc\sae_dev_web\render\SpectacleRenderer;
 class InsertRepository extends Repository {
 
     // Attribut
+    /**
+     * @var InsertRepository|null
+     */
     private static ?InsertRepository $instance = null; // Instance unique de la classe InsertRepository
 
     /**
@@ -38,12 +40,10 @@ class InsertRepository extends Repository {
      */
     public static function getInstance(): InsertRepository {
 
+        //Si l'instance n'existe pas, on la crée
         if(self::$instance === null) {
-
             self::$instance = new self(self::$config);
-
         }
-
         return self::$instance;
     }
 
@@ -56,8 +56,10 @@ class InsertRepository extends Repository {
      */
     public function ajouterSpectacle(Spectacle $spectacle): Spectacle {
 
+        // Requête SQL qui insère un spectacle donné dans la BDD
         $req = 'INSERT INTO Spectacle (nomSpectacle, idStyle, idArtiste, heureD, duree, descSpectacle) VALUES (?, ?, ?, ?, ?, ?)';
 
+        // Préparation de la requête
         $stmt = $this->pdo->prepare($req);
 
         $nom = $spectacle->getNom();
@@ -73,6 +75,7 @@ class InsertRepository extends Repository {
         $stmt->bindParam(4, $heureD);
         $stmt->bindParam(5, $duree);
         $stmt->bindParam(6, $desc);
+        // Execution de la requête
         $stmt->execute();
 
         // On ajoute le nouvel id à l'objet Spectacle et on le renvoie
@@ -89,8 +92,10 @@ class InsertRepository extends Repository {
      */
     public function ajouterSoiree(Soiree $soiree): void {
 
+        // Requête SQL qui insère une soirée donnée dans la BDD
         $req = 'INSERT INTO Soiree (nomSoiree, idLieu, idThematique, tarif, dateSoiree, estAnnule) VALUES (?, ?, ?, ?, ?, ?)';
 
+        // Préparation de la requête
         $stmt = $this->pdo->prepare($req);
 
         $nom = $soiree->getNom();
@@ -99,8 +104,11 @@ class InsertRepository extends Repository {
         $tarif = $soiree->getTarif();
         $date = $soiree->getDate();
         $annulee = $soiree->getEstAnnule();
+
+        // Si l'annulation de la soirée n'est pas définie, on la met à false
         if (!isset($annulee)) {
             $annulee = false;
+        // Sinon on la met à true
         } else {
             $annulee = true;
         }
@@ -112,6 +120,7 @@ class InsertRepository extends Repository {
         $stmt->bindParam(5, $date);
         $stmt->bindParam(6, $annulee);
 
+        // Execution de la requête
         $stmt->execute();
 
     }
@@ -126,8 +135,10 @@ class InsertRepository extends Repository {
      */
     public function ajouterSpectacleToSoiree(Soiree $soiree, Spectacle $spectacle): void {
 
+        // Requête SQL qui lie un Spectacle donnée à une Soirée donnée dans la BDD
         $req = 'INSERT INTO Programme (idSoiree, idSpectacle) VALUES(?, ?)';
 
+        // Préparation de la requête
         $stmt = $this->pdo->prepare($req);
 
         $idSoiree = $soiree->getId();
@@ -136,6 +147,7 @@ class InsertRepository extends Repository {
         $stmt->bindParam(1, $idSoiree);
         $stmt->bindParam(2, $idSpectacle);
 
+        // Execution de la requête
         $stmt->execute();
 
     }
@@ -148,8 +160,10 @@ class InsertRepository extends Repository {
      */
     public function ajouterLieu(Lieu $lieu): void {
 
+        // Requête SQL qui insère un lieu donné dans la BDD
         $req = 'INSERT INTO Lieu (nomLieu, adresse, nbPlacesAssises, nbPlacesDebout) VALUES (?, ?, ?, ?)';
 
+        // Préparation de la requête
         $stmt = $this->pdo->prepare($req);
 
         $nom = $lieu->getNom();
@@ -162,8 +176,8 @@ class InsertRepository extends Repository {
         $stmt->bindParam(3, $nbPlacesAssises);
         $stmt->bindParam(4, $nbPlacesDebout);
 
+        // Execution de la requête
         $stmt->execute();
-
 
     }
 
@@ -175,14 +189,17 @@ class InsertRepository extends Repository {
      */
     public function ajouterStyle(Style $style): void {
 
-        $req = 'INSERT INTO style(nomStyle) VALUES (?)';
+        // Requête SQL qui insère un style donné dans la BDD
+        $req = 'INSERT INTO Style(nomStyle) VALUES (?)';
 
+        // Préparation de la requête
         $stmt = $this->pdo->prepare($req);
 
         $nom = $style->getNom();
 
         $stmt->bindParam(1, $nom);
 
+        // Execution de la requête
         $stmt->execute();
 
     }
@@ -195,7 +212,7 @@ class InsertRepository extends Repository {
      */
     public function ajouterImage(Image $image) : void {
 
-        // Requête SQL qui ajoute une image (nom de l'image) à la BDD
+        // Requête SQL qui ajoute une image donnée (nom de l'image) à la BDD
         $querySQL = "INSERT INTO ImageSpectacle (idSpectacle, nomFichierImage) VALUES (?, ?)";
 
         // On prépare et execute la requête
@@ -207,6 +224,7 @@ class InsertRepository extends Repository {
         $stmt->bindParam(1, $idSpectacle);
         $stmt->bindParam(2, $nomFichier);
 
+        // Execution de la requête
         $stmt->execute();
 
     }
@@ -219,7 +237,7 @@ class InsertRepository extends Repository {
      */
     public function ajouterAudio(Audio $audio) : void {
 
-        // Requête SQL qui ajoute un audio (nom de l'audio) à la BDD
+        // Requête SQL qui ajoute un audio donné (nom de l'audio) à la BDD
         $querySQL = "INSERT INTO AudioSpectacle (idSpectacle, nomFichierAudio) VALUES (?, ?)";
 
         // On prépare et execute la requête
@@ -231,6 +249,7 @@ class InsertRepository extends Repository {
         $stmt->bindParam(1, $idAudio);
         $stmt->bindParam(2, $nomFichier);
 
+        // Execution de la requête
         $stmt->execute();
 
     }
@@ -243,7 +262,7 @@ class InsertRepository extends Repository {
      */
     public function ajouterVideo(Video $video) : void {
 
-        // Requête SQL qui ajoute une video (url de la vidéo) à la BDD
+        // Requête SQL qui ajoute une video donnée (url de la vidéo) à la BDD
         $querySQL = "INSERT INTO VideoSpectacle (idSpectacle, nomFichierVideo) VALUES (?, ?)";
 
         // On prépare et execute la requête
@@ -255,6 +274,7 @@ class InsertRepository extends Repository {
         $stmt->bindParam(1, $idVideo);
         $stmt->bindParam(2, $nomFichier);
 
+        // Execution de la requête
         $stmt->execute();
 
     }
@@ -269,14 +289,17 @@ class InsertRepository extends Repository {
      */
     public function ajouterUtilisateur(string $email, string $mdp, int $role) : void {
 
-        $req = 'INSERT INTO utilisateur(email, mdp, role) VALUES(?, ?, ?)';
+        // Requête SQL qui ajoute un utilisateur (email, mot de passe et rôle) à la BDD
+        $req = 'INSERT INTO Utilisateur(email, mdp, role) VALUES(?, ?, ?)';
 
+        // Préparation de la requête
         $stmt = $this->pdo->prepare($req);
 
         $stmt->bindParam(1, $email);
         $stmt->bindParam(2, $mdp);
         $stmt->bindParam(3, $role);
 
+        // Execution de la requête
         $stmt->execute();
 
     }
@@ -288,27 +311,38 @@ class InsertRepository extends Repository {
      */
     public function ajouterThematique(Thematique $theme) : void {
 
-        $req = 'INSERT INTO thematiquesoiree(nomThematique) VALUES (?)';
+        // Requête SQL qui ajoute une thématique donnée à la BDD
+        $req = 'INSERT INTO Thematiquesoiree(nomThematique) VALUES (?)';
 
+        // Préparation de la requête
         $nom = $theme->getNom();
 
         $stmt = $this->pdo->prepare($req);
 
         $stmt->bindParam(1, $nom);
 
+        // Execution de la requête
         $stmt->execute();
 
     }
 
-    public function ajouterArtiste(Artiste $artiste) {
+    /**
+     * @param Artiste $artiste
+     * @return void
+     */
+    public function ajouterArtiste(Artiste $artiste) : void{
+
+        // Requête SQL qui ajoute un artiste donné à la BDD
         $req = 'INSERT INTO Artiste (nomArtiste) VALUES (?)';
 
+        // Préparation de la requête
         $stmt = $this->pdo->prepare($req);
 
         $nom = $artiste->getNom();
 
         $stmt->bindParam(1, $nom);
 
+        // Execution de la requête
         $stmt->execute();
     }
 

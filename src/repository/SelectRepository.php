@@ -31,9 +31,9 @@ class SelectRepository extends Repository
      */
     public static function getInstance(): SelectRepository
     {
-
+        //Si l'instance n'existe pas, on la crée
         if (self::$instance === null) {
-            self::$instance = new SelectRepository(self::$config);
+            self::$instance = new self(self::$config);
         }
         return self::$instance;
 
@@ -306,6 +306,7 @@ class SelectRepository extends Repository
     }
 
 
+
     /**
      * Méthode qui renvoie la liste de tous les artistes
      * @return array Liste d'artiste
@@ -329,6 +330,8 @@ class SelectRepository extends Repository
         }
         return $res;
     }
+
+
 
     /**
      * Méthode qui renvoie un artiste dans la BDD
@@ -354,6 +357,8 @@ class SelectRepository extends Repository
         );
     }
 
+
+
     /**
      * Méthode qui renvoie la liste de tous les styles
      * @return Style[] Liste de styles
@@ -378,6 +383,8 @@ class SelectRepository extends Repository
         return $res;
     }
 
+
+
     /**
      * Méthode qui renvoie un style dans la BDD
      * @param int $id Id du style
@@ -401,6 +408,8 @@ class SelectRepository extends Repository
             $data['nomStyle']
         );
     }
+
+
 
     /**
      * Méthode qui renvoie la liste de tous les lieux
@@ -433,8 +442,14 @@ class SelectRepository extends Repository
         return $res;
     }
 
-    public function getLieu(int $id): Lieu|null
-    {
+
+
+    /**
+     * Méthode qui récupère un objet Lieu en fonction de l'id donnée
+     * @param int $id L'id du lieu
+     * @return Lieu|null Objet de type lieu
+     */
+    public function getLieu(int $id): Lieu|null {
         // Requête SQL qui récupère les attributs d'artistes
         $querySQL = "Select idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout FROM Lieu WHERE idLieu = ?";
 
@@ -583,6 +598,12 @@ class SelectRepository extends Repository
         return $res;
     }
 
+
+
+    /**
+     * @param int $id
+     * @return Thematique
+     */
     public function getThematique(int $id) : Thematique {
         // Requête SQL qui récupère les attributs de thématique
         $querySQL = "Select idThematique, nomThematique FROM ThematiqueSoiree WHERE idThematique = ?";
@@ -611,11 +632,11 @@ class SelectRepository extends Repository
     public function getHeureDebutSpectacle(int $id) : string {
 
         // Requête SQL qui récupère l'heure de début d'un spectacle
-        $querySQL = "SELECT heureD FROM Spectacle WHERE idSpectacle = :id";
+        $querySQL = "SELECT heureD FROM Spectacle WHERE idSpectacle = ?";
 
         // On prépare la requête et on l'exécute
         $statement = $this->pdo->prepare($querySQL);
-        $statement->bindParam(":id", $id);
+        $statement->bindParam(1, $id);
         $statement->execute();
 
         // On retourne l'heure de début
@@ -636,11 +657,11 @@ class SelectRepository extends Repository
         $querySQL = "SELECT Lieu.idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout FROM Lieu 
                      INNER JOIN Soiree ON Lieu.idLieu = Soiree.idLieu 
                      INNER JOIN Programme ON Programme.idSoiree = Soiree.idSoiree
-                     WHERE Programme.idSpectacle = :id";
+                     WHERE Programme.idSpectacle = ?";
 
         // On prépare la requête et on l'exécute
         $statement = $this->pdo->prepare($querySQL);
-        $statement->bindParam(":id", $idSpectacle);
+        $statement->bindParam(1, $idSpectacle);
         $statement->execute();
 
         // On récupère les données
@@ -695,6 +716,13 @@ class SelectRepository extends Repository
 
     }
 
+
+
+    /**
+     * Méthode qui dit si un spectacle est annulé ou non
+     * @param int $idSpectacle L'id du spectacle
+     * @return int 1 si le spectacle est annulé, 0 sinon
+     */
     public function getEstAnnuleSpectacle(int $idSpectacle) : int {
         // Requête SQL qui récupère l'état d'annulation du spectacle
         $querySQL = "SELECT estAnnule FROM Spectacle WHERE idSpectacle = ?";
