@@ -129,7 +129,7 @@ class DispatcherAffichageSoirees {
             <body>
             
                 <h1 id="mainTitle"> NRV - Nancy Rock Vibration </h1>
-                <h2 id="secondTitle"> Soiress </h2>
+                <h2 id="secondTitle"> Soirees </h2>
             
                 <form method="get">
                     <div class="user-info">

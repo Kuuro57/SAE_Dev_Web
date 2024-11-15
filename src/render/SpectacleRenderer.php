@@ -95,18 +95,22 @@ class SpectacleRenderer implements Renderer {
 
         return "
             <div id='spectacle'>
-                <p><strong>{$this->spectacle->getNom()}</strong> <br>
-                <strong>Date</strong> - $date </p> <br>
+                <p>
+                    <strong>{$this->spectacle->getNom()}</strong> <br>
+                    <strong>Date</strong> - $date 
+                </p>
                 <p>
                     <strong>Heure</strong> - {$heureD->format('H:i')} / {$heureF->format('H:i')} <br>
                     <strong>Lieu</strong> - $lieu <br>
                     $annule
-                  
                 </p>
-                $images
                 
-            </div>
-        ";}
+                $images
+            </div>";
+    }
+
+
+
     /**
      * Méthode renderLong qui permet d'afficher en format HTML long pour chaque spectacle,
      *

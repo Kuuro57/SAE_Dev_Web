@@ -138,8 +138,8 @@ img {
 
 /* Conteneur principal */
 .container {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 20px;
     width: 80%;
     max-width: 1200px;
@@ -150,9 +150,7 @@ img {
 
 /* Affichage des éléments à l'intérieur de la zone container */
 .container>* {
-    flex: 1;
-    block-size: fit-content;
-    display: inline-flex;
+    justify-self: center;
     border: solid navajowhite 2px;
     padding: 1em;
 }
