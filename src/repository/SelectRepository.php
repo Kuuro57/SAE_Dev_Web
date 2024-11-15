@@ -22,6 +22,9 @@ class SelectRepository extends Repository
 {
 
     // Attribut
+    /**
+     * @var SelectRepository|null
+     */
     private static ?SelectRepository $instance = null; // Instance unique de la classe SelectRepository
 
 
@@ -31,9 +34,9 @@ class SelectRepository extends Repository
      */
     public static function getInstance(): SelectRepository
     {
-
+        //Si l'instance n'existe pas, on la crée
         if (self::$instance === null) {
-            self::$instance = new SelectRepository(self::$config);
+            self::$instance = new self(self::$config);
         }
         return self::$instance;
 
@@ -119,8 +122,7 @@ class SelectRepository extends Repository
      * @param int $id Id du spectacle
      * @return Spectacle Un objet de type spectacle
      */
-    public function getSpectacle(int $id): Spectacle
-    {
+    public function getSpectacle(int $id): Spectacle {
         // Requête SQL qui récupère les données du spectacle
         $querySQL = "SELECT idSpectacle, nomSpectacle, idStyle, idArtiste, duree, heureD, descSpectacle 
                      FROM Spectacle WHERE idSpectacle = ?";
@@ -433,6 +435,10 @@ class SelectRepository extends Repository
         return $res;
     }
 
+    /**
+     * @param int $id
+     * @return Lieu
+     */
     public function getLieu(int $id): Lieu
     {
         // Requête SQL qui récupère les attributs d'artistes
@@ -579,6 +585,10 @@ class SelectRepository extends Repository
         return $res;
     }
 
+    /**
+     * @param int $id
+     * @return Thematique
+     */
     public function getThematique(int $id) : Thematique {
         // Requête SQL qui récupère les attributs de thématique
         $querySQL = "Select idThematique, nomThematique FROM ThematiqueSoiree WHERE idThematique = ?";
@@ -607,11 +617,11 @@ class SelectRepository extends Repository
     public function getHeureDebutSpectacle(int $id) : string {
 
         // Requête SQL qui récupère l'heure de début d'un spectacle
-        $querySQL = "SELECT heureD FROM Spectacle WHERE idSpectacle = :id";
+        $querySQL = "SELECT heureD FROM Spectacle WHERE idSpectacle = ?";
 
         // On prépare la requête et on l'exécute
         $statement = $this->pdo->prepare($querySQL);
-        $statement->bindParam(":id", $id);
+        $statement->bindParam(1, $id);
         $statement->execute();
 
         // On retourne l'heure de début
@@ -632,11 +642,11 @@ class SelectRepository extends Repository
         $querySQL = "SELECT Lieu.idLieu, nomLieu, adresse, nbPlacesAssises, nbPlacesDebout FROM Lieu 
                      INNER JOIN Soiree ON Lieu.idLieu = Soiree.idLieu 
                      INNER JOIN Programme ON Programme.idSoiree = Soiree.idSoiree
-                     WHERE Programme.idSpectacle = :id";
+                     WHERE Programme.idSpectacle = ?";
 
         // On prépare la requête et on l'exécute
         $statement = $this->pdo->prepare($querySQL);
-        $statement->bindParam(":id", $idSpectacle);
+        $statement->bindParam(1, $idSpectacle);
         $statement->execute();
 
         // On récupère les données
@@ -691,6 +701,10 @@ class SelectRepository extends Repository
 
     }
 
+    /**
+     * @param int $idSpectacle
+     * @return int
+     */
     public function getEstAnnuleSpectacle(int $idSpectacle) : int {
         // Requête SQL qui récupère l'état d'annulation du spectacle
         $querySQL = "SELECT estAnnule FROM Spectacle WHERE idSpectacle = ?";
