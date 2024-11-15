@@ -9,6 +9,7 @@ use iutnc\sae_dev_web\festival\Lieu;
 use iutnc\sae_dev_web\festival\Soiree;
 use iutnc\sae_dev_web\festival\Spectacle;
 use iutnc\sae_dev_web\festival\Style;
+use iutnc\sae_dev_web\festival\Thematique;
 use iutnc\sae_dev_web\festival\Video;
 use iutnc\sae_dev_web\render\SpectacleRenderer;
 
@@ -275,6 +276,25 @@ class InsertRepository extends Repository {
         $stmt->bindParam(1, $email);
         $stmt->bindParam(2, $mdp);
         $stmt->bindParam(3, $role);
+
+        $stmt->execute();
+
+    }
+
+    /**
+     * Ajout d'une thématique à la BDD
+     * @param Thematique $theme Objet Thematique créé avec le nom de la thématique
+     * @return void
+     */
+    public function ajouterThematique(Thematique $theme) : void {
+
+        $req = 'INSERT INTO thematiquesoiree(nomThematique) VALUES (?)';
+
+        $nom = $theme->getNom();
+
+        $stmt = $this->pdo->prepare($req);
+
+        $stmt->bindParam(1, $nom);
 
         $stmt->execute();
 

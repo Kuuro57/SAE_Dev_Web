@@ -1,22 +1,19 @@
-<?php declare (strict_types=1);
+<?php
 
 namespace iutnc\sae_dev_web\action;
 
-use iutnc\sae_dev_web\festival\Style;
+use iutnc\sae_dev_web\festival\Thematique;
 use iutnc\sae_dev_web\repository\InsertRepository;
-use PDOException;
 
-/**
- * Classe qui représente l'action d'ajouter un style
- */
-class AddStyleAction extends Action
-{
+class AddThematiqueAction extends Action {
 
-    // Attribut
-    private string $formulaire = '<form method="post" action="?action=add-style">
-                        <input type="text" name="FnomStyle" placeholder="Nom du style" class="input-field" required autofocus>
+    /*
+     * Formulaire d'ajout d'une thématique
+     */
+    private string $formulaire = '<form method="post" action="?action=add-theme">
+                        <input type="text" name="nomT" placeholder="Nom de la thématique" class="input-field" required autofocus>
                         <input type="submit" name="connex" value="Ajouter" class="button">
-                        </form>';
+                    </form>';
 
     public function execute(): string {
 
@@ -38,21 +35,23 @@ class AddStyleAction extends Action
 
 
         if ($this->http_method == "GET") {
-            $res = '<h1>Ajouter un style</h1>' . $this->formulaire;
+            $res = '<h1>Ajouter une thématique</h1>' . $this->formulaire;
         } else {
-            $nomStyle = filter_var($_POST['FnomStyle'],  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-
-            $style = new Style(null, $nomStyle);
+            //  On récupère le nom passé dans le form
+            $nomTheme = filter_var($_POST['nomT'],  FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
             $db = InsertRepository::getInstance();
+
+            $theme = new Thematique(null, $nomTheme);
+
             try {
-                $db->ajouterStyle($style);
-                $res = '<h1>Style ajouté</h1>';
-            } catch (PDOException $e) {
-                $res = '<h1>Erreur lors de l\'ajout du style</h1>';
-                echo $e->getMessage();
+                $db->ajouterThematique($theme);
+                $res = '<h1>Thématique ajoutée</h1>';
+            } catch (\PDOException $e) {
+                $res = '<h1>Erreur lors de lajout de la thématique</h1>' . $e->getMessage();
             }
         }
         return $res;
+
     }
 }

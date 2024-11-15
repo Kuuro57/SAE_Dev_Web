@@ -78,21 +78,38 @@ class DispatcherAffichageSoirees {
 
         // Si l'utilisateur est connecté
         if (isset($_SESSION['user'])) {
-            // On créé son email et son rôle (ADMIN ou STANDARD)
-            $email = 'Connecté au compte : ' . $_SESSION['user']['email'];
-            if ((int) $_SESSION['user']['role'] === 1) { $role = 'Vos permissions : STANDARD'; }
-            elseif ((int) $_SESSION['user']['role'] === 100) { $role = 'Vos permissions : ADMIN'; }
-            else { $role = 'Vos permissions : Undefined'; }
 
             // On crée le bouton de déconnexion
             $btnDeconnexion = '<button name="action" value="se-deconnecter"> Se déconnecter </button>';
+
+            // Si l'utilisateur est connecté en tant que STANDARD
+            if ((int) $_SESSION['user']['role'] === 1) {
+                // On affiche son email et son rôle
+                $email = 'Connecté au compte : ' . $_SESSION['user']['email'];
+                $role = 'Vos permissions : STANDARD';
+            }
+
+            // Sinon si l'utilisateur est connecté en tant que STAFF
+            else if ((int) $_SESSION['user']['role'] === 90) {
+                // On affiche son email et son rôle
+                $email = 'Connecté au compte : ' . $_SESSION['user']['email'];
+                $role = 'Vos permissions : STAFF';
+            }
+
+            // Sinon si l'utilisateur est connecté en tant que ADMIN
+            else if ((int) $_SESSION['user']['role'] === 100) {
+                // On affiche son email et son rôle
+                $email = 'Connecté au compte : ' . $_SESSION['user']['email'];
+                $role = 'Vos permissions : ADMIN';
+            }
+
         }
         // Sinon
         else {
             // On crée le bouton de connexion
             $btnConnexion = '<button name="action" value="se-connecter"> Connexion </button>';
             // On crée le bouton de création d'un compte
-            $btnCreationCompte = '<button name="action" value="add-utilisateur"> Créer son compte </button>';
+            $btnCreationCompte = '<button name="action" value="add-utilisateur"> Inscription </button>';
         }
 
         // On affiche sur la page son contenu

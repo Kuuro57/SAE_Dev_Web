@@ -44,12 +44,12 @@ class Auth{
 
 
     /**
-     * Méthode qui enregistre un utilisateur dans la BDD
+     * Méthode qui enregistre un utilisateur STANDARD dans la BDD
      * @param string $e Une adresse email
      * @param string $p Un mot de passe
      * @return String Message qui indique si l'inscription s'est bien déroulée ou non
      */
-    public static function register(string $e, string $p): String {
+    public static function registerUtilisateur(string $e, string $p): String {
 
         // On vérifie que l'utilisateur n'existe pas déjà dans la BDD
         $selectRepo = SelectRepository::getInstance();
@@ -62,9 +62,40 @@ class Auth{
 
         // On hash son mot de passe
         $hashpassw = password_hash($p, PASSWORD_DEFAULT);
+
         // On ajoute l'email et le mot de passe à la BDD avec le role 1 (rôle standard)
         $insertRepo = InsertRepository::getInstance();
         $insertRepo->ajouterUtilisateur($e, $hashpassw, 1);
+        // On retourne un message qui indique que l'inscription s'est bien déroulée
+        return '<b>Compte créé !</b>';
+
+    }
+
+
+
+    /**
+     * Méthode qui enregistre un utilisateur STAFF dans la BDD
+     * @param string $e Une adresse email
+     * @param string $p Un mot de passe
+     * @return String Message qui indique si l'inscription s'est bien déroulée ou non
+     */
+    public static function registerStaff(string $e, string $p): String {
+
+        // On vérifie que l'utilisateur n'existe pas déjà dans la BDD
+        $selectRepo = SelectRepository::getInstance();
+        $list = $selectRepo->findExistingEmail($e);
+
+        // Si la liste n'est pas vide
+        if (!($list === [])) {
+            return "L'email {$e} existe déjà !";
+        }
+
+        // On hash son mot de passe
+        $hashpassw = password_hash($p, PASSWORD_DEFAULT);
+
+        // On ajoute l'email et le mot de passe à la BDD avec le role 90 (rôle STAFF)
+        $insertRepo = InsertRepository::getInstance();
+        $insertRepo->ajouterUtilisateur($e, $hashpassw, 90);
         // On retourne un message qui indique que l'inscription s'est bien déroulée
         return '<b>Compte créé !</b>';
 

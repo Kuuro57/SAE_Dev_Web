@@ -9,10 +9,10 @@ use iutnc\sae_dev_web\auth\Auth;
 /**
  * Classe qui représente l'action de créer un nouveau compte
  */
-class AddUtilisateurAction extends Action {
+class AddStaffAction extends Action {
 
     // Attribut
-    private string $formulaire = '<form method="post" action="?action=add-utilisateur">
+    private string $formulaire = '<form method="post" action="?action=add-staff">
                                         <input type="email" name="email" placeholder="Email" class="input-field" required autofocus>
                                         <input type="password" name="passwd1" placeholder="Mot de passe" class="input-field" required>
                                         <input type="password" name="passwd2" placeholder="Confirmez le mot de passe" class="input-field" required>
@@ -55,11 +55,28 @@ class AddUtilisateurAction extends Action {
      */
     public function execute() : string {
 
+        // Si l'utilisateur n'est pas connecté
+        if (!isset($_SESSION['user'])) {
+            // On renvoie un message comme quoi il n'a pas les permissions
+            return '<p> Vous n\'avez pas les permissions requises ! Connectez-vous à un compte ADMIN </p>';
+
+        }
+        // Sinon
+        else {
+            // Si le compte à les permissions STANDARD ou STAFF
+            if ((int)$_SESSION['user']['role'] === 1 || (int)$_SESSION['user']['role'] === 90) {
+                // On renvoie un message comme quoi il n'a pas les permissions
+                return '<p> Vous n\'avez pas les permissions requises ! Connectez-vous à un compte ADMIN </p>';
+            }
+        }
+
+
+
         // Si la méthode utilisée est de type GET
         if ($this->http_method == "GET") {
             // On renvoie le formulaire
             $res = "
-                    <h1>Créer un compte</h1>
+                    <h1>Créer un compte STAFF</h1>
                     $this->formulaire
                     ";
         }
@@ -87,7 +104,7 @@ class AddUtilisateurAction extends Action {
                 // Sinon
                 else {
                 // On enregistre le nouveau compte / utilisateur dans la BDD
-                $res = "<p>" . Auth::registerUtilisateur($e, $p1) . "</p>";}
+                $res = "<p>" . Auth::registerStaff($e, $p1) . "</p>";}
             }
             // Sinon
             else {
