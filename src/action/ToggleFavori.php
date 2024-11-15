@@ -11,7 +11,7 @@ class ToggleFavori extends Action {
 
     public function execute(): string {
 
-        //header('Location: afficherSpectacles.php?action=&renderMode=long');
+        header('Location: afficherSpectacles.php?action=&renderMode=long');
 
         $res = "";
 
@@ -27,7 +27,14 @@ class ToggleFavori extends Action {
                     $spec = $_GET["idSp"];
                     $val = ($_COOKIE["Favoris"]);
                     $favs[] = $val;
-                    $favs[] = $spec;
+                    $favs = $this->toArray($val);
+
+                    $index = array_search($spec, $favs);
+
+                    if($index === false) {
+                        $favs[] = $spec;
+                        $favs = array_values($favs);
+                    }
                     $ids = (implode($favs));
                     $exp = time() + 30 * 24 * 60 * 60;
 
@@ -104,7 +111,7 @@ class ToggleFavori extends Action {
 
     }
 
-    public function toArray(string $s): array {
+    public static function toArray(string $s): array {
         $res = [];
         for($i = 0; $i < strlen($s); $i++) {
             array_push($res, $s[$i]);
