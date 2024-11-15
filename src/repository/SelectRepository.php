@@ -741,6 +741,13 @@ class SelectRepository extends Repository
         return (int) $data['estAnnule'];
     }
 
+
+
+    /**
+     * Méthode qui renvoie l'id d'un email enregistré dans la BDD
+     * @param string $email Adresse email
+     * @return int L'id associé à l'adresse email
+     */
     public function getIdFromEmail(string $email) : int {
 
         $req = 'SELECT idUtilisateur from Utilisateur WHERE email = ?';
@@ -757,7 +764,15 @@ class SelectRepository extends Repository
 
     }
 
-    public function existPref($idUser, $idSpec) : bool{
+
+
+    /**
+     * Méthode qui regarde si le spectacle est existant dans la liste des préférences de l'utilisateur
+     * @param int $idUser Id de l'utilisateur
+     * @param int $idSpec Id du spectacle
+     * @return bool
+     */
+    public function existPref(int $idUser, int $idSpec) : bool{
 
         $req = 'SELECT * from Listepreference WHERE idUtilisateur = ? AND idSpectacle = ?';
 
@@ -776,7 +791,14 @@ class SelectRepository extends Repository
 
     }
 
-    public function hasPrefs($idUser) : bool{
+
+
+    /**
+     * Méthode qui regarde si l'utilisateur à des spectacle dans sa liste de préférences
+     * @param int $idUser Id de l'utilisateur
+     * @return bool
+     */
+    public function hasPrefs(int $idUser) : bool{
 
         $req = 'SELECT idSpectacle from Listepreference WHERE idUtilisateur = ?';
 
@@ -794,7 +816,14 @@ class SelectRepository extends Repository
 
     }
 
-    public function getPrefs($idUser) : array {
+
+
+    /**
+     * Méthode qui récupère une liste des ids des spectacles dans la liste de préférences de l'utilisateur
+     * @param int $idUser Id de l'utilisateur
+     * @return int[] La liste des ids
+     */
+    public function getPrefs(int $idUser) : array {
 
         $req = 'SELECT idSpectacle from Listepreference WHERE idUtilisateur = ?';
 

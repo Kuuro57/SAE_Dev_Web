@@ -9,11 +9,9 @@ use iutnc\sae_dev_web\festival\Spectacle;
  */
 class UpdateRepository extends Repository {
 
-// Attribut
-    /**
-     * @var UpdateRepository|null
-     */
+    // Attribut
     private static ?UpdateRepository $instance = null; // Instance unique de la classe SelectRepository
+
 
 
     /**
@@ -31,12 +29,12 @@ class UpdateRepository extends Repository {
     }
 
 
+
     /**
      * Méthode qui met à jour un spectacle dans la BDD
      * @param Spectacle $spectacle Le spectacle à mettre à jour
      * @return Spectacle Le spectacle mis à jour
      */
-
     public function updateSpectacle(Spectacle $spectacle): Spectacle {
 
         // Requête SQL qui modifie un spectacle donné dans la BDD
@@ -51,12 +49,13 @@ class UpdateRepository extends Repository {
         return $spectacleRecup;
     }
 
+
+
     /**
      * Méthode annulerSpectacle qui annule un spectacle dans la BDD
      * @param Spectacle $spectacle
      * @return Spectacle
      */
-
     public function annulerSpectacle(Spectacle $spectacle): Spectacle {
 
         // Requête SQL qui modfie l'état d'annulation d'un spectacle donné dans la BDD
