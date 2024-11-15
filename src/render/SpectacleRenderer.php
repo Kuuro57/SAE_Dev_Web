@@ -100,13 +100,12 @@ class SpectacleRenderer implements Renderer {
                     <strong>Heure</strong> - {$heureD->format('H:i')} / {$heureF->format('H:i')} <br>
                     <strong>Lieu</strong> - $lieu <br>
                     $annule
-                    // pour chaque image du tab images on affiche l'image
                   
                 </p>
                 $images;<br>
                 
-                <a href='?action=toggle-fav&idSp=$idSp'><button>Ajouter aux favoris</button></a>
-                <a href='?action=toggle-fav&idSp=$idSp'><button>Supprimer des favoris</button></a>
+                
+                
             </div>
         ";}
     /**
@@ -205,6 +204,9 @@ class SpectacleRenderer implements Renderer {
 
         $idSp = $this->spectacle->getId();
 
+        $urlAjouterFavoris = "?action=toggle-fav&state=add&idSp=$idSp";
+        $urlSupprimerFavoris = "?action=toggle-fav&state=sup&idSp=$idSp";
+
         $annule = $this->isCancelled();
         return "
             <div id='spectacle'>
@@ -219,8 +221,8 @@ class SpectacleRenderer implements Renderer {
                 <strong>Images</strong> - $images <br>
                 <strong>Audio</strong> - $audioListe <br>
                 <strong>Video</strong> - $videoListe <br>
-                <a href='?action=toggle-fav&idSp=$idSp'><button>Ajouter aux favoris</button></a>
-                <a href='?action=toggle-fav&idSp=$idSp'><button>Supprimer des favoris</button></a>
+                <a href='$urlAjouterFavoris'><button>Ajouter aux favoris</button></a>
+                <a href='$urlSupprimerFavoris'><button>Supprimer des favoris</button></a>
                 $annule
             </div>
         ";

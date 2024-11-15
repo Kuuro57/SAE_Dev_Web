@@ -723,6 +723,41 @@ class SelectRepository extends Repository
         return (int) $data['estAnnule'];
     }
 
+    public function getIdFromEmail(string $email) : int {
+
+        $req = 'SELECT idUtilisateur from Utilisateur WHERE email = ?';
+
+        $stmt = $this->pdo->prepare($req);
+
+        $stmt->bindParam(1, $email);
+
+        $stmt->execute();
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return (int) $data['idUtilisateur'];
+
+    }
+
+    public function existPref($idUser, $idSpec) {
+
+        $req = 'SELECT * from Listepreference WHERE idUtilisateur = ? AND idSpectacle = ?';
+
+        $stmt = $this->pdo->prepare($req);
+        $stmt->bindParam(1, $idUser);
+        $stmt->bindParam(2, $idSpec);
+        $stmt->execute();
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if(is_null($data)){
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
 }
 
 
